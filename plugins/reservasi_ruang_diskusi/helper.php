@@ -457,7 +457,7 @@ function reserveSchedule($self)
             }
         }
 
-        $data['reservation_date'] = date('Y-m-d');
+        $data['reservation_date'] = date('Y-m-d H:i:s');
 
         // do insert
         // initialise db operation
@@ -474,7 +474,7 @@ function reserveSchedule($self)
         }
         else
         {
-            utility::jsToastr('Self Register Form', 'Gagal menyimpan data '.$sql->error, 'error');
+            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi '.$sql->error, 'error');
         }
         exit;
     }

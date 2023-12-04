@@ -94,13 +94,13 @@ switch (true) {
     case (isset($_GET['reservedScheduleList']) && count($meta) > 0):
         include __DIR__ . '/reserved-schedule-grid.inc.php';
         break;
-    
+
     case ((isset($_POST['detail']) OR (isset($_GET['action']) AND $_GET['action'] == 'detail')) && count($meta) > 0):
-        include __DIR__ . '/member-edit.inc.php';
+        include __DIR__ . '/reserved-schedule-edit.inc.php';
         break;
 
     default:
-        include __DIR__ . '/member-grid.inc.php';
+        include __DIR__ . '/reserved-schedule-grid.inc.php';
         break;
 }
 ?>

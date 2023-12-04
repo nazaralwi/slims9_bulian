@@ -16,7 +16,7 @@ class CreateOnsiteReservation extends \SLiMS\Migration\Migration
     {
         DB::getInstance()->query("CREATE TABLE IF NOT EXISTS `onsite_reservation` (
                                     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                    `reservation_date` date DEFAULT NULL,
+                                    `reservation_date` DATETIME DEFAULT NULL,
                                     `name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
                                     `student_id` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
                                     `major` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
