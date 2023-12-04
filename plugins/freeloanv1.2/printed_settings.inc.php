@@ -30,10 +30,8 @@ function loadPrintSettings($dbs, $type) {
     $barcode_settings_d = $barcode_settings_q->fetch_row();
     if ($barcode_settings_d[0]) {
       $barcode_settings = @unserialize($barcode_settings_d[0]);
-      if (is_array($barcode_settings) && count($barcode_settings) > 0) {
-        foreach ($barcode_settings as $setting_name => $val) {
-          $sysconf['print'][$type][$setting_name] = $val;
-        }
+      foreach ($barcode_settings as $setting_name => $val) {
+        $sysconf['print'][$type][$setting_name] = $val;
       }
       return $sysconf['print'][$type];
     }
@@ -42,11 +40,11 @@ function loadPrintSettings($dbs, $type) {
 
 // label print settings
 /* measurement in cm */
-$sysconf['print']['label']['page_margin'] = 0.2;
-$sysconf['print']['label']['items_per_row'] = 3;
+$sysconf['print']['label']['page_margin'] = 0.1;
+$sysconf['print']['label']['items_per_row'] = 2;
 $sysconf['print']['label']['items_margin'] = 0.05;
-$sysconf['print']['label']['box_width'] = 8;
-$sysconf['print']['label']['box_height'] = 3.3;
+$sysconf['print']['label']['box_width'] = 9.5;
+$sysconf['print']['label']['box_height'] = 3.5;
 $sysconf['print']['label']['include_header_text'] = 1; // change to 0 if dont want to use header in each label
 $sysconf['print']['label']['header_text'] = ''; // keep empty if you want to use Library Name as a header text
 $sysconf['print']['label']['fonts'] = "Arial, Verdana, Helvetica, 'Trebuchet MS'";
@@ -58,14 +56,14 @@ $sysconf['print']['label']['border_size'] = 1; // in pixels
 $sysconf['print']['barcode']['barcode_page_margin'] = 0.2;
 $sysconf['print']['barcode']['barcode_items_per_row'] = 3;
 $sysconf['print']['barcode']['barcode_items_margin'] = 0.1;
-$sysconf['print']['barcode']['barcode_box_width'] = 7;
-$sysconf['print']['barcode']['barcode_box_height'] = 5;
+$sysconf['print']['barcode']['barcode_box_width'] = 3.8;
+$sysconf['print']['barcode']['barcode_box_height'] = 2.6;
 $sysconf['print']['barcode']['barcode_include_header_text'] = 1; // change to 0 if dont want to use header in each barcode
-$sysconf['print']['barcode']['barcode_cut_title'] = 50; // maximum characters in title to appear in each barcode. change to 0 if you dont want the title cutted
+$sysconf['print']['barcode']['barcode_cut_title'] = 35; // maximum characters in title to appear in each barcode. change to 0 if you dont want the title cutted
 $sysconf['print']['barcode']['barcode_header_text'] = ''; // keep empty if you want to use Library Name as a header text
 $sysconf['print']['barcode']['barcode_fonts'] = "Arial, Verdana, Helvetica, 'Trebuchet MS'"; // font to use
-$sysconf['print']['barcode']['barcode_font_size'] = 11;
-$sysconf['print']['barcode']['barcode_scale'] = 70; // barcode scale in percent relative to box width and height
+$sysconf['print']['barcode']['barcode_font_size'] = 8;
+$sysconf['print']['barcode']['barcode_scale'] = 100; // barcode scale in percent relative to box width and height
 $sysconf['print']['barcode']['barcode_border_size'] = 1; // in pixels
 
 // barcode generator print settings
@@ -76,19 +74,17 @@ $sysconf['print']['barcodegen']['include_border'] = 0;
 $sysconf['print']['barcodegen']['items_per_row'] = 3;
 
 /* Receipt Printing */
-$sysconf['print']['receipt']['receipt_width'] = '7cm';
-$sysconf['print']['receipt']['receipt_font'] = 'Courier';
+$sysconf['print']['receipt']['receipt_width'] = '15cm';
+$sysconf['print']['receipt']['receipt_font'] = 'serif';
 $sysconf['print']['receipt']['receipt_color'] = '#000';
 $sysconf['print']['receipt']['receipt_margin'] = '5px';
-$sysconf['print']['receipt']['receipt_padding'] = '10px';
+$sysconf['print']['receipt']['receipt_padding'] = '5px';
 $sysconf['print']['receipt']['receipt_border'] = '1px dashed #000';
 $sysconf['print']['receipt']['receipt_fontSize'] = '7pt';
-$sysconf['print']['receipt']['receipt_header_fontSize'] = '7pt';
+$sysconf['print']['receipt']['receipt_header_fontSize'] = '8pt';
 $sysconf['print']['receipt']['receipt_titleLength'] = 100;
 
 // member card print settings
-$sysconf['print']['membercard']['template'] = 'classic';
-
 /* measurement in cm */
 $sysconf['print']['membercard']['page_margin'] = 0.2;
 $sysconf['print']['membercard']['items_margin'] = 0.1;
@@ -100,20 +96,20 @@ $sysconf['print']['membercard']['factor'] = "37.795275591"; //cm to px
 
 // Items Settings
 // change to 0 if dont want to use selected items
-$sysconf['print']['membercard']['include_id_label'] = 1; // id
-$sysconf['print']['membercard']['include_name_label'] = 1; // name
-$sysconf['print']['membercard']['include_pin_label'] = 1; // identify
-$sysconf['print']['membercard']['include_inst_label'] = 0; // institution
-$sysconf['print']['membercard']['include_email_label'] = 0; // mail address
-$sysconf['print']['membercard']['include_address_label'] = 1; // home or office address
+$sysconf['print']['membercard']['include_id_label'] = 1; // no anggota
+$sysconf['print']['membercard']['include_name_label'] = 1; // nama anggota
+$sysconf['print']['membercard']['include_pin_label'] = 1; // no identitas
+$sysconf['print']['membercard']['include_inst_label'] = 0; // institusi
+$sysconf['print']['membercard']['include_email_label'] = 0; // email
+$sysconf['print']['membercard']['include_address_label'] = 1; // alamat
 $sysconf['print']['membercard']['include_barcode_label'] = 1; // barcode
-$sysconf['print']['membercard']['include_expired_label'] = 1; // expired date
+$sysconf['print']['membercard']['include_expired_label'] = 1; // expired
 
 // Cardbox Settings
 $sysconf['print']['membercard']['box_width'] = 8.6;
 $sysconf['print']['membercard']['box_height'] = 5.4;
-$sysconf['print']['membercard']['front_side_image'] = 'bg-front.svg';
-$sysconf['print']['membercard']['back_side_image'] = 'bg-back.svg';
+$sysconf['print']['membercard']['front_side_image'] = 'membercard_background.jpg';
+$sysconf['print']['membercard']['back_side_image'] = 'membercard_background.jpg';
 
 // Logo Setting
 $sysconf['print']['membercard']['logo'] = "logo.png";
@@ -186,13 +182,28 @@ $sysconf['print']['membercard']['address_font_size'] = "7";
 $sysconf['print']['membercard']['address_left'] = "";
 $sysconf['print']['membercard']['address_top'] = "";
 
-// catalog card settings
-$sysconf['print']['catalog']['self_list_card'] = '1';
-$sysconf['print']['catalog']['title_card'] = '1';
-$sysconf['print']['catalog']['author_card'] = '1';
-$sysconf['print']['catalog']['subject_card'] = '1';
-
-// pocket book settigs
-$sysconf['print']['pocket']['items_per_row'] = 2;
-$sysconf['print']['pocket']['libraryname'] = "Senayan Library";
-$sysconf['print']['pocket']['schoolname'] = "SMA Maju Jaya";
+// freeloan letter print settings
+// by Drajat Hasan
+// Logo Setting
+$sysconf['print']['freeloan']['logo_surat'] = "logo.png";
+$sysconf['print']['freeloan']['items_per_row'] = 1;
+// Header Settings
+$sysconf['print']['freeloan']['header1_text'] = 'Main Institute'; // Name of your University or School or Your Institution. use <br /> tag to make another line
+$sysconf['print']['freeloan']['header2_text'] = 'Faculty'; // Name of your faculty or your division
+$sysconf['print']['freeloan']['header3_text'] = 'Your Major'; // E.g. Computer Engginer, Medical, etc. use <br /> tag to make another line
+$sysconf['print']['freeloan']['header4_text'] = 'Address'; // Address of your University or School or Your division
+$sysconf['print']['freeloan']['header5_text'] = 'Phone Number'; // Phone Number 
+// Content
+$sysconf['print']['freeloan']['caption_letter'] = 'Infromation Letter';
+$sysconf['print']['freeloan']['declare_letter'] = '';
+$sysconf['print']['freeloan']['result_letter'] = '';
+$sysconf['print']['freeloan']['number_format'] = '/Perp/'; // /Perp/NamaInisialPerpustakaan
+$sysconf['print']['freeloan']['institute'] = '';
+$sysconf['print']['freeloan']['period'] = '';
+$sysconf['print']['freeloan']['year'] = date("Y");
+// Head Library Signature
+//$sysconf['print']['freeloan']['date'] = date("D")."".$sysconf['array_ina_month_format'][$sysconf['month']];
+$sysconf['print']['freeloan']['city'] = "City Name";
+$sysconf['print']['freeloan']['division_of_signature'] = '';
+$sysconf['print']['freeloan']['name_of_signature'] = '';
+$sysconf['print']['freeloan']['id_of_signature'] = '';

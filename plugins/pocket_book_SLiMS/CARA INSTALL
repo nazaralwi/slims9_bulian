@@ -1,0 +1,22 @@
+Pocket Book SLiMS Plugin By Drajat
+
+Langkah-langkah
+1. Ekstrak file pocket_book_SLiMS.zip 
+2. backup file printed_settings.inc.php yang berada di admin/admin_template
+3. lalu salin file printed_settings.inc.php hasil ekstrak dari file pocket_book_SLiMS.zip 
+   kedalam folder admin/admin_template/
+4. Atau kalau anda ragu salin skrip dibawah ini lalu templekan (paste) ke dalam file
+   printed_settings.inc.php di baris paling bawah
+// Pocket Book By Drajat Hasan
+$sysconf['print']['pocket']['items_per_row'] = 2;
+$sysconf['print']['pocket']['libraryname'] = "Senayan Library";
+$sysconf['print']['pocket']['schoolname'] = "SMA Maju Jaya";
+
+5. backup file print_settings.php dan submenu.php yang berada di folder admin/modules/bibliography/
+6. salin file book_pocket.php, print_settings.php dan submenu.php ke folder admin/modules/bibliography/
+7. salin file kantong.png ke folder images/
+8. buka phpmyadmin atau aplikasi sejenis, lalu masuk kedalam database yang digunakan oleh SLiMS
+9. klik menu import lalu pilih file.
+10.Upload file pocket_print_settings,sql lalu klik go
+11.Sekarang buka slims dan lihat di bagian biblio sudah ada menu baru yang bernama book pocket
+12.Selamat Mencoba

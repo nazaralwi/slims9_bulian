@@ -1,2 +1,0 @@
-SLiMS Plugin Skeleton
-----------

@@ -1,0 +1,1 @@
+INSERT INTO setting (`setting_id`, `setting_name`, `setting_value`) VALUES (NULL, 'pocket_print_settings', NULL);

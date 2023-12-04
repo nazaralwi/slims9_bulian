@@ -1,0 +1,17 @@
+Freeloan Plugin v1.2 for SLiMS 
+Teasted on Cendana and Akasia
+Fitur tambahan :
+1. add_essay adalah fitur tambahan yang digunakan untuk menambahkan judul skripsi ke dalam data dari setiap anggota.
+2. Pembaharuan di plugin member_free_loan_letter.php sudah bisa menampilkan judul skripsi dari setiap anggota.
+
+Lankgah-langkah
+1. Salin file submenu.php ke admin/modules/membership
+2. Salin file add_essay ke admin/modules/membership
+2. Salin file member_free_loan_letter.php ke admin/modules/membership
+3. Salin file printed_settings.inc.php ke admin/admin_template
+4. Salin file print_settings.php admin/modules/bibliography
+5. Salin folder freeloan ke files/
+6. Buka phpmyadmin atau aplikasi sejenis masuk ke database yang digunakan oleh slims anda, klik menu import lalu pilih file -> setting.sql -> go .
+7. Untuk fitur add_essay, pastikan anda masih tetap di phpmyadmin atau sejenis, setelah itu pilih table member -> klik import lalu pilih file -> add_essay.sql -> go.
+7. Plugin Fll(Free Loan Letter) telah terpasang :D
+

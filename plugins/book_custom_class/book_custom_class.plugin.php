@@ -13,7 +13,7 @@ use SLiMS\{DB,Plugins,Json};
 // get plugin instance
 $plugin = Plugins::getInstance();
 // Menu for master data
-$plugin->registerMenu('membership', 'Pengklompokan Custom', __DIR__ . '/pages/custom_class.php');
+$plugin->registerMenu('master_file', 'Pengklompokan Custom', __DIR__ . '/pages/custom_class.php');
 
 // registering menus or hook
 $plugin->register('advance_custom_field_data', function(&$custom_data){
@@ -45,7 +45,6 @@ $plugin->register('advance_custom_field_form', function($form, &$js){
         $biblioCustomClass->execute([$_REQUEST['itemID']]);
         $biblioCustomClassData = [];
         if ($biblioCustomClass->rowCount() > 0) $biblioCustomClassData = Json::parse($biblioCustomClass->fetch(PDO::FETCH_ASSOC)['custom_class'])->toArray();
-
 
         foreach ($biblioCustomClassData??[] as $data) {
             foreach ($options as $button) {
