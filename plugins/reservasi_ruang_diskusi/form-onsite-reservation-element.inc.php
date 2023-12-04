@@ -31,17 +31,17 @@ $form->addTextField('text', 'name', 'Nama', $meta['name'] ?? '', 'rows="1" class
 $form->addTextField('text', 'studentId', 'NIM', $meta['studentId'] ?? '', 'rows="1" class="form-control"', 'Student ID');
 
 // Program Studi
-$majorList = [['0', 'S1 Teknik Informatika'], ['1', 'S1 Software Engineering'], ['2', 'S1 Sistem Informasi'], 
-            ['3', 'S1 Sains Data'], ['4', 'S1 Teknik Telekomunikasi'], ['5', 'D3 Teknik Telekomunikasi'], ['6', 'S1 Automation Technology'], 
-            ['7', 'S1 Teknik Biomedis'], ['8', 'S1 Teknologi Pangan'], ['9', 'S1 Teknik Industri'], ['10', 'S1 Desain Komunikasi Visual'], 
-            ['11', 'S1 Digital Logistic'], ['12', 'S1 Bisnis Digital'], ['13', 'S1 Product Innovation'], ['14', 'D3  Teknik Digital'], ['15', 'Lainnya']];
+$majorList = ['S1 Teknik Informatika', 'S1 Software Engineering', 'S1 Sistem Informasi', 
+            'S1 Sains Data', 'S1 Teknik Telekomunikasi', 'D3 Teknik Telekomunikasi', 'S1 Automation Technology', 
+            'S1 Teknik Biomedis', 'S1 Teknologi Pangan', 'S1 Teknik Industri', 'S1 Desain Komunikasi Visual', 
+            'S1 Digital Logistic', 'S1 Bisnis Digital', 'S1 Product Innovation', 'D3  Teknik Digital', 'Lainnya'];
 $form->addSelectList('major', 'Program Studi', $majorList, $meta['major'] ?? '', 'class="select2"', 'Major');
 
 // WhatsApp Number
 $form->addTextField('text', 'whatsAppNumber', 'Nomor WhatsApp', $meta['whatsAppNumber'] ?? '', 'rows="1" class="form-control"', 'WhatsApp Number');
 
 // Visitor Discussion Room Number
-$form->addSelectList('visitorNumber', 'Jumlah pengguna ruangan', [['0', '5'], ['1', '6'], ['2', '7'], ['3', '8'], ['4', '9'], ['5', '10']], $meta['visitorNumber'] ?? '', 'class="select2"', 'Visitor Number');
+$form->addSelectList('visitorNumber', 'Jumlah pengguna ruangan', ['5', '6', '7', '8', '9', '10'], $meta['visitorNumber'] ?? '', 'class="select2"', 'Visitor Number');
 
 // Kegiatan yang Dilakukan
 $form->addTextField('text', 'activity', 'Kegiatan yang Akan Dilakukan', $meta['activity'] ?? '', 'rows="1" class="form-control"', 'Activity');
