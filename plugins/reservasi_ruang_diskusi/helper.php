@@ -135,6 +135,21 @@ function cancelReservation($self)
         // process delete
         // initialise db operation
         $sql = new simbio_dbop($dbs);
+
+        // check status
+        $map = [
+            'name' => 'name', 'studentId' => 'student_id', 
+            'major' => 'major', 'whatsAppNumber' => 'whatsapp_number',
+            'visitorNumber' => 'visitor_number', 'activity' => 'activity',
+        ];
+
+        $data = [];
+        foreach ($map as $key => $column_name) {
+            if (isset($_POST[$key]))
+            {
+                $data[$column_name] = str_replace(['"'], '', strip_tags($_POST[$key]));
+            }
+        }
         
         $fail = 0;
         foreach ($_POST['itemID'] as $itemID) {
@@ -145,10 +160,11 @@ function cancelReservation($self)
                 $fail++;
             }
         }
-        
 
         if (!$fail)
         {
+            $data['status'] = 'Cancel';
+            $insert = $sql->insert('reservation_history', $data);
             utility::jsToastr('Onsite Reservation', 'Berhail membatalkan reservasi', 'success');
             echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
         }

@@ -13,4 +13,4 @@ $plugin = \SLiMS\Plugins::getInstance();
 
 // registering menus
 $plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', __DIR__ . '/index.php');
-$plugin->registerMenu('opac', 'Reservasi Ruang Diskusi', __DIR__ . '/daftar_online.inc.php');
+$plugin->registerMenu('opac', 'Reservasi Ruang Diskusi', __DIR__ . '/reservasi_online.inc.php');
