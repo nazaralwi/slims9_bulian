@@ -39,17 +39,11 @@ if (isset($sysconf['selfRegistration']))
 }
 
 /* Action Area */
-// save setting
-saveSetting(getCurrentUrl(['memberList' => 1]));
-
-updateRegister(getCurrentUrl(['memberList' => 1]));
-
 updateReservation(getCurrentUrl(['memberList' => 1]));
 
 reserveSchedule(getCurrentUrl(['memberList' => 1]));
 
-// delete item
-deleteItem(getCurrentUrl(['memberList' => 1]));
+cancelReservation(getCurrentUrl(['memberList' => 1]));
 /* End Action Area */
 ?>
 <div class="menuBox">
@@ -59,9 +53,7 @@ deleteItem(getCurrentUrl(['memberList' => 1]));
         </div>
         <div class="sub_section">
             <div class="btn-group">
-                <a href="<?= getCurrentUrl(['memberList' => 1]) ?>" class="btn btn-primary">Daftar Member</a>
                 <a href="<?= getCurrentUrl(['reservedScheduleList' => 1]) ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
-                <a href="<?= getCurrentUrl(['formSetting' => 1]) ?>" class="btn btn-success">Form Setting</a>
                 <a href="<?= getCurrentUrl(['onsiteReservation' => 1]) ?>" class="btn btn-success">Reservasi Onsite</a>
             </div>
         </div>
@@ -78,19 +70,11 @@ if (!empty(dirCheckPermission()))
 // set view
 switch (true) {
     case (count($meta) === 0):
-        include __DIR__ . '/form-element.inc.php';
-        break;
-
-    case (isset($_GET['formSetting']) && count($meta) > 0):
-        include __DIR__ . '/form-element.inc.php';
+        include __DIR__ . '/form-onsite-reservation-element.inc.php';
         break;
 
     case (isset($_GET['onsiteReservation']) && count($meta) > 0):
         include __DIR__ . '/form-onsite-reservation-element.inc.php';
-        break;
-
-    case (isset($_GET['memberList']) && count($meta) > 0):
-        include __DIR__ . '/member-grid.inc.php';
         break;
 
     case (isset($_GET['reservedScheduleList']) && count($meta) > 0):

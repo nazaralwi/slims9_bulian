@@ -164,123 +164,6 @@ function saveRegister()
     exit();
 }
 
-// update register
-function updateRegister()
-{
-    global $dbs, $sysconf;
-
-    if (isset($_POST['updateRecordID']) && isset($_POST['saveDataMember']))
-    {
-        // set meta
-        $meta = $sysconf['selfRegistration'];
-
-        // Set Table Attribute
-        $table = (isset($meta['separateTable']) && (int)$meta['separateTable'] == 1) ? 'member_online': 'member';
-
-        // load simbio dbop
-        require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
-
-        // initialise db operation
-        $sql = new simbio_dbop($dbs);
-        $updateRecId = $dbs->escape_string($_POST['updateRecordID']);
-
-        if ($table === 'member_online')
-        {
-            // select data
-            $dataQuery = $dbs->query('select * from member_online where id = \''.$updateRecId.'\'');
-
-            $memberId = $dbs->escape_string($_POST['memberID']);
-            $dataResult = ($dataQuery->num_rows > 0) ? $dataQuery->fetch_assoc() : [];
-
-            // check status
-            if ((int)$meta['editableData'] === 0 && count($dataResult) > 0)
-            {
-                // unset id
-                unset($dataResult['id']);
-                // merge data
-                $dataOnline = array_merge(['member_id' => $memberId, 'expire_date' => date('Y-m-d', strtotime("+1 year"))], $dataResult);
-                // prepare to insert
-                $insert = $sql->insert('member', $dataOnline);
-
-                if ($insert)
-                {
-                    $sql->delete('member_online', "id='$updateRecId'");
-                    utility::jsToastr('Self Register Form', 'Berhasil menyimpan data', 'success');
-                    echo '<script>parent.$("#mainContent").simbioAJAX("'.MWB.'membership/index.php")</script>';
-                    exit;
-                }
-                else
-                {
-                    utility::jsAlert($sql->error);
-                    utility::jsToastr('Self Register Form', 'Gagal menyimpan data 1', 'error');
-                    exit;
-                }
-            }
-            else
-            {
-                // set up data
-                $map = [
-                        'memberName' => 'member_name', 'memberBirth' => 'birth_date', 
-                        'memberInst' => 'inst_name', 'memberSex' => 'gender',
-                        'memberAddress' => 'member_address', 'memberPhone' => 'member_phone',
-                        'memberEmail' => 'member_email'
-                    ];
-
-                $data = [];
-                foreach ($map as $key => $column_name) {
-                    if (isset($_POST[$key]))
-                    {
-                        $data[$column_name] = str_replace(['"'], '', strip_tags($_POST[$key]));
-                    }
-                }
-                
-                if (isset($meta['withImage']) && (bool)$meta['withImage'] === true)
-                {
-                    $data['member_image'] = $dataResult['member_image'];
-                }
-
-                $data['member_id'] = $memberId;
-                $data['mpasswd'] = (isset($dataResult['mpasswd'])) ? $dataResult['mpasswd'] : 'Tidak Ada Password';
-                $data['input_date'] = (isset($dataResult['input_date'])) ? $dataResult['input_date'] : date('Y-m-d');
-                $data['last_update'] = date('Y-m-d');
-                $data['expire_date'] = date('Y-m-d', strtotime("+1 year"));
-
-                $insert = $sql->insert('member', $data);
-
-                if ($insert)
-                {
-                    $sql->delete('member_online', "id='$updateRecId'");
-                    utility::jsToastr('Self Register Form', 'Berhasil menyimpan data', 'success');
-                    echo '<script>parent.$("#mainContent").simbioAJAX("'.MWB.'membership/index.php")</script>';
-                    exit;
-                }
-                else
-                {
-                    utility::jsToastr('Self Register Form', 'Gagal menyimpan data 2', 'error');
-                    exit;
-                }
-            }
-        }
-        else
-        {
-            $update = $sql->update('member', ['member_id' => $updateRecId, 'isPending' => (int)$_POST['isPending']], "member_id = '$updateRecId'");
-
-            if ($update)
-            {
-                utility::jsToastr('Self Register Form', 'Berhasil menyimpan data', 'success');
-                echo '<script>parent.$("#mainContent").simbioAJAX("'.MWB.'membership/index.php")</script>';
-                exit;
-            }
-            else
-            {
-                utility::jsToastr('Self Register Form', 'Gagal menyimpan data 3', 'error');
-                exit;
-            }
-        }
-        exit;
-    }
-}
-
 function updateReservation()
 {
     global $dbs, $sysconf;
@@ -339,75 +222,15 @@ function updateReservation()
     }
 }
 
-// save Setting
-function saveSetting($self)
-{
-    global $dbs;
-
-    // load simbio dbop
-    require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
-
-    // action
-    if (isset($_POST['saveData']))
-    {
-        // save into serialize data
-        $allowData = ['selfRegistrationActive','title','autoActive','separateTable','useRecaptcha','regisInfo','editableData','withImage'];
-
-        // loop for filter
-        foreach ($_POST as $key => $value) {
-            if (in_array($key, $allowData))
-            {
-                $_POST[$key] = $dbs->escape_string($value);
-            }
-            else
-            {
-                unset($_POST[$key]);
-            }
-        }
-
-        // copy template
-        // copyTemplate($_POST);
-        
-        // serialize data
-        $data = serialize($_POST);
-
-        // initialise db operation
-        $sql = new simbio_dbop($dbs);
-
-        // Delete data
-        $sql->delete('setting', 'setting_name = "selfRegistration"');
-
-        // setup for insert
-        $insert = $sql->insert('setting', ['setting_name' => 'selfRegistration', 'setting_value' => $data]);
-
-        if ($insert)
-        {
-            // if ((int)$_POST['separateTable'] === 1 )
-            // {
-            //     createTable();
-            // }
-
-            // set alert
-            utility::jsToastr('Self Register Form', 'Berhasil menyimpan data', 'success');
-            echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
-        }
-        else
-        {
-            utility::jsToastr('Self Register Form', 'Gagal menyimpan data '.$sql->error, 'error');
-        }
-        exit;
-    }
-} 
-
-// delete item
-function deleteItem($self)
+// cancel reservation
+function cancelReservation($self)
 {
     global $dbs,$meta;
 
     if ((isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])))
     {
         // Set Table Attribute
-        $table = (isset($meta['separateTable']) && (int)$meta['separateTable'] == 1) ? ['member_online', "id = '{id}'"] : ['member', "member_id = '{id}'"];
+        $table = ['onsite_reservation', "id = '{id}'"];
 
         // load simbio dbop
         require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
@@ -429,12 +252,12 @@ function deleteItem($self)
 
         if (!$fail)
         {
-            utility::jsToastr('Register Member Online', 'Berhail menghapus data.', 'success');
+            utility::jsToastr('Onsite Reservation', 'Berhail membatalkan reservasi', 'success');
             echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
         }
         else
         {
-            utility::jsToastr('Register Member Online', 'Gagal menghapus data', 'error');
+            utility::jsToastr('Onsite Reservation', 'Gagal membatalkan reservasi', 'error');
         }
         exit;
     }
