@@ -41,7 +41,7 @@ if (isset($sysconf['selfRegistration']))
 /* Action Area */
 updateReservation(getCurrentUrl(['memberList' => 1]));
 
-reserveSchedule(getCurrentUrl(['memberList' => 1]));
+reserveScheduleOnsite(getCurrentUrl(['memberList' => 1]));
 
 cancelReservation(getCurrentUrl(['memberList' => 1]));
 /* End Action Area */

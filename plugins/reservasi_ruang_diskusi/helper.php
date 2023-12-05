@@ -12,55 +12,19 @@ use Zein\Storage\Local\Upload;
 require __DIR__ . '/vendor/autoload.php';
 
 // Save Register
-function saveRegister()
+function reserveSchedule()
 {
-    global $dbs, $sysconf;
-
-    // set meta
-    $meta = $sysconf['selfRegistration']??[];
-
-    // Set Table Attribute
-    $table = (isset($meta['separateTable']) && (int)$meta['separateTable'] == 1) ? 'member_online': 'member';
+    global $dbs;
 
     // load simbio dbop
     require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
 
-    if (!\Volnix\CSRF\CSRF::validate($_POST)) {
-        echo '<script type="text/javascript">';
-        echo 'alert("Invalid login form!");';
-        echo 'location.href = \'index.php?p=daftar_online\';';
-        echo '</script>';
-        exit();
-    }
-
-    # <!-- Captcha form processing - start -->
-    if ($sysconf['captcha']['member']['enable']) {
-        if ($sysconf['captcha']['member']['type'] == 'recaptcha') {
-            require_once LIB . $sysconf['captcha']['member']['folder'] . '/' . $sysconf['captcha']['member']['incfile'];
-            $privatekey = $sysconf['captcha']['member']['privatekey'];
-            $resp = recaptcha_check_answer($privatekey,
-                $_SERVER["REMOTE_ADDR"],
-                $_POST["g-recaptcha-response"]);
-
-            if (!$resp->is_valid) {
-                // What happens when the CAPTCHA was entered incorrectly
-                header("location:index.php?p=daftar_online&captchaInvalid=true");
-                die();
-            }
-        } else if ($sysconf['captcha']['member']['type'] == 'others') {
-            # other captchas here
-        }
-    }
-    # <!-- Captcha form processing - end -->
-
     // set up data
     $map = [
-            'memberName' => 'member_name', 'memberBirth' => 'birth_date', 
-            'memberInst' => 'inst_name', 'memberSex' => 'gender',
-            'memberAddress' => 'member_address', 'memberPhone' => 'member_phone',
-            'memberEmail' => 'member_email',
-            'memberType' => 'member_type_id',
-           ];
+        'name' => 'name', 'studentId' => 'student_id', 
+        'major' => 'major', 'whatsAppNumber' => 'whatsapp_number',
+        'visitorNumber' => 'visitor_number', 'activity' => 'activity',
+    ];
 
     $data = [];
     foreach ($map as $key => $column_name) {
@@ -70,98 +34,31 @@ function saveRegister()
         }
     }
 
-    if ((isset($_POST['memberPassword1']) && !empty($_POST['memberPassword1'])) && (isset($_POST['memberPassword2']) && !empty($_POST['memberPassword2'])))
-    {
-        if ($_POST['memberPassword2'] === $_POST['memberPassword1'])
-        {
-            $data['mpasswd'] = password_hash($_POST['memberPassword1'], PASSWORD_BCRYPT);
-        }
-        else
-        {
-            echo '<script type="text/javascript">';
-            echo 'alert("Password tidak boleh kosong");';
-            echo 'location.href = \'index.php?p=daftar_online\';';
-            echo '</script>';
-            exit();
-        }
-    }
-    else
-    {
-        echo '<script type="text/javascript">';
-        echo 'alert("Password tidak boleh kosong");';
-        echo 'location.href = \'index.php?p=daftar_online\';';
-        echo '</script>';
-        exit();
-    }
-
-    // Date time
-    $data['input_date'] = date('Y-m-d');
-    $data['last_update'] = date('Y-m-d');
-
-
-    if ($table === 'member' && (int)$meta['autoActive'] === 0)
-    {
-        $data['is_pending'] = 1;
-    }
-
-    if ($table === 'member')
-    {
-        $data['member_id'] = substr(md5($data['member_name']), 0,20);
-        $data['expire_date'] = date('Y-m-d', strtotime("+1 year"));
-    }
-
-    // Upload
-    if (isset($meta['withImage']) && (bool)$meta['withImage'] === true)
-    {
-        $Upload = new Upload;
-        $Upload->mahasiswa = SB . 'images/';
-        $newFilename = hash('sha256', md5(date('this'))) . '.jpeg';
-
-        $Upload
-            ->streamFrom('photoprofil')
-            ->limitSize('1MB')
-            ->allowMime(['image/jpeg','image/png'])
-            ->allowExt(['.png','.jpg','.jpeg'])
-            ->storeToMahasiswa('persons')
-            ->as($newFilename);
-
-        if ($Upload->isSuccess())
-        {
-            $data['member_image'] = $newFilename;
-        }
-        else
-        {
-            utility::jsAlert('File tidak berhasil diunggah karena : ' . $Upload->getError());
-        }
-    }
-        
+    $data['reservation_date'] = date('Y-m-d H:i:s');
 
     // do insert
     // initialise db operation
     $sql = new simbio_dbop($dbs);
 
     // setup for insert
-    $insert = $sql->insert($table, $data);
+    $insert = $sql->insert('onsite_reservation', $data);
 
     if ($insert)
     {
         echo '<script type="text/javascript">';
-        echo 'alert("Berhasil terdaftar. '.$meta['regisInfo'].'");';
-        echo 'location.href = \'index.php?p=daftar_online\';';
+        echo 'alert("Reservasi berhasil.");';
+        echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
         echo '</script>';
         exit();
     }
     else
     {
         echo '<script type="text/javascript">';
-        echo 'alert("Gagal terdaftar segera hubungi petugas perpustakaan, untuk info selanjutnya. '.$sql->error.'");';
-        echo 'location.href = \'index.php?p=daftar_online\';';
+        echo 'alert("Reservasi gagal'.$sql->error.'");';
+        echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
         echo '</script>';
         exit();
     }
-
-    // header("location:index.php?p=daftar_online");
-    exit();
 }
 
 function updateReservation()
@@ -313,7 +210,7 @@ function dirCheckPermission()
     return $msg;
 }
 
-function reserveSchedule($self)
+function reserveScheduleOnsite($self)
 {
     global $dbs;
 
