@@ -40,7 +40,7 @@ $str_input .= simbio_form_element::textField('text', 'reservationId', $rec_d['id
 $str_input .= '<div id="msgBox" class="col mt-2"></div>';
 $str_input .= '</div>';
 $str_input .= '</div>';
-$form->addAnything(__('Reservation ID').'*', $str_input);
+$form->addAnything(__('Reservation ID'), $rec_d['id']);
 
 $form->addAnything(__('Reservation Date'), $rec_d['reservation_date']);
 

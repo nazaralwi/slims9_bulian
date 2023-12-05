@@ -44,6 +44,8 @@ saveSetting(getCurrentUrl(['memberList' => 1]));
 
 updateRegister(getCurrentUrl(['memberList' => 1]));
 
+updateReservation(getCurrentUrl(['memberList' => 1]));
+
 reserveSchedule(getCurrentUrl(['memberList' => 1]));
 
 // delete item
