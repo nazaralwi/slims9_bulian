@@ -1,5 +1,14 @@
 {
+    "authors": [
+        {
+            "name": "Muhammad Nazar Alwi",
+            "email": "alwinazar75@gmail.com"
+        }
+    ],
     "require": {
         "zein/storage": "dev-main"
+    },
+    "config": {
+        "vendor-dir": "lib/vendor"
     }
 }
