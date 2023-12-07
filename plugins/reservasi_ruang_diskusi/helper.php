@@ -34,7 +34,7 @@ function reserveScheduleOnsite($self)
         }
         else
         {
-            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi '.$sql->error, 'error');
+            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi', 'error');
         }
         exit;
     }
