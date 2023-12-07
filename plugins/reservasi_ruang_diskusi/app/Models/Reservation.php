@@ -1,7 +1,6 @@
 <?php
 
 class Reservation {
-    // Properties representing the table columns
     public $id;
     public $name;
     public $studentId;
@@ -11,9 +10,8 @@ class Reservation {
     public $activity;
     public $reservation_date;
 
-    // Method to get a reservation by ID
     public static function getById($reservationId) {
-        global $dbs; // Assuming $dbs is your database connection
+        global $dbs;
 
         $sql = "SELECT * FROM onsite_reservation WHERE id = ?";
         $stmt = $dbs->prepare($sql);
@@ -29,9 +27,8 @@ class Reservation {
         }
     }
 
-    // Method to retrieve all reservations
     public static function getAll() {
-        global $dbs; // Assuming $dbs is your database connection
+        global $dbs;
 
         $sql = "SELECT * FROM onsite_reservation";
         $result = $dbs->query($sql);
@@ -47,9 +44,8 @@ class Reservation {
         return $reservations;
     }    
 
-    // Method to save a new reservation to the database
     public function save() {
-        global $dbs; // Assuming $dbs is your database connection
+        global $dbs;
 
         $sql = "INSERT INTO onsite_reservation (name, student_id, major, whatsapp_number, visitor_number, activity, reservation_date) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -64,9 +60,8 @@ class Reservation {
         }
     }
 
-    // Method to update an existing reservation
     public function update() {
-        global $dbs; // Assuming $dbs is your database connection
+        global $dbs;
 
         $sql = "UPDATE onsite_reservation SET name=?, student_id=?, major=?, whatsapp_number=?, visitor_number=?, activity=? WHERE id=?";
         
@@ -80,21 +75,18 @@ class Reservation {
         }
     }
 
-    // Method to delete a reservation by its ID
     public static function deleteById($reservationId) {
-        global $dbs; // Assuming $dbs is your database connection
+        global $dbs;
 
-        // Prepare SQL query to delete a reservation by ID
         $sql = "DELETE FROM onsite_reservation WHERE id = ?";
         
-        // Prepare and execute the SQL statement
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("i", $reservationId);
         
         if ($stmt->execute()) {
-            return true; // Deletion successful
+            return true;
         } else {
-            return false; // Deletion failed
+            return false;
         }
     }
 }

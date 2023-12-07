@@ -1,9 +1,4 @@
 <?php
-/**
- * @Created by          : Drajat Hasan
- * @Date                : 2021-05-07 05:25:56
- * @File name           : index.php
- */
 
 defined('INDEX_AUTH') OR die('Direct access not allowed!');
 
@@ -30,7 +25,6 @@ if (!$can_read) {
 
 $page_title = 'Reservasi Ruang Diskusi';
 
-// set meta
 $meta = [];
 if (isset($sysconf['selfRegistration']))
 {
@@ -38,14 +32,13 @@ if (isset($sysconf['selfRegistration']))
     $meta = !is_array($meta) ? [] : $meta;
 }
 
-/* Action Area */
 updateReservation(getCurrentUrl(['memberList' => 1]));
 
 reserveScheduleOnsite(getCurrentUrl(['memberList' => 1]));
 
 cancelReservation(getCurrentUrl(['memberList' => 1]));
-/* End Action Area */
 ?>
+
 <div class="menuBox">
     <div class="menuBoxInner memberIcon">
         <div class="per_title">
@@ -67,7 +60,6 @@ if (!empty(dirCheckPermission()))
     die('<div class="errorBox">' . dirCheckPermission() . '</div>');
 }
 
-// set view
 switch (true) {
     case (count($meta) === 0):
         include __DIR__ . '/form-onsite-reservation-element.inc.php';
@@ -91,7 +83,6 @@ switch (true) {
 }
 ?>
 <script>
-    // set edit link
     let a = document.querySelectorAll('.editLink');
 
     a.forEach((el,index) => {
@@ -101,7 +92,6 @@ switch (true) {
 
     if (document.querySelector('.simbio_form_maker') !== null)
     {
-        // set form to delete
         let form = document.querySelector('.simbio_form_maker');
 
         form.setAttribute('action', '<?= getCurrentUrl() ?>');

@@ -1,14 +1,4 @@
 <?php
-/**
- * @author Drajat Hasan
- * @email drajathasan20@gmail.com
- * @create date 2021-05-08 09:15:53
- * @modify date 2022-03-28 14:07:00
- * @desc [description]
- */
-
-use Zein\Storage\Local\Upload;
-
 require __DIR__ . '/lib/vendor/autoload.php';
 require __DIR__ . '/app/Models/Reservation.php';
 
@@ -40,7 +30,6 @@ function reserveScheduleOnsite($self)
     }
 } 
 
-// Save Register
 function reserveSchedule()
 {
     $reservation = new Reservation();
@@ -65,26 +54,22 @@ function reserveSchedule()
     else
     {
         echo '<script type="text/javascript">';
-        // echo 'alert("Reservasi gagal'.$sql->error.'");';
         echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
         echo '</script>';
         exit();
     }
 }
 
-function updateReservation()
+function updateReservation($self)
 {
     if (isset($_POST['updateRecordID']) && isset($_POST['updateReservationData']))
     {
-        // Assuming $dbs is your database connection
         global $dbs;
 
-        // Get reservation by ID using the Reservation class method
         $updateRecordID = $dbs->escape_string($_POST['updateRecordID']);
         $reservation = Reservation::getById($updateRecordID);
 
         if ($reservation) {
-            // Map POST data to reservation properties
             $map = [
                 'name' => 'name', 'studentId' => 'studentId', 
                 'major' => 'major', 'whatsAppNumber' => 'whatsAppNumber',
@@ -97,7 +82,6 @@ function updateReservation()
                 }
             }
 
-            // Perform the update using the Reservation class method
             if ($reservation->update()) {
                 utility::jsToastr('Onsite Reservation', 'Berhasil memperbarui data reservasi', 'success');
                 echo '<script>parent.$("#mainContent").simbioAJAX("'.MWB.'membership/index.php")</script>';
@@ -107,23 +91,19 @@ function updateReservation()
                 exit;
             }
         } else {
-            // Handle reservation not found
             echo "Reservation not found.";
             exit;
         }
     }
 }
 
-// cancel reservation
 function cancelReservation($self)
 {
     if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['itemAction']))
     {
-        // Counter for failed deletions
         $fail = 0;
 
         foreach ($_POST['itemID'] as $itemID) {
-            // Delete reservation by ID
             $delete = Reservation::deleteById($itemID);
 
             if (!$delete) {
@@ -142,14 +122,12 @@ function cancelReservation($self)
     }
 }
 
-// compose Url
 function getCurrentUrl($query = [])
 {
     
     return $_SERVER['PHP_SELF'] . '?' . http_build_query(array_merge(['mod' => $_GET['mod'], 'id' => $_GET['id']], $query));
 }
 
-// premission check
 function dirCheckPermission()
 {
     $msg = '';
