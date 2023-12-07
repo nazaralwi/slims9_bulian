@@ -211,41 +211,21 @@ function dirCheckPermission()
 
 function reserveScheduleOnsite($self)
 {
-    global $dbs;
-
-    // load simbio dbop
-    require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
-
-    // action
     if (isset($_POST['onsiteReservation']))
     {
-        // set up data
-        $map = [
-            'name' => 'name', 'studentId' => 'student_id', 
-            'major' => 'major', 'whatsAppNumber' => 'whatsapp_number',
-            'visitorNumber' => 'visitor_number', 'activity' => 'activity',
-        ];
+        $reservation = new Reservation();
 
-        $data = [];
-        foreach ($map as $key => $column_name) {
-            if (isset($_POST[$key]))
-            {
-                $data[$column_name] = $dbs->escape_string(str_replace(['"'], '', strip_tags($_POST[$key])));
-            }
-        }
-
-        $data['reservation_date'] = date('Y-m-d H:i:s');
-
-        // do insert
-        // initialise db operation
-        $sql = new simbio_dbop($dbs);
-
-        // setup for insert
-        $insert = $sql->insert('onsite_reservation', $data);
-
-        if ($insert)
+        $reservation->name = $_POST['name'];
+        $reservation->studentId = $_POST['studentId'];
+        $reservation->major = $_POST['major'];
+        $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+        $reservation->visitorNumber = $_POST['visitorNumber'];
+        $reservation->activity = $_POST['activity'];
+    
+        $reservation->reservation_date = date('Y-m-d H:i:s');
+    
+        if ($reservation->save())
         {
-            // set alert
             utility::jsToastr('Reservasi Onsite', 'Berhasil melakukan reservasi', 'success');
             echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
         }
