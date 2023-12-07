@@ -14,10 +14,10 @@ if (isset($_POST['name']))
 }
 
 // check dependency
-if (!file_exists(SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'formmaker.inc.php'))
+if (!file_exists(SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper/formmaker.inc.php'))
 {
     echo '<div class="bg-danger p-2 text-white">';
-    echo 'Folder <b>'.SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'formmaker.inc.php</b> tidak ada. Pastikan folder itu tersedia.';
+    echo 'Folder <b>'.SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper/formmaker.inc.php</b> tidak ada. Pastikan folder itu tersedia.';
     echo '</div>';
 }
 else
@@ -39,7 +39,7 @@ else
     define('DR_INDEX_AUTH', '1');
 
     // require helper
-    require SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'formmaker.inc.php';
+    require SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper/formmaker.inc.php';
 
     // create form
     createForm($attr);
