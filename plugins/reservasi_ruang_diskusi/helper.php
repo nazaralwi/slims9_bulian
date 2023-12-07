@@ -10,40 +10,23 @@
 use Zein\Storage\Local\Upload;
 
 require __DIR__ . '/lib/vendor/autoload.php';
+require __DIR__ . '/app/Models/Reservation.php';
 
 // Save Register
 function reserveSchedule()
 {
-    global $dbs;
+    $reservation = new Reservation();
 
-    // load simbio dbop
-    require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
+    $reservation->name = $_POST['name'];
+    $reservation->studentId = $_POST['studentId'];
+    $reservation->major = $_POST['major'];
+    $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+    $reservation->visitorNumber = $_POST['visitorNumber'];
+    $reservation->activity = $_POST['activity'];
 
-    // set up data
-    $map = [
-        'name' => 'name', 'studentId' => 'student_id', 
-        'major' => 'major', 'whatsAppNumber' => 'whatsapp_number',
-        'visitorNumber' => 'visitor_number', 'activity' => 'activity',
-    ];
+    $reservation->reservation_date = date('Y-m-d H:i:s');
 
-    $data = [];
-    foreach ($map as $key => $column_name) {
-        if (isset($_POST[$key]))
-        {
-            $data[$column_name] = $dbs->escape_string(str_replace(['"'], '', strip_tags($_POST[$key])));
-        }
-    }
-
-    $data['reservation_date'] = date('Y-m-d H:i:s');
-
-    // do insert
-    // initialise db operation
-    $sql = new simbio_dbop($dbs);
-
-    // setup for insert
-    $insert = $sql->insert('onsite_reservation', $data);
-
-    if ($insert)
+    if ($reservation->save())
     {
         echo '<script type="text/javascript">';
         echo 'alert("Reservasi berhasil.");';
@@ -54,7 +37,7 @@ function reserveSchedule()
     else
     {
         echo '<script type="text/javascript">';
-        echo 'alert("Reservasi gagal'.$sql->error.'");';
+        // echo 'alert("Reservasi gagal'.$sql->error.'");';
         echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
         echo '</script>';
         exit();
