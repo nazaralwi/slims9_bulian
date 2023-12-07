@@ -5,14 +5,6 @@ $attr = [
     'enctype' => 'multipart/form-data'
 ];
 
-// require helper
-require __DIR__ . DS . 'helper.php';
-
-if (isset($_POST['name']))
-{
-    reserveSchedule();
-}
-
 // check dependency
 if (!file_exists(SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper/formmaker.inc.php'))
 {
