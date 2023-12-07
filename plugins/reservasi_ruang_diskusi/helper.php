@@ -89,57 +89,28 @@ function updateReservation()
 // cancel reservation
 function cancelReservation($self)
 {
-    global $dbs,$meta;
-
-    if ((isset($_POST['itemID']) AND !empty($_POST['itemID']) AND isset($_POST['itemAction'])))
+    if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['itemAction']))
     {
-        // Set Table Attribute
-        $table = ['onsite_reservation', "id = '{id}'"];
-
-        // load simbio dbop
-        require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
-
-        // process delete
-        // initialise db operation
-        $sql = new simbio_dbop($dbs);
-
-        // check status
-        $map = [
-            'name' => 'name', 'studentId' => 'student_id', 
-            'major' => 'major', 'whatsAppNumber' => 'whatsapp_number',
-            'visitorNumber' => 'visitor_number', 'activity' => 'activity',
-        ];
-
-        $data = [];
-        foreach ($map as $key => $column_name) {
-            if (isset($_POST[$key]))
-            {
-                $data[$column_name] = str_replace(['"'], '', strip_tags($_POST[$key]));
-            }
-        }
-        
+        // Counter for failed deletions
         $fail = 0;
-        foreach ($_POST['itemID'] as $itemID) {
-            $delete = $sql->delete($table[0], str_replace('{id}', $dbs->escape_string($itemID), $table[1]));
 
-            if (!$delete)
-            {
+        foreach ($_POST['itemID'] as $itemID) {
+            // Delete reservation by ID
+            $delete = Reservation::deleteById($itemID);
+
+            if (!$delete) {
                 $fail++;
             }
         }
 
-        if (!$fail)
-        {
-            $data['status'] = 'Cancel';
-            $insert = $sql->insert('reservation_history', $data);
-            utility::jsToastr('Onsite Reservation', 'Berhail membatalkan reservasi', 'success');
+        if (!$fail) {
+            utility::jsToastr('Onsite Reservation', 'Berhasil membatalkan reservasi', 'success');
             echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
-        }
-        else
-        {
+            exit;
+        } else {
             utility::jsToastr('Onsite Reservation', 'Gagal membatalkan reservasi', 'error');
+            exit;
         }
-        exit;
     }
 }
 

@@ -80,19 +80,21 @@ class Reservation {
         }
     }
 
-    // Method to delete a reservation
-    public function delete() {
+    // Method to delete a reservation by its ID
+    public static function deleteById($reservationId) {
         global $dbs; // Assuming $dbs is your database connection
 
-        $sql = "DELETE FROM onsite_reservation WHERE id=?";
+        // Prepare SQL query to delete a reservation by ID
+        $sql = "DELETE FROM onsite_reservation WHERE id = ?";
         
+        // Prepare and execute the SQL statement
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("i", $this->id);
+        $stmt->bind_param("i", $reservationId);
         
         if ($stmt->execute()) {
-            return true;
+            return true; // Deletion successful
         } else {
-            return false;
+            return false; // Deletion failed
         }
     }
 }
