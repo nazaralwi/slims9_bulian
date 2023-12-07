@@ -12,6 +12,34 @@ use Zein\Storage\Local\Upload;
 require __DIR__ . '/lib/vendor/autoload.php';
 require __DIR__ . '/app/Models/Reservation.php';
 
+function reserveScheduleOnsite($self)
+{
+    if (isset($_POST['onsiteReservation']))
+    {
+        $reservation = new Reservation();
+
+        $reservation->name = $_POST['name'];
+        $reservation->studentId = $_POST['studentId'];
+        $reservation->major = $_POST['major'];
+        $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+        $reservation->visitorNumber = $_POST['visitorNumber'];
+        $reservation->activity = $_POST['activity'];
+    
+        $reservation->reservation_date = date('Y-m-d H:i:s');
+    
+        if ($reservation->save())
+        {
+            utility::jsToastr('Reservasi Onsite', 'Berhasil melakukan reservasi', 'success');
+            echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
+        }
+        else
+        {
+            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi '.$sql->error, 'error');
+        }
+        exit;
+    }
+} 
+
 // Save Register
 function reserveSchedule()
 {
@@ -114,37 +142,6 @@ function cancelReservation($self)
     }
 }
 
-// copy template
-function copyTemplate($data)
-{
-    if ((int)$data['selfRegistrationActive'] === 1 && !file_exists(SB.'lib'.DS.'contents'.DS.'daftar_online.inc.php'))
-    {
-        copy(__DIR__.DS.'daftar_online.inc.php', SB.'lib'.DS.'contents'.DS.'daftar_online.inc.php');
-    }
-}
-
-// Creating Table
-function createTable()
-{
-    global $dbs;
-
-    // setup query
-    @$dbs->query("CREATE TABLE IF NOT EXISTS `member_online` (
-        `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        `member_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
-        `birth_date` date DEFAULT NULL,
-        `inst_name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
-        `gender` int(1) NOT NULL,
-        `member_address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-        `member_phone` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
-        `member_email` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
-        `mpasswd` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL,
-        `input_date` date DEFAULT NULL,
-        `last_update` date DEFAULT NULL
-      ) ENGINE='MyISAM';");
-    
-}
-
 // compose Url
 function getCurrentUrl($query = [])
 {
@@ -163,31 +160,3 @@ function dirCheckPermission()
 
     return $msg;
 }
-
-function reserveScheduleOnsite($self)
-{
-    if (isset($_POST['onsiteReservation']))
-    {
-        $reservation = new Reservation();
-
-        $reservation->name = $_POST['name'];
-        $reservation->studentId = $_POST['studentId'];
-        $reservation->major = $_POST['major'];
-        $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
-        $reservation->visitorNumber = $_POST['visitorNumber'];
-        $reservation->activity = $_POST['activity'];
-    
-        $reservation->reservation_date = date('Y-m-d H:i:s');
-    
-        if ($reservation->save())
-        {
-            utility::jsToastr('Reservasi Onsite', 'Berhasil melakukan reservasi', 'success');
-            echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
-        }
-        else
-        {
-            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi '.$sql->error, 'error');
-        }
-        exit;
-    }
-} 
