@@ -46,59 +46,43 @@ function reserveSchedule()
 
 function updateReservation()
 {
-    global $dbs, $sysconf;
-
     if (isset($_POST['updateRecordID']) && isset($_POST['updateReservationData']))
     {
-        // load simbio dbop
-        require_once SB.'simbio2'.DS.'simbio_DB'.DS.'simbio_dbop.inc.php';
+        // Assuming $dbs is your database connection
+        global $dbs;
 
-        // initialise db operation
-        $sql = new simbio_dbop($dbs);
-        $updateRecId = $dbs->escape_string($_POST['updateRecordID']);
+        // Get reservation by ID using the Reservation class method
+        $updateRecordID = $dbs->escape_string($_POST['updateRecordID']);
+        $reservation = Reservation::getById($updateRecordID);
 
-        // select data
-        $dataQuery = $dbs->query('select * from onsite_reservation where id = \''.$updateRecId.'\'');
+        if ($reservation) {
+            // Map POST data to reservation properties
+            $map = [
+                'name' => 'name', 'studentId' => 'studentId', 
+                'major' => 'major', 'whatsAppNumber' => 'whatsAppNumber',
+                'visitorNumber' => 'visitorNumber', 'activity' => 'activity',
+            ];
 
-        $dataResult = ($dataQuery->num_rows > 0) ? $dataQuery->fetch_assoc() : [];
-
-        // check status
-        $map = [
-            'name' => 'name', 'studentId' => 'student_id', 
-            'major' => 'major', 'whatsAppNumber' => 'whatsapp_number',
-            'visitorNumber' => 'visitor_number', 'activity' => 'activity',
-        ];
-
-        $data = [];
-        foreach ($map as $key => $column_name) {
-            if (isset($_POST[$key]))
-            {
-                $data[$column_name] = str_replace(['"'], '', strip_tags($_POST[$key]));
+            foreach ($map as $key => $property) {
+                if (isset($_POST[$key])) {
+                    $reservation->$property = str_replace(['"'], '', strip_tags($_POST[$key]));
+                }
             }
-        }
-        
-        $data['name'] = $_POST['name'];
-        $data['student_id'] = $_POST['studentId'];
-        $data['major'] = $_POST['major'];
-        $data['whatsapp_number'] = $_POST['whatsAppNumber'];
-        $data['visitor_number'] = $_POST['visitorNumber'];
-        $data['activity'] = $_POST['activity'];
 
-        $update = $sql->update('onsite_reservation', $data, "id = ".$updateRecId);
-
-        if ($update)
-        {
-            utility::jsToastr('Onsite Reservation', 'Berhasil memperbarui data reservasi', 'success');
-            echo '<script>parent.$("#mainContent").simbioAJAX("'.MWB.'membership/index.php")</script>';
+            // Perform the update using the Reservation class method
+            if ($reservation->update()) {
+                utility::jsToastr('Onsite Reservation', 'Berhasil memperbarui data reservasi', 'success');
+                echo '<script>parent.$("#mainContent").simbioAJAX("'.MWB.'membership/index.php")</script>';
+                exit;
+            } else {
+                utility::jsToastr('Onsite Reservation', 'Gagal menyimpan data reservasi', 'error');
+                exit;
+            }
+        } else {
+            // Handle reservation not found
+            echo "Reservation not found.";
             exit;
         }
-        else
-        {
-            utility::jsToastr('Onsite Reservation', 'Gagal menyimpan data reservasi', 'error');
-            exit;
-        }
-
-        exit;
     }
 }
 
