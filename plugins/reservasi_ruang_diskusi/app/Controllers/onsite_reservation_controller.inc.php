@@ -1,17 +1,22 @@
 <?php
+// session_start();
 
-if ($_SESSION['uid'] > 1)
-{
+include SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Models/OnsiteReservation.php';
+include SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Views/OnsiteReservationView.php';
+
+$model = new OnsiteReservation();
+$view = new OnsiteReservationView();
+
+if ($_SESSION['uid'] > 1) {
     echo '<div class="bg-danger p-2 text-white">';
     echo 'Hanya akun super-admin yang dapat merubah bagian ini.';
     echo '</div>';
     exit;
 }
-$majorList = ['S1 Teknik Informatika', 'S1 Software Engineering', 'S1 Sistem Informasi', 
-            'S1 Sains Data', 'S1 Teknik Telekomunikasi', 'D3 Teknik Telekomunikasi', 'S1 Automation Technology', 
-            'S1 Teknik Biomedis', 'S1 Teknologi Pangan', 'S1 Teknik Industri', 'S1 Desain Komunikasi Visual', 
-            'S1 Digital Logistic', 'S1 Bisnis Digital', 'S1 Product Innovation', 'D3  Teknik Digital', 'Lainnya'];
 
+$majorList = $model->getMajorList();
+
+// Creating form as in your original code
 $form = new simbio_form_table_AJAX('onsiteReservationForm', $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'], 'post');
 $form->submit_button_attr = 'name="onsiteReservation" value="' . __('Reservasi') . '" class="s-btn btn btn-default"';
 
@@ -26,5 +31,5 @@ $form->addTextField('text', 'whatsAppNumber', 'Nomor WhatsApp', $meta['whatsAppN
 $form->addSelectList('visitorNumber', 'Jumlah pengguna ruangan', ['5', '6', '7', '8', '9', '10'], $meta['visitorNumber'] ?? '', 'class="select2"', 'Visitor Number');
 $form->addTextField('text', 'activity', 'Kegiatan yang Akan Dilakukan', $meta['activity'] ?? '', 'rows="1" class="form-control"', 'Activity');
 
-echo $form->printOut();
+$view->renderForm($form->printOut());
 ?>

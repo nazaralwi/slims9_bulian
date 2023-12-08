@@ -62,11 +62,11 @@ if (!empty(dirCheckPermission()))
 
 switch (true) {
     case (count($meta) === 0):
-        include __DIR__ . '/form-onsite-reservation-element.inc.php';
+        include SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Controllers/onsite_reservation_controller.inc.php';
         break;
 
     case (isset($_GET['onsiteReservation']) && count($meta) > 0):
-        include __DIR__ . '/form-onsite-reservation-element.inc.php';
+        include SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Controllers/onsite_reservation_controller.inc.php';
         break;
 
     case (isset($_GET['reservedScheduleList']) && count($meta) > 0):
