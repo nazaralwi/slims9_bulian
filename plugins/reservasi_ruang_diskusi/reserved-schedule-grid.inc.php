@@ -22,7 +22,7 @@ $datagrid->setSQLorder('reservation_date ASC');
 // set table and table header attributes
 $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
 $datagrid->table_name = 'reservationScheduleList';
-$datagrid->table_attr = 'id="reservationScheduleList" class="s-table table"';
+$datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // set delete proccess URL
 $datagrid->chbox_form_URL = null;
