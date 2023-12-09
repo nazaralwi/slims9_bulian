@@ -1,6 +1,6 @@
 <?php
 // Load necessary models
-require_once SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Models/Reservation.php';
+require_once SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper.php';
 
 // Handle form submissions or other controller logic
 if (isset($_POST['name'])) {
