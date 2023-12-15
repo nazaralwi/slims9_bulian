@@ -78,8 +78,8 @@ function createSelect($_label, $_name, $_option, $_attr = '', $_default_value = 
 {
 	echo '<div class="form-group">';
 	echo '<label>'.$_label.'</label>';
-	echo '<select class="form-control '.$_attr.'" name="'.$_name.'">';
-	echo '<option value="0">Pilih</option>';
+	echo '<select id="'. $_name .'" class="form-control "'.$_attr.' name="'.$_name.'">';
+	// echo '<option value="0">Pilih</option>';
 	foreach ($_option as $value) {
 		if (!empty($_default_value) AND ($_default_value == $value['value'])) {
 			echo '<option value="'.$value['value'].'" selected>'.$value['label'].'</option>';	
@@ -88,6 +88,24 @@ function createSelect($_label, $_name, $_option, $_attr = '', $_default_value = 
 		}
 	}
 	echo '</select>';
+	echo '</div>';
+}
+
+function createDynamicSelect($_label, $_name)
+{
+	echo '<div class="form-group">';
+	echo '<label>'.$_label.'</label>';
+	echo '<select id="'. $_name .'" class="form-control" name="'.$_name.'">';
+	echo '</select>';
+	echo '</div>';
+}
+
+
+function createDate($_label, $_name, $_min, $_onchange)
+{
+	echo '<div class="form-group">';
+	echo '<label>'.$_label.'</label>';
+	echo '<input class="form-control" type="date" id="' . $_name . '" name="' . $_name . '" min="' . $_min . '" onchange="' . $_onchange . '">';
 	echo '</div>';
 }
 
