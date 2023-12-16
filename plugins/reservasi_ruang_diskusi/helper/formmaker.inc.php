@@ -70,11 +70,11 @@ function createUploadArea($_label, $_name, $labelUpload = 'Pilih File - besar fi
 	</style>';
 
 	echo '<div class="form-group hidden" id="'. $_name . '">';
-	echo '<label for="exampleInputFile">'.$_label.'</label>';
+	echo '<label for="'. $_name .'">'.$_label.'</label>';
 	echo '<div class="input-group">';
 	echo '<div class="custom-file">';
-	echo '<input type="file" class="form-control" name="'.$_name.'" id="exampleInputFile" '.$_required.'>';
-	echo '<label class="custom-file-label" for="exampleInputFile">' . $labelUpload . '</label>';
+	echo '<input type="file" class="custom-file-input" name="'.$_name.'" id="'. $_name .'" '.$_required.'>';
+	echo '<label class="custom-file-label" for="'. $_name .'">' . $labelUpload . '</label>';
 	echo '</div>';
 	echo '</div>';
 	echo '</div>';

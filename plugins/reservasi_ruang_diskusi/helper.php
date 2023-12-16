@@ -46,8 +46,8 @@ function reserveSchedule()
     $times = explode(" - ", $timeRange);
     $reservation->startTime = $times[0];
     $reservation->endTime = $times[1];
-    
     $reservation->reservationDocument = '';
+
     $reservation->visitorNumber = $_POST['visitorNumber'];
     $reservation->activity = $_POST['activity'];
 
