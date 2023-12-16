@@ -28,6 +28,6 @@ class UpdateOnsiteReservationOnline extends \SLiMS\Migration\Migration
 
     private static function columnExists(string $columnName)
     {
-        return DB::getInstance()->query('describe `onsite_reservation` ' . $columnName)->fetch(\PDO::FETCH_ASSOC);
+        return DB::getInstance()->query('describe `room_reservations` ' . $columnName)->fetch(\PDO::FETCH_ASSOC);
     }
 }

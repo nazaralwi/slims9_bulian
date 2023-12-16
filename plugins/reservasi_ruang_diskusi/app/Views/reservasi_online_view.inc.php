@@ -45,6 +45,7 @@ else
     createDate(__('Tanggal Reservasi'), 'reservationDate', date('Y-m-d'), 'populateSubcategories()');
     createSelect(__('Durasi Peminjaman'), 'duration', $reservationDuration, 'onchange="populateSubcategories()"');
     createDynamicSelect(__('Jadwal Reservasi yang Tersedia'), 'availableSchedule');
+    createUploadArea(__('Upload Surat Peminjaman Ruang'), 'reservationDocument');
     createSelect(__('Jumlah pengguna ruangan'), 'visitorNumber', $visitorCount);
     createFormContent(__('Kegiatan yang Akan Dilakukan'), 'text', 'activity', 'Isikan nomor Kegiatan Anda', true, '', true);
     createFormButton('Daftar', 'submit', 'register');
@@ -90,5 +91,20 @@ else
     }
 
     window.onload = populateSubcategories;
+    </script>';
+
+    echo '<script>
+    $(document).ready(function() {
+        $(\'#duration\').on(\'change\', function() {
+            var selectedOption = $(this).val(); // Get the selected option
+            
+            // Show/hide the conditional field based on the selected option
+            if (selectedOption === \'>120\') {
+                $(\'#reservationDocument\').show(); // Show the conditional field
+            } else {
+                $(\'#reservationDocument\').hide(); // Hide the conditional field
+            }
+        });
+    });
     </script>';
 }

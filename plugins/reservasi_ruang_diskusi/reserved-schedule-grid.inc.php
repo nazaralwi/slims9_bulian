@@ -4,7 +4,7 @@
 $datagrid = new simbio_datagrid();
 
 // table spec
-$table_spec = 'onsite_reservation';
+$table_spec = 'room_reservations';
 
 // set column
 $datagrid->setSQLColumn('id',
@@ -13,6 +13,10 @@ $datagrid->setSQLColumn('id',
                         'student_id AS \''.__('NIM').'\'', 
                         'major AS \''.__('Jurusan').'\'',
                         'whatsapp_number AS \''.__('Nomor WhatsApp').'\'',
+                        'reserved_date AS \''.__('Tanggal').'\'',
+                        'duration AS \''.__('Durasi Peminjaman (menit)').'\'',
+                        'start_time AS \''.__('Awal').'\'',
+                        'end_time AS \''.__('Akhir').'\'',
                         'visitor_number AS \'' . __('Jumlah anggota') . '\'',
                         'activity AS \'' . __('Kegiatan yang Dilakukan') . '\'');
 

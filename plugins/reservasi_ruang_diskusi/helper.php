@@ -12,6 +12,7 @@ function reserveScheduleOnsite($self)
         $reservation->studentId = $_POST['studentId'];
         $reservation->major = $_POST['major'];
         $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+        $reservation->duration = $_POST['duration'];
         $reservation->visitorNumber = $_POST['visitorNumber'];
         $reservation->activity = $_POST['activity'];
     
@@ -38,6 +39,15 @@ function reserveSchedule()
     $reservation->studentId = $_POST['studentId'];
     $reservation->major = $_POST['major'];
     $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+    $reservation->reservedDate = $_POST['reservationDate'];
+    $reservation->duration = $_POST['duration'];
+
+    $timeRange = $_POST['availableSchedule'];
+    $times = explode(" - ", $timeRange);
+    $reservation->startTime = $times[0];
+    $reservation->endTime = $times[1];
+    
+    $reservation->reservationDocument = '';
     $reservation->visitorNumber = $_POST['visitorNumber'];
     $reservation->activity = $_POST['activity'];
 
@@ -71,8 +81,8 @@ function updateReservation($self)
 
         if ($reservation) {
             $map = [
-                'name' => 'name', 'studentId' => 'studentId', 
-                'major' => 'major', 'whatsAppNumber' => 'whatsAppNumber',
+                'name' => 'name', 'studentId' => 'studentId', 'major' => 'major', 
+                'whatsAppNumber' => 'whatsAppNumber', 'duration' => 'duration',
                 'visitorNumber' => 'visitorNumber', 'activity' => 'activity',
             ];
 

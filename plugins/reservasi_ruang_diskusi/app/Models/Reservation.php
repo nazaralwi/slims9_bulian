@@ -6,6 +6,11 @@ class Reservation {
     public $studentId;
     public $major;
     public $whatsAppNumber;
+    public $reservedDate;
+    public $duration;
+    public $startTime;
+    public $endTime;
+    public $reservationDocument;
     public $visitorNumber;
     public $activity;
     public $reservation_date;
@@ -13,7 +18,7 @@ class Reservation {
     public static function getById($reservationId) {
         global $dbs;
 
-        $sql = "SELECT * FROM onsite_reservation WHERE id = ?";
+        $sql = "SELECT * FROM room_reservations WHERE id = ?";
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("i", $reservationId);
         $stmt->execute();
@@ -30,7 +35,7 @@ class Reservation {
     public static function getAll() {
         global $dbs;
 
-        $sql = "SELECT * FROM onsite_reservation";
+        $sql = "SELECT * FROM room_reservations";
         $result = $dbs->query($sql);
 
         $reservations = [];
@@ -47,11 +52,11 @@ class Reservation {
     public function save() {
         global $dbs;
 
-        $sql = "INSERT INTO onsite_reservation (name, student_id, major, whatsapp_number, visitor_number, activity, reservation_date) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO room_reservations (name, student_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document, visitor_number, activity, reservation_date) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("ssssiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->visitorNumber, $this->activity, $this->reservation_date);
+        $stmt->bind_param("sssssisssiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocument, $this->visitorNumber, $this->activity, $this->reservation_date);
         
         if ($stmt->execute()) {
             return true;
@@ -63,10 +68,10 @@ class Reservation {
     public function update() {
         global $dbs;
 
-        $sql = "UPDATE onsite_reservation SET name=?, student_id=?, major=?, whatsapp_number=?, visitor_number=?, activity=? WHERE id=?";
+        $sql = "UPDATE room_reservations SET name=?, student_id=?, major=?, whatsapp_number=?, reserved_date=?, duration=?, start_time=?, end_time=?, reservation_document=?, visitor_number=?, activity=? WHERE id=?";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("ssssisi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->visitorNumber, $this->activity, $this->id);
+        $stmt->bind_param("sssssisssisi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocument, $this->visitorNumber, $this->activity, $this->id);
         
         if ($stmt->execute()) {
             return true;
@@ -78,7 +83,7 @@ class Reservation {
     public static function deleteById($reservationId) {
         global $dbs;
 
-        $sql = "DELETE FROM onsite_reservation WHERE id = ?";
+        $sql = "DELETE FROM room_reservations WHERE id = ?";
         
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("i", $reservationId);

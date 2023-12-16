@@ -1,6 +1,6 @@
 <?php
 
-$attribute = "SELECT * FROM onsite_reservation WHERE id='{itemID}'";
+$attribute = "SELECT * FROM room_reservations WHERE id='{itemID}'";
 
 $itemID = $dbs->escape_string(trim(isset($_POST['itemID'])?$_POST['itemID']:'')); 
 $rec_q = $dbs->query(str_replace('{itemID}', $itemID, $attribute));
@@ -45,6 +45,8 @@ $form->addTextField('text', 'name', __('Name').'*', $rec_d['name']??'', 'rows="1
 $form->addTextField('text', 'studentId', __('NIM'), $rec_d['student_id']??'', 'rows="1" class="form-control"', 'Student Id');
 $form->addSelectList('major', __('Program Studi'), $majorList, $rec_d['major'] ?? '', 'class="select2"', 'Major');
 $form->addTextField('text', 'whatsAppNumber', __('Nomor WhatsApp'), $rec_d['whatsapp_number'] ?? '', 'rows="1" class="form-control"', 'WhatsApp Number');
+$reservationDuration = [['30','30 menit'],['60','1 jam'], ['90','1,5 jam'], ['120','2 jam']];
+$form->addSelectList('duration', __('Durasi Peminjaman'), $reservationDuration, $rec_d['duration'] ?? '', 'class="select2"', 'Duration');
 $form->addSelectList('visitorNumber', __('Jumlah pengguna ruangan'), ['5', '6', '7', '8', '9', '10'], $rec_d['visitorNumber'] ?? '', 'class="select2"', 'Visitor Number');
 $form->addTextField('text', 'activity', __('Kegiatan yang Akan Dilakukan'), $rec_d['activity'] ?? '', 'rows="1" class="form-control"', 'Activity');
 
