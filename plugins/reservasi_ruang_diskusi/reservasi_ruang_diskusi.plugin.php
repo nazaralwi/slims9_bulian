@@ -8,9 +8,12 @@
  * Author URI: nazaralwi.com
  */
 
+// Discussion Room Reservation Base
+define('DRRB', SB.'plugins'.DS.'reservasi_ruang_diskusi');
+
 // get plugin instance
 $plugin = \SLiMS\Plugins::getInstance();
 
 // registering menus
-$plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', __DIR__ . '/index.php');
-$plugin->registerMenu('opac', 'Reservasi Ruang Diskusi', SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Controllers/reservasi_online_controller.inc.php');
+$plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index.php');
+$plugin->registerMenu('opac', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/member/Controllers/reservasi_online_controller.inc.php');

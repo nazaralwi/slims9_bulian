@@ -1,8 +1,8 @@
 <?php
 // session_start();
 
-include SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Models/OnsiteReservation.php';
-include SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Views/OnsiteReservationView.php';
+include DRRB . DS . 'app/admin/Models/OnsiteReservation.php';
+include DRRB . DS . 'app/admin/Views/OnsiteReservationView.php';
 
 $model = new OnsiteReservation();
 $view = new OnsiteReservationView();

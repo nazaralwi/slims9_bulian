@@ -1,6 +1,6 @@
 <?php
 // Load necessary models
-require_once SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper.php';
+require_once DRRB . DS . 'helper/helper.php';
 
 // Handle form submissions or other controller logic
 if (isset($_POST['name'])) {
@@ -8,4 +8,4 @@ if (isset($_POST['name'])) {
 }
 
 // Include the view
-include SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'app/Views/reservasi_online_view.inc.php';
+include DRRB . DS . 'app/member/Views/reservasi_online_view.inc.php';

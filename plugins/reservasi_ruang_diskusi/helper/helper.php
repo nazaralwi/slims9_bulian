@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/lib/vendor/autoload.php';
-require __DIR__ . '/app/Models/Reservation.php';
+require DRRB .DS. 'lib/vendor/autoload.php';
+require DRRB .DS. 'app/models/Reservation.php';
 
 function reserveScheduleOnsite($self)
 {
