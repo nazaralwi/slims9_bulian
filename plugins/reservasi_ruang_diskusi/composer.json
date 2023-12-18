@@ -1,4 +1,8 @@
 {
+    "name": "nazaralwi/discussion-room-reservation",
+    "description": "Plugin for support reservation",
+    "type": "project",
+    "license": "GPL-3.0-only",
     "authors": [
         {
             "name": "Muhammad Nazar Alwi",
@@ -6,7 +10,18 @@
         }
     ],
     "require": {
+        "php": ">=7.4",
+        "altorouter/altorouter": "^2.0",
+        "laminas/laminas-diactoros": "^2.6",
+        "mpscholten/request-parser": "^1.5",
+        "idoalit/sinom": "dev-main",
         "zein/storage": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Discussion\\Room\\Reservation\\Lib": "lib/",
+            "Discussion\\Room\\Reservation\\App": "app/"
+        }
     },
     "config": {
         "vendor-dir": "lib/vendor"
