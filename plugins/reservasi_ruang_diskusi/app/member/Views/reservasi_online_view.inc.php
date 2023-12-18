@@ -63,7 +63,7 @@ else
 
         const selectedDate = document.getElementById(\'reservationDate\').value;
 
-        fetch(\'plugins/reservasi_ruang_diskusi/app/Views/process.php\', {
+        fetch(\'plugins/reservasi_ruang_diskusi/app/member/Views/process.php\', {
             method: \'POST\',
             headers: {
                 \'Content-Type\': \'application/x-www-form-urlencoded\',
