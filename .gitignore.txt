@@ -25,6 +25,7 @@ slims8_akasia.sublime-workspace
 
 plugins/*
 !plugins/reservasi-ruang-diskusi/
+plugins/reservasi-ruang-diskusi/lib/vendor
 
 template/*
 
