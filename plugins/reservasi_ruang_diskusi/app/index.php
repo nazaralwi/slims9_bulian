@@ -31,9 +31,9 @@ if (!is_array($meta)) {
     $meta = [];
 }
 
-updateReservation(Url::adminSection('/memberList'));
-reserveScheduleOnsite(Url::adminSection('/memberList'));
-cancelReservation(Url::adminSection('/memberList'));
+updateReservation(Url::adminSection('/reservationScheduleList'));
+reserveScheduleOnsite(Url::adminSection('/reservationScheduleList'));
+cancelReservation(Url::adminSection('/reservationScheduleList'));
 
 ?>
 
@@ -44,7 +44,7 @@ cancelReservation(Url::adminSection('/memberList'));
         </div>
         <div class="sub_section">
             <div class="btn-group">
-                <a href="<?= Url::adminSection('/reservedScheduleList') ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
+                <a href="<?= Url::adminSection('/reservationScheduleList') ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
                 <a href="<?= Url::adminSection('/onsiteReservation') ?>" class="btn btn-success">Reservasi Onsite</a>
             </div>
         </div>
@@ -63,14 +63,14 @@ switch (true) {
         include __DIR__ . '/admin/Controllers/onsite_reservation_controller.inc.php';
         break;
 
-    case isset($_GET['sec']) && $_GET['sec'] == '/reservedScheduleList' && count($meta) > 0:
+    case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleList' && count($meta) > 0:
         include __DIR__ . '/admin/Views/reserved_schedule_grid.inc.php';
         break;
 
-    case (isset($_POST['detail']) || (isset($_GET['action']) && $_GET['action'] == 'detail')) && count($meta) > 0:
+    case (isset($_POST['detail']) || (isset($_GET['sec']) && $_GET['sec'] == '/editReservation')) && count($meta) > 0:
         include __DIR__ . '/admin/Views/reserved_schedule_edit.inc.php';
         break;
-
+    
     default:
         include __DIR__ . '/admin/Views/reserved_schedule_grid.inc.php';
         break;
@@ -78,11 +78,11 @@ switch (true) {
 ?>
 <script>
     document.querySelectorAll('.editLink').forEach((el) => {
-        el.href = el.getAttribute('href').replace(/(\&memberList=1)/g, '');
+        el.href = el.getAttribute('href').replace(/(\&sec=%2FreservationScheduleList)/g, '');
     });
 
     const form = document.querySelector('.simbio_form_maker');
     if (form !== null) {
-        form.setAttribute('action', '<?= Url::getCurrentUrl() ?>');
+        form.setAttribute('action', '<?= Url::adminSection('/editReservation') ?>');
     }
 </script>
