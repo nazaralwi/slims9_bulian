@@ -19,8 +19,9 @@
     },
     "autoload": {
         "psr-4": {
-            "Discussion\\Room\\Reservation\\Lib": "lib/",
-            "Discussion\\Room\\Reservation\\App": "app/"
+            "DiscussionRoomReservation\\Lib\\": "lib/",
+
+            "DiscussionRoomReservation\\App\\": "app/"
         }
     },
     "config": {

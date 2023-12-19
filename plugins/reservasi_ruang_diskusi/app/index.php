@@ -15,6 +15,8 @@ require SIMBIO . 'simbio_DB/datagrid/simbio_dbgrid.inc.php';
 require DRRB . DS . 'helper/helper.php';
 // End dependencies
 
+use DiscussionRoomReservation\Lib\Url;
+
 // Privileges checking
 $can_read = utility::havePrivilege('membership', 'r');
 
@@ -29,9 +31,9 @@ if (!is_array($meta)) {
     $meta = [];
 }
 
-updateReservation(getCurrentUrl(['memberList' => 1]));
-reserveScheduleOnsite(getCurrentUrl(['memberList' => 1]));
-cancelReservation(getCurrentUrl(['memberList' => 1]));
+updateReservation(Url::adminSection('/memberList'));
+reserveScheduleOnsite(Url::adminSection('/memberList'));
+cancelReservation(Url::adminSection('/memberList'));
 
 ?>
 
@@ -42,8 +44,8 @@ cancelReservation(getCurrentUrl(['memberList' => 1]));
         </div>
         <div class="sub_section">
             <div class="btn-group">
-                <a href="<?= getCurrentUrl(['reservedScheduleList' => 1]) ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
-                <a href="<?= getCurrentUrl(['onsiteReservation' => 1]) ?>" class="btn btn-success">Reservasi Onsite</a>
+                <a href="<?= Url::adminSection('/reservedScheduleList') ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
+                <a href="<?= Url::adminSection('/onsiteReservation') ?>" class="btn btn-success">Reservasi Onsite</a>
             </div>
         </div>
     </div>
@@ -57,11 +59,11 @@ if (!empty($dirPermissionError)) {
 
 switch (true) {
     case count($meta) === 0:
-    case isset($_GET['onsiteReservation']) && count($meta) > 0:
+    case isset($_GET['sec']) && $_GET['sec'] == '/onsiteReservation' && count($meta) > 0:
         include __DIR__ . '/admin/Controllers/onsite_reservation_controller.inc.php';
         break;
 
-    case isset($_GET['reservedScheduleList']) && count($meta) > 0:
+    case isset($_GET['sec']) && $_GET['sec'] == '/reservedScheduleList' && count($meta) > 0:
         include __DIR__ . '/admin/Views/reserved_schedule_grid.inc.php';
         break;
 
@@ -81,6 +83,6 @@ switch (true) {
 
     const form = document.querySelector('.simbio_form_maker');
     if (form !== null) {
-        form.setAttribute('action', '<?= getCurrentUrl() ?>');
+        form.setAttribute('action', '<?= Url::getCurrentUrl() ?>');
     }
 </script>

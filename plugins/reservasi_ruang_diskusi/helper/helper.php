@@ -1,6 +1,6 @@
 <?php
 require DRRB .DS. 'lib/vendor/autoload.php';
-require DRRB .DS. 'app/models/Reservation.php';
+require DRRB .DS. 'app/Models/Reservation.php';
 
 function reserveScheduleOnsite($self)
 {
@@ -130,12 +130,6 @@ function cancelReservation($self)
             exit;
         }
     }
-}
-
-function getCurrentUrl($query = [])
-{
-    
-    return $_SERVER['PHP_SELF'] . '?' . http_build_query(array_merge(['mod' => $_GET['mod'], 'id' => $_GET['id']], $query));
 }
 
 function dirCheckPermission()
