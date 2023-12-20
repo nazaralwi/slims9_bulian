@@ -36,7 +36,7 @@ echo '<script>
 
         const selectedDate = document.getElementById(\'date\').value;
 
-        fetch(\'plugins/reservasi_ruang_diskusi/app/ReservationLogic/populate_schedule.php\', {
+        fetch(\'plugins/reservasi_ruang_diskusi/app/reservation_logic/populate_schedule.php\', {
             method: \'POST\',
             headers: {
                 \'Content-Type\': \'application/x-www-form-urlencoded\',
