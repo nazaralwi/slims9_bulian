@@ -17,8 +17,8 @@ function getMinutesAndSecond($time) {
 
 foreach ($reservationEvents as $event) {
     $events[] = array(
-        'start' => $event->reserved_date.' '.getMinutesAndSecond($event->start_time),
-        'end' => $event->reserved_date.' '.getMinutesAndSecond($event->end_time),
+        'start' => $event->reservedDate.' '.getMinutesAndSecond($event->startTime),
+        'end' => $event->reservedDate.' '.getMinutesAndSecond($event->endTime),
         'summary' => $event->activity,
         'mask' => false,
     );

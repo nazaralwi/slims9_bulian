@@ -58,8 +58,15 @@ class Reservation {
         $events = [];
 
         if ($result->num_rows > 0) {
-            while ($row = $result->fetch_object('Reservation')) {
-                $events[] = $row;
+            while ($row = $result->fetch_assoc()) {
+                // Create Reservation objects manually and populate them with fetched data
+                $reservation = new Reservation();
+                $reservation->reservedDate = $row['reserved_date'];
+                $reservation->startTime = $row['start_time'];
+                $reservation->endTime = $row['end_time'];
+                $reservation->activity = $row['activity'];
+    
+                $events[] = $reservation;
             }
         }
 
