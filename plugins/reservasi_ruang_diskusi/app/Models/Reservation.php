@@ -73,6 +73,35 @@ class Reservation {
         return $events;
     }
 
+    public static function getBookedSchedules() {
+        global $dbs;
+
+        $sql = "SELECT reserved_date, start_time, end_time FROM room_reservations";
+        $result = $dbs->query($sql);
+
+        $schedule = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // return as mapped schedule instead of Reservation's object
+                $startTimeParts = explode(":", $row['start_time']);
+                $formattedStartTime = $startTimeParts[0] . ":" . $startTimeParts[1];
+
+                $endTimeParts = explode(":", $row['end_time']);
+                $formattedEndTime = $endTimeParts[0] . ":" . $endTimeParts[1];
+        
+                $schedule[] = [
+                    'start_date' => $row['reserved_date'],
+                    'end_date' => $row['reserved_date'],
+                    'start_time' => $formattedStartTime,
+                    'end_time' => $formattedEndTime,
+                ];
+            }
+        }
+
+        return $schedule;
+    }
+
     public function save() {
         global $dbs;
 
