@@ -19,12 +19,17 @@ foreach ($reservationEvents as $event) {
     $events[] = array(
         'start' => $event->reservedDate.' '.getMinutesAndSecond($event->startTime),
         'end' => $event->reservedDate.' '.getMinutesAndSecond($event->endTime),
-        'summary' => $event->name . "\n" . $event->activity,
+        'summary' => $event->name . "<br>" . $event->activity,
         'mask' => false,
+        // 'classes' => ['contohClass']
     );
 }
 ?>
-
+<!-- <style>
+    .contohClass {
+        background-color: #000000;
+    }
+</style> -->
 <div class="text-right mb-2">
     <button type="button" id="nextWeekBtn" class="btn btn-secondary">Next Week</button>
     <button type="button" id="todayWeekBtn" class="btn btn-secondary">Today's Week</button>
