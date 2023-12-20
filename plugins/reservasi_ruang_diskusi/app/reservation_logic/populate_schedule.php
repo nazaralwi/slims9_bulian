@@ -107,15 +107,38 @@ function populateSchedule($startDateParam, $durationInMinutes, $bookedSchedules 
     }
 }
 
+// Database connection setup
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "slims_bulian";
 
-$bookedSchedules = [
-    ['start_date' => '2023-12-13', 'end_date' => '2023-12-13', 'start_time' => '08:30', 'end_time' => '09:30'],
-    ['start_date' => '2023-12-13', 'end_date' => '2023-12-13', 'start_time' => '11:00', 'end_time' => '12:00'],
-    ['start_date' => '2023-12-13', 'end_date' => '2023-12-13', 'start_time' => '08:15', 'end_time' => '08:45'],
-    ['start_date' => '2023-12-14', 'end_date' => '2023-12-14', 'start_time' => '15:00', 'end_time' => '16:00'],
-    ['start_date' => '2023-12-14', 'end_date' => '2023-12-14', 'start_time' => '14:30', 'end_time' => '15:00'],
-    // Add more booked slots as needed
-];
+// Create connection
+$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+// Set PDO to throw exceptions on error
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+function getBookedSchedulesFromDatabase($conn) {
+    $sql = "SELECT reserved_date, start_time, end_time FROM room_reservations";
+    $stmt = $conn->query($sql);
+
+    $schedule = [];
+
+    if ($stmt) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $schedule[] = [
+                'start_date' => $row['reserved_date'],
+                'end_date' => $row['reserved_date'],
+                'start_time' => $row['start_time'],
+                'end_time' => $row['end_time'],
+            ];
+        }
+    }
+    
+    return $schedule;
+}
+
+$bookedSchedules = getBookedSchedulesFromDatabase($conn);
 
 // Check if the selectedDate is received from the POST request
 if (isset($_POST['selectedDate'])) {
@@ -133,4 +156,3 @@ if (isset($_POST['selectedDate'])) {
     // Handle the case when no date is provided
     echo json_encode(['error' => 'No date provided']);
 }
-?>
