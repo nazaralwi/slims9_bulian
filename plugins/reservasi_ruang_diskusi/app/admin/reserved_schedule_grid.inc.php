@@ -21,7 +21,7 @@ $datagrid->setSQLColumn('id',
                         'activity AS \'' . __('Kegiatan yang Dilakukan') . '\'');
 
 // ordering
-$datagrid->setSQLorder('reservation_date ASC');
+$datagrid->setSQLorder('reservation_date DESC');
 
 // set table and table header attributes
 $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
