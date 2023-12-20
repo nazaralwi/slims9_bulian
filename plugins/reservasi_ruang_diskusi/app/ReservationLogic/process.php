@@ -75,7 +75,21 @@ function generateLongestAvailableSchedules($startDate, $durationOptions, $booked
         }
     }
 
-    return array_reduce($availableSchedules, 'array_merge', []);
+    $timeSlots = array_reduce($availableSchedules, 'array_merge', []);
+    usort($timeSlots, function ($a, $b) {
+        // Split the time slots into start and end times
+        list($startA, $endA) = explode('-', $a);
+        list($startB, $endB) = explode('-', $b);
+    
+        // Compare start times first
+        if ($startA !== $startB) {
+            return strcmp($startA, $startB); // Sort alphabetically
+        }
+    
+        // If start times are equal, compare end times
+        return strcmp($endB, $endA); // Sort alphabetically
+    });
+    return $timeSlots;
 }
 
 function populateSchedule($startDateParam, $durationInMinutes, $bookedSchedules = []) {
