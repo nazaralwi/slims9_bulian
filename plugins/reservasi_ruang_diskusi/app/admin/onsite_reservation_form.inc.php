@@ -1,11 +1,5 @@
 <?php
-// session_start();
-
-include DRRB . DS . 'app/models/OnsiteReservation.php';
-
-$model = new OnsiteReservation();
-
-$majorList = $model->getMajorList();
+$majorList = getMajorList();
 
 // Creating form as in your original code
 $form = new simbio_form_table_AJAX('onsiteReservationForm', $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'], 'post');
