@@ -41,6 +41,13 @@ class Url
         return $_SERVER['PHP_SELF'] . '?' . http_build_query($query);
     }
 
+    static function memberSection($section_path = null) {
+        $query = [
+            'p' => 'reservasi_ruang_diskusi'
+        ];
+        return $_SERVER['PHP_SELF'] . '?' . http_build_query($query);
+    }
+
     static function goto($url) {
         echo <<<HTML
         <script>parent.$('#mainContent').simbioAJAX('{$url}')</script>

@@ -31,43 +31,45 @@ function reserveScheduleOnsite($self)
     }
 } 
 
-function reserveSchedule()
+function reserveSchedule($self)
 {
-    $reservation = new Reservation();
+    if (isset($_POST['name'])) {
+        $reservation = new Reservation();
 
-    $reservation->name = $_POST['name'];
-    $reservation->studentId = $_POST['studentId'];
-    $reservation->major = $_POST['major'];
-    $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
-    $reservation->reservedDate = $_POST['reservationDate'];
-    $reservation->duration = $_POST['duration'];
-
-    $timeRange = $_POST['availableSchedule'];
-    $times = explode(" - ", $timeRange);
-    $reservation->startTime = $times[0];
-    $reservation->endTime = $times[1];
-    $reservation->reservationDocument = '';
-
-    $reservation->visitorNumber = $_POST['visitorNumber'];
-    $reservation->activity = $_POST['activity'];
-
-    $reservation->reservation_date = date('Y-m-d H:i:s');
-
-    if ($reservation->save())
-    {
-        echo '<script type="text/javascript">';
-        echo 'alert("Reservasi berhasil.");';
-        echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
-        echo '</script>';
-        exit();
-    }
-    else
-    {
-        echo '<script type="text/javascript">';
-        echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
-        echo '</script>';
-        exit();
-    }
+        $reservation->name = $_POST['name'];
+        $reservation->studentId = $_POST['studentId'];
+        $reservation->major = $_POST['major'];
+        $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+        $reservation->reservedDate = $_POST['reservationDate'];
+        $reservation->duration = $_POST['duration'];
+    
+        $timeRange = $_POST['availableSchedule'];
+        $times = explode(" - ", $timeRange);
+        $reservation->startTime = $times[0];
+        $reservation->endTime = $times[1];
+        $reservation->reservationDocument = '';
+    
+        $reservation->visitorNumber = $_POST['visitorNumber'];
+        $reservation->activity = $_POST['activity'];
+    
+        $reservation->reservation_date = date('Y-m-d H:i:s');
+    
+        if ($reservation->save())
+        {
+            echo '<script type="text/javascript">';
+            echo 'alert("Reservasi berhasil.");';
+            echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
+            echo '</script>';
+            exit();
+        }
+        else
+        {
+            echo '<script type="text/javascript">';
+            echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
+            echo '</script>';
+            exit();
+        }    
+    }    
 }
 
 function updateReservation($self)

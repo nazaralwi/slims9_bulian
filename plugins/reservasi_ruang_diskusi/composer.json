@@ -20,11 +20,15 @@
     "autoload": {
         "psr-4": {
             "DiscussionRoomReservation\\Lib\\": "lib/",
-
-            "DiscussionRoomReservation\\App\\": "app/"
+            "DiscussionRoomReservation\\App\\": "app/",
+            "DiscussionRoomReservation\\App\\Controllers\\": "app/Controllers",
+            "DiscussionRoomReservation\\App\\Views\\": "app/Views"
         }
     },
     "config": {
         "vendor-dir": "lib/vendor"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
     }
 }

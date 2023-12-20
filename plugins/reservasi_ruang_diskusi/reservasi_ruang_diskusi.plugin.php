@@ -10,10 +10,11 @@
 
 // Discussion Room Reservation Base
 define('DRRB', SB.'plugins'.DS.'reservasi_ruang_diskusi');
+require_once DRRB. '/lib/vendor/autoload.php';
 
 // get plugin instance
 $plugin = \SLiMS\Plugins::getInstance();
 
 // registering menus
-$plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index.php');
-$plugin->registerMenu('opac', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/member/Controllers/reservasi_online_controller.inc.php');
+$plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index_admin.php');
+$plugin->registerMenu('opac', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index_member.php');

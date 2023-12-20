@@ -8,4 +8,4 @@ if (isset($_POST['name'])) {
 }
 
 // Include the view
-include DRRB . DS . 'app/member/Views/reservasi_online_view.inc.php';
+include DRRB . DS . 'app/Views/member/reservasi_online_view.inc.php';

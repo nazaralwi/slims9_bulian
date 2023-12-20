@@ -1,18 +1,11 @@
 <?php
 // session_start();
 
-include DRRB . DS . 'app/admin/Models/OnsiteReservation.php';
-include DRRB . DS . 'app/admin/Views/OnsiteReservationView.php';
+include DRRB . DS . 'app/Models/OnsiteReservation.php';
+include DRRB . DS . 'app/Views/admin/OnsiteReservationView.php';
 
 $model = new OnsiteReservation();
 $view = new OnsiteReservationView();
-
-if ($_SESSION['uid'] > 1) {
-    echo '<div class="bg-danger p-2 text-white">';
-    echo 'Hanya akun super-admin yang dapat merubah bagian ini.';
-    echo '</div>';
-    exit;
-}
 
 $majorList = $model->getMajorList();
 
