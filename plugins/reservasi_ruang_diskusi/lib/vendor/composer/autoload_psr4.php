@@ -7,7 +7,18 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     'Zein\\Storage\\' => array($vendorDir . '/zein/storage/src/Storage'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
+    'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
+    'MPScholten\\RequestParser\\' => array($vendorDir . '/mpscholten/request-parser/src'),
     'League\\MimeTypeDetection\\' => array($vendorDir . '/league/mime-type-detection/src'),
     'League\\Flysystem\\Local\\' => array($vendorDir . '/league/flysystem-local'),
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
+    'Laminas\\Diactoros\\' => array($vendorDir . '/laminas/laminas-diactoros/src'),
+    'Idoalit\\Sinom\\' => array($vendorDir . '/idoalit/sinom/src'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+    'DiscussionRoomReservation\\Lib\\' => array($baseDir . '/lib'),
+    'DiscussionRoomReservation\\App\\Views\\' => array($baseDir . '/app/Views'),
+    'DiscussionRoomReservation\\App\\Controllers\\' => array($baseDir . '/app/Controllers'),
+    'DiscussionRoomReservation\\App\\' => array($baseDir . '/app'),
+    'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
 );

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../app/ReservationLogic/process.php';
+require_once __DIR__ . '/../app/ReservationLogic/populate_schedule.php';
 use PHPUnit\Framework\TestCase;
 
 

@@ -13,7 +13,7 @@ require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO . 'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO . 'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO . 'simbio_DB/datagrid/simbio_dbgrid.inc.php';
-require DRRB . DS . 'helper/helper.php';
+require DRRB . DS . 'app/helper/helper.php';
 // End dependencies
 
 // privileges checking
@@ -30,7 +30,6 @@ $page_title = 'Reservasi Ruang Diskusi';
 updateReservation(Url::adminSection('/reservationScheduleList'));
 reserveScheduleOnsite(Url::adminSection('/reservationScheduleList'));
 cancelReservation(Url::adminSection('/reservationScheduleList'));
-
 ?>
 
 <div class="menuBox">
@@ -50,19 +49,19 @@ cancelReservation(Url::adminSection('/reservationScheduleList'));
 <?php
 switch (true) {
     case isset($_GET['sec']) && $_GET['sec'] == '/onsiteReservation':
-        include __DIR__ . '/Controllers/admin/onsite_reservation_controller.inc.php';
+        include __DIR__ . '/admin/onsite_reservation_form.inc.php';
         break;
 
     case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleList':
-        include __DIR__ . '/Views/admin/reserved_schedule_grid.inc.php';
+        include __DIR__ . '/admin/reserved_schedule_grid.inc.php';
         break;
 
     case (isset($_POST['detail']) || (isset($_GET['sec']) && $_GET['sec'] == '/editReservation')):
-        include __DIR__ . '/Views/admin/reserved_schedule_edit.inc.php';
+        include __DIR__ . '/admin/reserved_schedule_edit.inc.php';
         break;
     
     default:
-        include __DIR__ . '/Views/admin/reserved_schedule_grid.inc.php';
+        include __DIR__ . '/admin/reserved_schedule_grid.inc.php';
         break;
 }
 ?>

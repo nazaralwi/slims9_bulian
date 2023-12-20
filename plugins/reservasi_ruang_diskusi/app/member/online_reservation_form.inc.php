@@ -9,10 +9,10 @@ $attr = [
 ];
 
 // check dependency
-if (!file_exists(SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper/formmaker.inc.php'))
+if (!file_exists(DRRB.DS.'app/helper/formmaker.inc.php'))
 {
     echo '<div class="bg-danger p-2 text-white">';
-    echo 'Folder <b>'.SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper/formmaker.inc.php</b> tidak ada. Pastikan folder itu tersedia.';
+    echo 'Folder <b>'.DRRB.DS.'app/helper/formmaker.inc.php</b> tidak ada. Pastikan folder itu tersedia.';
     echo '</div>';
 }
 else
@@ -37,7 +37,7 @@ else
     define('DR_INDEX_AUTH', '1');
 
     // require helper
-    require SB.'plugins'.DS.'reservasi_ruang_diskusi'.DS.'helper/formmaker.inc.php';
+    require DRRB.DS.'app/helper/formmaker.inc.php';
 
     // create form
     createForm($attr);
@@ -66,7 +66,7 @@ else
 
         const selectedDate = document.getElementById(\'reservationDate\').value;
 
-        fetch(\'plugins/reservasi_ruang_diskusi/app/ReservationLogic/process.php\', {
+        fetch(\'plugins/reservasi_ruang_diskusi/app/ReservationLogic/populate_schedule.php\', {
             method: \'POST\',
             headers: {
                 \'Content-Type\': \'application/x-www-form-urlencoded\',

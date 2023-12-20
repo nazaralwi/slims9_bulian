@@ -1,11 +1,9 @@
 <?php
 // session_start();
 
-include DRRB . DS . 'app/Models/OnsiteReservation.php';
-include DRRB . DS . 'app/Views/admin/OnsiteReservationView.php';
+include DRRB . DS . 'app/models/OnsiteReservation.php';
 
 $model = new OnsiteReservation();
-$view = new OnsiteReservationView();
 
 $majorList = $model->getMajorList();
 
@@ -38,7 +36,7 @@ echo '<script>
 
         const selectedDate = document.getElementById(\'date\').value;
 
-        fetch(\'process.php\', {
+        fetch(\'plugins/reservasi_ruang_diskusi/app/ReservationLogic/populate_schedule.php\', {
             method: \'POST\',
             headers: {
                 \'Content-Type\': \'application/x-www-form-urlencoded\',
@@ -85,5 +83,5 @@ $str_input .= '</div>';
 
 $form->addSelectList('visitorNumber', 'Jumlah pengguna ruangan', ['5', '6', '7', '8', '9', '10'], $meta['visitorNumber'] ?? '', 'class="select2"', 'Visitor Number');
 $form->addTextField('text', 'activity', 'Kegiatan yang Akan Dilakukan', $meta['activity'] ?? '', 'rows="1" class="form-control"', 'Activity');
-$view->renderForm($form->printOut());
+echo $form->printOut();
 ?>

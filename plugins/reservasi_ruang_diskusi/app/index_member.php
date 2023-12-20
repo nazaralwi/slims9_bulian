@@ -1,6 +1,6 @@
 <?php
 // Load necessary models
-require_once DRRB . DS . 'helper/helper.php';
+require_once DRRB . DS . 'app/helper/helper.php';
 
 use DiscussionRoomReservation\Lib\Url;
 
@@ -8,4 +8,4 @@ use DiscussionRoomReservation\Lib\Url;
 reserveSchedule(Url::memberSection()); // Handle reservation schedule logic...
 
 // Include the view
-include DRRB . DS . 'app/Views/member/reservasi_online_view.inc.php';
+include DRRB . DS . 'app/member/online_reservation_form.inc.php';
