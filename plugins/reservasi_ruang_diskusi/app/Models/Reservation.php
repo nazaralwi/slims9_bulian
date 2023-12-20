@@ -47,7 +47,24 @@ class Reservation {
         }
 
         return $reservations;
-    }    
+    }   
+    
+    public static function getAllEvents() {
+        global $dbs;
+
+        $sql = "SELECT reserved_date, start_time, end_time, activity FROM room_reservations";
+        $result = $dbs->query($sql);
+
+        $events = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_object('Reservation')) {
+                $events[] = $row;
+            }
+        }
+
+        return $events;
+    }
 
     public function save() {
         global $dbs;

@@ -18,3 +18,4 @@ $plugin = \SLiMS\Plugins::getInstance();
 // registering menus
 $plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index_admin.php');
 $plugin->registerMenu('opac', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index_member.php');
+$plugin->registerMenu('opac', 'Jadwal Ruang Diskusi', DRRB . DS . 'app/index_opac.php');
