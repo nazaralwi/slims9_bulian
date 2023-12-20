@@ -52,7 +52,7 @@ class Reservation {
     public static function getAllEvents() {
         global $dbs;
 
-        $sql = "SELECT reserved_date, start_time, end_time, activity FROM room_reservations";
+        $sql = "SELECT name, reserved_date, start_time, end_time, activity FROM room_reservations";
         $result = $dbs->query($sql);
 
         $events = [];
@@ -61,6 +61,7 @@ class Reservation {
             while ($row = $result->fetch_assoc()) {
                 // Create Reservation objects manually and populate them with fetched data
                 $reservation = new Reservation();
+                $reservation->name = $row['name'];
                 $reservation->reservedDate = $row['reserved_date'];
                 $reservation->startTime = $row['start_time'];
                 $reservation->endTime = $row['end_time'];

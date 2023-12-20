@@ -19,11 +19,19 @@ foreach ($reservationEvents as $event) {
     $events[] = array(
         'start' => $event->reservedDate.' '.getMinutesAndSecond($event->startTime),
         'end' => $event->reservedDate.' '.getMinutesAndSecond($event->endTime),
-        'summary' => $event->activity,
+        'summary' => $event->name . "\n" . $event->activity,
         'mask' => false,
     );
 }
+?>
 
+<div class="text-right mb-2">
+    <button type="button" id="nextWeekBtn" class="btn btn-secondary">Next Week</button>
+    <button type="button" id="todayWeekBtn" class="btn btn-secondary">Today's Week</button>
+    <button type="button" id="prevWeekBtn" class="btn btn-secondary">Previous Week</button>
+</div>
+
+<?php
 $calendar
 ->hideSaturdays()
 ->hideSundays()
