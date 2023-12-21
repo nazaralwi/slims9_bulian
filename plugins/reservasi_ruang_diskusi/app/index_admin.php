@@ -13,7 +13,7 @@ require SIMBIO . 'simbio_GUI/table/simbio_table.inc.php';
 require SIMBIO . 'simbio_GUI/form_maker/simbio_form_table_AJAX.inc.php';
 require SIMBIO . 'simbio_GUI/paging/simbio_paging.inc.php';
 require SIMBIO . 'simbio_DB/datagrid/simbio_dbgrid.inc.php';
-require DRRB . DS . 'app/helper/helper.php';
+require DRRB . DS . 'app/helper/reservation_utils.php';
 // End dependencies
 
 // privileges checking

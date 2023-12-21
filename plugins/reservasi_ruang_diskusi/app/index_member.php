@@ -1,6 +1,6 @@
 <?php
 // Load necessary models
-require_once DRRB . DS . 'app/helper/helper.php';
+require_once DRRB . DS . 'app/helper/reservation_utils.php';
 
 use DiscussionRoomReservation\Lib\Url;
 

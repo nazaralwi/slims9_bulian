@@ -62,6 +62,19 @@ function createUploadArea($_label, $_name, $labelUpload = 'Pilih File - besar fi
 	.hidden {
 		display: none;
 	}
+	.error-message {
+		color: #b9191b; /* Red color */
+		font-size: 0.8rem; /* Slightly smaller than your form controls */
+		margin-top: 0.5rem; /* Add some space above the message */
+		padding: 5px;
+		border: 1px solid #e74c3c; /* Light red border */
+		border-radius: 4px;
+		background-color: #fcf8f6; /* Lighten background for contrast */
+	}
+	
+	#error-container {
+		display: block; /* Ensure container is visible */
+	}
 	</style>';
 
 	echo '<div class="form-group hidden" id="'. $_name . '">';
@@ -73,6 +86,7 @@ function createUploadArea($_label, $_name, $labelUpload = 'Pilih File - besar fi
 	echo '</div>';
 	echo '</div>';
 	echo '</div>';
+	echo '<div id="error-container" aria-live="polite";></div>';
 }
 
 function createSelect($_label, $_name, $_option, $_attr = '', $_default_value = '')

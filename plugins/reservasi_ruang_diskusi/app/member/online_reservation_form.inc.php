@@ -3,6 +3,7 @@
 use DiscussionRoomReservation\Lib\Url;
 
 $attr = [
+    'id' => 'reservationForm',
     'action' => Url::memberSection(),
     'method' => 'POST',
     'enctype' => 'multipart/form-data'
@@ -55,11 +56,15 @@ else
     closeTag('div');
     closeTag('form');
 
+    // Populate available schedule based on selected date
     echo '<script>
     const today = new Date().toISOString().substr(0, 10);
     document.getElementById(\'reservationDate\').value = today;
 
     function populateSubcategories() {
+        // reset all state
+        hideErrorMessage()
+
         const duration = document.getElementById(\'duration\').value;
         const availableSchedule = document.getElementById(\'availableSchedule\');
         availableSchedule.innerHTML = \'\';
@@ -96,6 +101,36 @@ else
     window.onload = populateSubcategories;
     </script>';
 
+    // Prevent form submission when schedule isn't available ("Tidak ada jadwal")
+    echo '<script>
+    document.getElementById("reservationForm").addEventListener("submit", function(event) {
+        var availableSchedule = document.getElementById(\'availableSchedule\');
+        var selectedValue = availableSchedule.value;
+
+        if (selectedValue === "Jadwal tidak tersedia") { // Replace "requiredValue" with the desired value
+            event.preventDefault(); // Prevent form submission
+            showInlineErrorMessage("Jadwal tidak tersedia. Silahkan pilih jadwal yang lain.");
+        }
+    });
+    function showInlineErrorMessage(message) {
+        var errorContainer = document.getElementById("error-container");
+        
+        // Clear any existing error messages:
+        errorContainer.innerHTML = "";
+        
+        var errorMessage = document.createElement("p");
+        errorMessage.classList.add("error-message"); // Add a class for styling
+        errorMessage.textContent = message;
+        
+        errorContainer.appendChild(errorMessage);
+    }
+    function hideErrorMessage() {
+        var errorContainer = document.getElementById("error-container");
+        errorContainer.innerHTML = ""; // Clear the contents of the error container
+    }      
+    </script>';
+
+    // Show input reservation document for >120h reservation duration
     echo '<script>
     $(document).ready(function() {
         $(\'#duration\').on(\'change\', function() {
