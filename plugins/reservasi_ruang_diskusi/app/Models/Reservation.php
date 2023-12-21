@@ -85,17 +85,34 @@ class Reservation {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 // return as mapped schedule instead of Reservation's object
-                $startTimeParts = explode(":", $row['start_time']);
-                $formattedStartTime = $startTimeParts[0] . ":" . $startTimeParts[1];
-
-                $endTimeParts = explode(":", $row['end_time']);
-                $formattedEndTime = $endTimeParts[0] . ":" . $endTimeParts[1];
-        
                 $schedule[] = [
                     'start_date' => $row['reserved_date'],
                     'end_date' => $row['reserved_date'],
-                    'start_time' => $formattedStartTime,
-                    'end_time' => $formattedEndTime,
+                    'start_time' => $row['start_time'],
+                    'end_time' => $row['end_time'],
+                ];
+            }
+        }
+
+        return $schedule;
+    }
+
+    public static function getBookedSchedules1() {
+        global $dbs;
+
+        $sql = "SELECT reserved_date, start_time, end_time FROM room_reservations";
+        $result = $dbs->query($sql);
+
+        $schedule = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // return as mapped schedule instead of Reservation's object
+                $schedule[] = [
+                    'start_date' => $row['reserved_date'],
+                    'end_date' => $row['reserved_date'],
+                    'start_time' => $row['start_time'],
+                    'end_time' => $row['end_time'],
                 ];
             }
         }
@@ -110,7 +127,7 @@ class Reservation {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("sssssisssiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocument, $this->visitorNumber, $this->activity, $this->reservation_date);
+        $stmt->bind_param("sssssssssiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocument, $this->visitorNumber, $this->activity, $this->reservation_date);
         
         if ($stmt->execute()) {
             return true;

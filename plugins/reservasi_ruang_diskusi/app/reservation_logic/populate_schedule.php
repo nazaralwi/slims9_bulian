@@ -127,3 +127,5 @@ if (isset($_POST['selectedDate'])) {
     // Handle the case when no date is provided
     echo json_encode(['error' => 'No date provided']);
 }
+
+exit;
