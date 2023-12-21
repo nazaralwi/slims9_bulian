@@ -104,8 +104,10 @@ else
             // Show/hide the conditional field based on the selected option
             if (selectedOption === \'>120\') {
                 $(\'#reservationDocument\').show(); // Show the conditional field
+                $(\'#input-reservationDocument\').prop(\'required\', true); // Add required
             } else {
                 $(\'#reservationDocument\').hide(); // Hide the conditional field
+                $(\'#input-reservationDocument\').prop(\'required\', false); // remove required
             }
         });
     });

@@ -58,11 +58,6 @@ function createFormContent($_label, $_type, $_name, $_place_holder = '', $_is_re
 
 function createUploadArea($_label, $_name, $labelUpload = 'Pilih File - besar file maksimal 1 MB', $_edit = false)
 {
-	$_required = ' require="true"';
-	if ($_edit) {
-		$_required = '';
-	}
-
 	echo '<style>
 	.hidden {
 		display: none;
@@ -73,8 +68,8 @@ function createUploadArea($_label, $_name, $labelUpload = 'Pilih File - besar fi
 	echo '<label for="'. $_name .'">'.$_label.'</label>';
 	echo '<div class="input-group">';
 	echo '<div class="custom-file">';
-	echo '<input type="file" class="custom-file-input" name="'.$_name.'" id="'. $_name .'" '.$_required.'>';
-	echo '<label class="custom-file-label" for="'. $_name .'">' . $labelUpload . '</label>';
+	echo '<input type="file" class="custom-file-input" name="input-'.$_name.'" id="input-'. $_name .'">';
+	echo '<label class="custom-file-label" for="input-'. $_name .'">' . $labelUpload . '</label>';
 	echo '</div>';
 	echo '</div>';
 	echo '</div>';
