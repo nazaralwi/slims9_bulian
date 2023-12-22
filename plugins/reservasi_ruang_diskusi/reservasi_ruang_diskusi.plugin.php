@@ -22,3 +22,4 @@ $plugin->registerMenu('opac', 'Jadwal Ruang Diskusi', DRRB . DS . 'app/index_opa
 
 // For AJAX request
 $plugin->registerMenu('opac', 'Populate Schedule', DRRB . DS . 'app/reservation_logic/populate_schedule.php');
+$plugin->registerMenu('opac', 'Reservation Calendar', DRRB . DS . 'app/opac/reservation_calendar.php');
