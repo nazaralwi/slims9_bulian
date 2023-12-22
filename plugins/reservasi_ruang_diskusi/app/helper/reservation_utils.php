@@ -18,14 +18,16 @@ function reserveScheduleOnsite($self)
     
         $reservation->reservation_date = date('Y-m-d H:i:s');
     
-        if ($reservation->save())
+        $result = $reservation->save();
+
+        if ($result['success'] === true)
         {
-            utility::jsToastr('Reservasi Onsite', 'Berhasil melakukan reservasi', 'success');
+            utility::jsToastr('Reservasi Onsite', $result['message'], 'success');
             echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
         }
         else
         {
-            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi', 'error');
+            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi: ' . $result['message'], 'error');
         }
         exit;
     }
@@ -54,10 +56,12 @@ function reserveSchedule($self)
     
         $reservation->reservation_date = date('Y-m-d H:i:s');
     
-        if ($reservation->save())
+        $result = $reservation->save();
+
+        if ($result['success'] === true)
         {
             echo '<script type="text/javascript">';
-            echo 'alert("Reservasi berhasil.");';
+            echo 'alert("' . $result['message'] . '");';
             echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
             echo '</script>';
             exit();
@@ -65,6 +69,7 @@ function reserveSchedule($self)
         else
         {
             echo '<script type="text/javascript">';
+            echo 'alert("'. $result['message'] . '");';
             echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
             echo '</script>';
             exit();

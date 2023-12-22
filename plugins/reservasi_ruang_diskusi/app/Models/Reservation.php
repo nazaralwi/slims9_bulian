@@ -129,11 +129,35 @@ class Reservation {
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("sssssssssiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocument, $this->visitorNumber, $this->activity, $this->reservation_date);
         
+        // Check if the reservation already exists before inserting
+        $existingReservation = $this->checkExistingReservation();
+
+        if ($existingReservation) {
+            // A reservation already exists with the same date, start time, and end time
+            return ["success" => false, "message" => "Error: This schedule is already reserved."]; // You might also handle this case as needed (e.g., provide an error message)
+        }    
+
+        // Proceed with the insertion if no existing reservation is found
         if ($stmt->execute()) {
-            return true;
+            return ["success" => true, "message" => "Reservation saved successfully."];
         } else {
-            return false;
+            return ["success" => false, "message" => "Error: Failed to insert reservation."];
         }
+    }
+
+    public function checkExistingReservation() {
+        global $dbs;
+    
+        $sql = "SELECT * FROM room_reservations WHERE reserved_date = ? AND start_time = ? AND end_time = ?";
+        
+        $stmt = $dbs->prepare($sql);
+        $stmt->bind_param("sss", $this->reservedDate, $this->startTime, $this->endTime);
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+        $existingReservation = $result->fetch_assoc();
+    
+        return $existingReservation; // Returns existing reservation data if found, otherwise returns NULL
     }
 
     public function update() {
