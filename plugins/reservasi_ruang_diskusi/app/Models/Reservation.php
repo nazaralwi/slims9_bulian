@@ -148,17 +148,30 @@ class Reservation {
     public function checkExistingReservation() {
         global $dbs;
     
-        $sql = "SELECT * FROM room_reservations WHERE reserved_date = ? AND start_time = ? AND end_time = ?";
-        
+        $sql = "SELECT * FROM room_reservations 
+        WHERE reserved_date = ? 
+        AND (
+            (start_time <= ? AND end_time >= ?) OR            -- Case: New reservation overlaps existing
+            (start_time >= ? AND end_time <= ?) OR            -- Case: New reservation is within existing
+            (start_time < ? AND end_time > ?) OR            -- Case: New reservation's start_time is within existing
+            (start_time < ? AND end_time > ?)               -- Case: New reservation's end_time is within existing
+        )";
+    
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("sss", $this->reservedDate, $this->startTime, $this->endTime);
+        $stmt->bind_param("sssssssss",
+            $this->reservedDate, 
+            $this->startTime, $this->endTime,                  // For overlapping case
+            $this->startTime, $this->endTime,                  // For new reservation within existing
+            $this->startTime, $this->startTime,                // For new reservation's start_time within existing
+            $this->endTime, $this->endTime                     // For new reservation's end_time within existing
+        );
         $stmt->execute();
     
         $result = $stmt->get_result();
-        $existingReservation = $result->fetch_assoc();
+        $existingReservations = $result->fetch_all(MYSQLI_ASSOC);
     
-        return $existingReservation; // Returns existing reservation data if found, otherwise returns NULL
-    }
+        return $existingReservations; // Returns existing reservation data if found, otherwise returns an empty array
+    }    
 
     public function update() {
         global $dbs;

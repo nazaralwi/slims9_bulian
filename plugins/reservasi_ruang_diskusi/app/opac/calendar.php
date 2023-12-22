@@ -23,9 +23,7 @@ foreach ($reservationEvents as $event) {
         'mask' => false,
     );
 }
-?>
 
-<?php
 $calendar
 ->hideSaturdays()
 ->hideSundays()
