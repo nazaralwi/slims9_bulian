@@ -2,6 +2,12 @@
 
 use DiscussionRoomReservation\Lib\Url;
 
+// Load necessary models
+require_once DRRB . DS . 'app/helper/reservation_utils.php';
+
+// Handle form submissions or other controller logic
+reserveSchedule(Url::memberSection()); // Handle reservation schedule logic...
+
 $attr = [
     'id' => 'reservationForm',
     'action' => Url::memberSection(),
