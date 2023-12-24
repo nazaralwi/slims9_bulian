@@ -23,6 +23,12 @@ $datagrid->setSQLColumn('reservation_id AS \''.__('ID Reservasi').'\'',
 
 // ordering
 $datagrid->setSQLorder('reservation_date DESC');
+// $datagrid->setSQLCriteria('reserved_date = CURRENT_DATE AND ((reserved_date = CURRENT_DATE AND end_time > CURRENT_TIME) OR reserved_date > CURRENT_DATE)');
+$datagrid->modifyColumnContent(6, 'callback{createLinkableWhatsAppNumber}');
+
+function createLinkableWhatsAppNumber($obj_db, $row, $field_num) {
+    return '<a href="https://wa.me/' . $row[$field_num] .'" target="_blank" style="color: blue; text-decoration: underline;">'. $row[$field_num] .'</a>';
+}
 
 // set table and table header attributes
 $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
