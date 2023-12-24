@@ -153,7 +153,7 @@ function uploadFile()
     if (isset($_FILES['reservationDocumentInput'])) {
         $uploaded_file_id = 0;
         $memberId = $_SESSION['mid'];
-        $title = 'surat_peminjaman_ruang_' . $memberId;
+        $title = 'spr_' . $memberId;
         $url = '';
         $fileDesc = '';
         $fileKey = '';

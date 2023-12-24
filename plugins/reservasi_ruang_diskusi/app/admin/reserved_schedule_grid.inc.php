@@ -15,12 +15,12 @@ $datagrid->setSQLColumn('reservation_id AS \''.__('ID Reservasi').'\'',
                         'reservation_document_id AS \''.__('Dokumen').'\'', 
                         'student_id AS \''.__('NIM').'\'', 
                         'major AS \''.__('Jurusan').'\'',
-                        'whatsapp_number AS \''.__('Nomor WhatsApp').'\'',
+                        'whatsapp_number AS \''.__('No. WA').'\'',
                         'reserved_date AS \''.__('Tanggal').'\'',
                         'duration AS \''.__('Durasi').'\'',
                         'start_time AS \''.__('Awal').'\'',
                         'end_time AS \''.__('Akhir').'\'',
-                        'visitor_number AS \'' . __('Jumlah anggota') . '\'',
+                        'visitor_number AS \'' . __('Jml. anggota') . '\'',
                         'activity AS \'' . __('Kegiatan') . '\'');
 
 // ordering
@@ -39,7 +39,7 @@ function createLinkableReservationDocument($obj_db, $row, $field_num) {
         $result = $obj_db->query($query);
 
         $filesRow = $result->fetch_assoc();
-        return '<a class="s-btn btn btn-link notAJAX openPopUp" href="'.SWB.'admin/view.php?fid='.urlencode($row[$field_num]).'" width="780" height="500" target="_blank">'.$filesRow['file_title'].'</a>';
+        return '<a class="notAJAX openPopUp" style="color: blue; text-decoration: underline;" href="'.SWB.'admin/view.php?fid='.urlencode($row[$field_num]).'" width="780" height="500" target="_blank">'.$filesRow['file_title'].'</a>';
     } else {
         return '<a>Tidak ada surat</a>';
     }
