@@ -43,7 +43,8 @@ class Url
 
     static function memberSection($section_path = null) {
         $query = [
-            'p' => 'reservasi_ruang_diskusi'
+            'p' => 'member',
+            'sec'=> 'discussion_room_reservation'
         ];
         return $_SERVER['PHP_SELF'] . '?' . http_build_query($query);
     }

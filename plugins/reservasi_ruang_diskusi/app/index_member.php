@@ -802,8 +802,12 @@ if ($is_member_login) :
                             'link' => 'index.php?p=member&sec=loan_history'
                         ],
                         'discussion_room_reservation' => [
-                            'text' => __('Discussion Room Reservation'),
+                            'text' => __('Discussion Room Reservation Form'),
                             'link' => 'index.php?p=member&sec=discussion_room_reservation'
+                        ],
+                        'discussion_room_reservation_list' => [
+                            'text' => __('Discussion Room Reservation List'),
+                            'link' => 'index.php?p=member&sec=discussion_room_reservation_list'
                         ],
                         'my_account' => [
                             'text' => __('My Account'),
@@ -849,11 +853,19 @@ if ($is_member_login) :
                             break;
                         case 'discussion_room_reservation':
                             echo '<div class="tagline">';
-                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation') . '</div>' . "\n";
+                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation Form') . '</div>' . "\n";
                             echo '</div>';
                             // echo showLoanHist();
                             echo showDiscussionRoomReservationForm();
                             // echo '<div class="alert alert-info">Telah tersedia menu reservasi ruang diskusi dalam area anggota</div>';
+                            break;
+                        case 'discussion_room_reservation_list':
+                            echo '<div class="tagline">';
+                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation List') . '</div>' . "\n";
+                            echo '</div>';
+                            // echo showLoanHist();
+                            // echo showDiscussionRoomReservationForm();
+                            echo '<div class="alert alert-info">Telah tersedia menu daftar reservasi ruang diskusi dalam area anggota</div>';
                             break;
                         case 'my_account':
                             echo '<div class="tagline">';

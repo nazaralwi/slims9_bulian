@@ -7,9 +7,10 @@ $datagrid = new simbio_datagrid();
 $table_spec = 'room_reservations';
 
 // set column
-$datagrid->setSQLColumn('id',
+$datagrid->setSQLColumn('reservation_id AS \''.__('ID Reservasi').'\'',
                         'reservation_date AS \''.__('Tanggal Reservasi').'\'', 
                         'name AS \''.__('Nama').'\'', 
+                        'reservation_document_id AS \''.__('ID Dokumen Reservasi').'\'', 
                         'student_id AS \''.__('NIM').'\'', 
                         'major AS \''.__('Jurusan').'\'',
                         'whatsapp_number AS \''.__('Nomor WhatsApp').'\'',

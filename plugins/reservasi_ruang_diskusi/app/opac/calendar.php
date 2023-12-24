@@ -19,7 +19,7 @@ foreach ($reservationEvents as $event) {
     $events[] = array(
         'start' => $event->reservedDate.' '.getMinutesAndSecond($event->startTime),
         'end' => $event->reservedDate.' '.getMinutesAndSecond($event->endTime),
-        'summary' => $event->name . "<br>" . $event->activity,
+        'summary' => $event->activity,
         'mask' => false,
     );
 }

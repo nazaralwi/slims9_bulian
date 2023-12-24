@@ -1,6 +1,11 @@
 <?php
+use SLiMS\Filesystems\Storage;
+
 require DRRB .DS. 'lib/vendor/autoload.php';
 require DRRB .DS. 'app/Models/Reservation.php';
+// require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+// require SIMBIO.'simbio_FILE/simbio_file_upload.inc.php';
+// require SIMBIO.'simbio_FILE/simbio_directory.inc.php';
 
 function reserveScheduleOnsite($self)
 {
@@ -49,7 +54,14 @@ function reserveSchedule($self)
         $times = explode(" - ", $timeRange);
         $reservation->startTime = $times[0];
         $reservation->endTime = $times[1];
-        $reservation->reservationDocument = '';
+        $reservation->reservationDocumentId = '';
+
+        $isFileUploaded = getUploadedFile();
+        $insertId = $isFileUploaded['insert_id'];
+
+        if ($isFileUploaded['message'] !== "No insertion is made") {    
+            $reservation->reservationDocumentId = $insertId;
+        }
     
         $reservation->visitorNumber = $_POST['visitorNumber'];
         $reservation->activity = $_POST['activity'];
@@ -58,11 +70,15 @@ function reserveSchedule($self)
     
         $result = $reservation->save();
 
+        if ($isFileUploaded['message'] !== "No insertion is made") {
+            $reservation->associateFileWithReservation();
+        }
+
         if ($result['success'] === true)
         {
             echo '<script type="text/javascript">';
             echo 'alert("' . $result['message'] . '");';
-            echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation\';';
             echo '</script>';
             exit();
         }
@@ -70,7 +86,7 @@ function reserveSchedule($self)
         {
             echo '<script type="text/javascript">';
             echo 'alert("'. $result['message'] . '");';
-            echo 'location.href = \'index.php?p=reservasi_ruang_diskusi\';';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation\';';
             echo '</script>';
             exit();
         }    
@@ -137,6 +153,81 @@ function cancelReservation($self)
             exit;
         }
     }
+}
+
+function getUploadedFile() {
+  global $sysconf;
+
+  ob_start();
+  if (isset($_FILES['reservationDocumentInput'])) {
+      $uploaded_file_id = 0;
+      $memberId = $_SESSION['mid'];
+      $title = 'surat_peminjaman_ruang_' . $memberId;
+      $url = '';
+      $fileDesc = '';
+      $fileKey = '';
+
+      // FILE UPLOADING
+      if ($_FILES['reservationDocumentInput']['error'] == 1) {
+        //   toastr(__('Invalid attachment, make sure your file is not exceeded system max upload'))->error();
+          return ["success" => false, "message" => "Invalid attachment, make sure your file is not exceeded system max upload", "insert_id" => 0];;
+      }
+
+      if (isset($_FILES['reservationDocumentInput']) AND $_FILES['reservationDocumentInput']['size']) {
+          $file_dir = '';
+          // create upload object
+          $file_upload = Storage::repository()->upload('reservationDocumentInput', function ($repository) use ($sysconf) {
+
+              // Extension check
+              $repository->isExtensionAllowed();
+
+              // File size check
+              $repository->isLimitExceeded($sysconf['max_upload'] * 1024);
+
+              // destroy it if failed
+              if (!empty($repository->getError())) $repository->destroyIfFailed();
+          })->as(md5(date('Y-m-d H:i:s'))); // set new name
+
+          if ($file_upload->getUploadStatus()) { 
+                $file_ext = $file_upload->getExt($file_upload->getUploadedFileName());         
+                
+                $reservation = new Reservation();
+                $reservation->uploaderId = $uploaded_file_id;
+                $reservation->fileTitle = $title;
+                $reservation->fileName = $file_upload->getUploadedFileName();
+                $reservation->fileURL = $url;
+                $reservation->fileDir = $file_dir;
+                $reservation->fileDesc = $fileDesc;
+                $reservation->fileKey = $fileKey;
+                $reservation->mimeType = $sysconf['mimetype'][trim($file_ext, '.')] ?? '';
+                $inputDate = date('Y-m-d H:i:s');
+                $reservation->inputDate = $inputDate;
+                $reservation->lastUpdate = $inputDate;
+
+                $result = $reservation->insertFile();
+                $insertId = $result['insert_id'];
+
+                if ($result['success'] === true && $insertId !== 0)
+                {
+                    $uploaded_file_id = $insertId;
+                    echo '<script type="text/javascript">';
+                    echo 'alert("' . $result['message'] . '");';
+                    echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation\';';
+                    echo '</script>';
+                    return ["success" => $result['success'], "message" => $result['message'], "insert_id" => $insertId];
+                }         
+          } else {
+                utility::jsToastr('File Attachment', __('Upload FAILED! Forbidden file type or file size too big!'), 'error');
+                echo '<script type="text/javascript">';
+                echo 'self.location.href = "' . $_SERVER['PHP_SELF'] . '";';
+                echo '</script>';
+                return ["success" => false, "message" => "Upload FAILED! Forbidden file type or file size too big!", "insert_id" => 0];
+          }
+      }
+  }
+  
+  // Return false if the insertion fails or no insertion is made
+  return ["success" => false, "message" => "No insertion is made", "insert_id" => 0];
 }
 
 function dirCheckPermission()

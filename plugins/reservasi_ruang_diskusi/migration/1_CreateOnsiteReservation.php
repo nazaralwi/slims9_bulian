@@ -15,7 +15,7 @@ class CreateOnsiteReservation extends \SLiMS\Migration\Migration
     public function up()
     {
         DB::getInstance()->query("CREATE TABLE IF NOT EXISTS `room_reservations` (
-                                    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                    `reservation_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                     `reservation_date` DATETIME DEFAULT NULL,
                                     `name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
                                     `student_id` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
@@ -25,7 +25,7 @@ class CreateOnsiteReservation extends \SLiMS\Migration\Migration
                                     `duration` int(1) NULL,
                                     `start_time` TIME DEFAULT NULL,
                                     `end_time` TIME DEFAULT NULL,
-                                    `reservation_document` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+                                    `reservation_document_id` int(11) NOT NULL AUTO_INCREMENT,
                                     `visitor_number` int(1) NULL,
                                     `activity` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL
                                 ) ENGINE='MyISAM';");

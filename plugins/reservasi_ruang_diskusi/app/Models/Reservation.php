@@ -1,7 +1,7 @@
 <?php
 
 class Reservation {
-    public $id;
+    public $reservationId;
     public $name;
     public $studentId;
     public $major;
@@ -10,10 +10,22 @@ class Reservation {
     public $duration;
     public $startTime;
     public $endTime;
-    public $reservationDocument;
+    public $reservationDocumentId;
     public $visitorNumber;
     public $activity;
     public $reservation_date;
+
+    public $fileId;
+    public $uploaderId;
+    public $fileTitle;
+    public $fileName;
+    public $fileURL;
+    public $fileDir;
+    public $fileDesc;
+    public $fileKey;
+    public $mimeType;
+    public $inputDate;
+    public $lastUpdate;
 
     public static function getById($reservationId) {
         global $dbs;
@@ -123,11 +135,11 @@ class Reservation {
     public function save() {
         global $dbs;
 
-        $sql = "INSERT INTO room_reservations (name, student_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document, visitor_number, activity, reservation_date) 
+        $sql = "INSERT INTO room_reservations (name, student_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document_id, visitor_number, activity, reservation_date) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("sssssssssiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocument, $this->visitorNumber, $this->activity, $this->reservation_date);
+        $stmt->bind_param("ssssssssiiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservation_date);
         
         // Check if the reservation already exists before inserting
         $existingReservation = $this->checkExistingReservation();
@@ -139,9 +151,42 @@ class Reservation {
 
         // Proceed with the insertion if no existing reservation is found
         if ($stmt->execute()) {
+            $this->reservationId = $stmt->insert_id;
             return ["success" => true, "message" => "Reservation saved successfully."];
         } else {
             return ["success" => false, "message" => "Error: Failed to insert reservation."];
+        }
+    }
+
+    public function insertFile() {
+        global $dbs;
+
+        $sql = "INSERT INTO files (uploader_id, file_title, file_name, file_url, file_dir, file_desc, file_key, mime_type, input_date, last_update) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $dbs->prepare($sql);
+        $stmt->bind_param("ssssssssss", $this->uploaderId, $this->fileTitle, $this->fileName, $this->fileURL, $this->fileDir, $this->fileDesc, $this->fileKey, $this->mimeType, $this->inputDate, $this->lastUpdate);
+
+        if ($stmt->execute()) {
+            $insertId = $stmt->insert_id;
+            $this->fileId = $insertId;
+            return ["success" => true, "message" => "File uploaded successfully.", "insert_id" => $insertId];
+        } else {
+            return ["success" => false, "message" => "Error: Failed to upload file.", "insert_id" => 0];
+        }
+    }
+
+    public function associateFileWithReservation() {
+        global $dbs;
+        
+        $sql = "UPDATE room_reservations SET reservation_document_id = ? WHERE reservation_id = ?";
+        $stmt = $dbs->prepare($sql);
+        $stmt->bind_param("ii", $this->reservationDocumentId, $this->reservationId);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -176,10 +221,10 @@ class Reservation {
     public function update() {
         global $dbs;
 
-        $sql = "UPDATE room_reservations SET name=?, student_id=?, major=?, whatsapp_number=?, reserved_date=?, duration=?, start_time=?, end_time=?, reservation_document=?, visitor_number=?, activity=? WHERE id=?";
+        $sql = "UPDATE room_reservations SET name=?, student_id=?, major=?, whatsapp_number=?, reserved_date=?, duration=?, start_time=?, end_time=?, reservation_document_id=?, visitor_number=?, activity=? WHERE id=?";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("sssssisssisi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocument, $this->visitorNumber, $this->activity, $this->id);
+        $stmt->bind_param("sssssissiisi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservationId);
         
         if ($stmt->execute()) {
             return true;
@@ -191,7 +236,7 @@ class Reservation {
     public static function deleteById($reservationId) {
         global $dbs;
 
-        $sql = "DELETE FROM room_reservations WHERE id = ?";
+        $sql = "DELETE FROM room_reservations WHERE reservation_id = ?";
         
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("i", $reservationId);

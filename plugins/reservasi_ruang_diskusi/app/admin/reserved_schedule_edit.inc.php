@@ -1,6 +1,6 @@
 <?php
 
-$attribute = "SELECT * FROM room_reservations WHERE id='{itemID}'";
+$attribute = "SELECT * FROM room_reservations WHERE reservation_id='{itemID}'";
 
 $itemID = $dbs->escape_string(trim(isset($_POST['itemID'])?$_POST['itemID']:'')); 
 $rec_q = $dbs->query(str_replace('{itemID}', $itemID, $attribute));
@@ -39,7 +39,7 @@ $majorList = ['S1 Teknik Informatika', 'S1 Software Engineering', 'S1 Sistem Inf
             'S1 Teknik Biomedis', 'S1 Teknologi Pangan', 'S1 Teknik Industri', 'S1 Desain Komunikasi Visual', 
             'S1 Digital Logistic', 'S1 Bisnis Digital', 'S1 Product Innovation', 'D3  Teknik Digital', 'Lainnya'];
 
-$form->addAnything(__('Reservation ID'), $rec_d['id']);
+$form->addAnything(__('Reservation ID'), $rec_d['reservation_id']);
 $form->addAnything(__('Reservation Date'), $rec_d['reservation_date']);
 $form->addTextField('text', 'name', __('Name').'*', $rec_d['name']??'', 'rows="1" class="form-control"', 'Name');
 $form->addTextField('text', 'studentId', __('NIM'), $rec_d['student_id']??'', 'rows="1" class="form-control"', 'Student Id');
