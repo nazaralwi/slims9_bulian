@@ -146,7 +146,7 @@ class Reservation {
 
         if ($existingReservation) {
             // A reservation already exists with the same date, start time, and end time
-            return ["success" => false, "message" => "Error: This schedule is already reserved."]; // You might also handle this case as needed (e.g., provide an error message)
+            return ["success" => false, "message" => "Error: This schedule is already reserved."];
         }    
 
         // Proceed with the insertion if no existing reservation is found
