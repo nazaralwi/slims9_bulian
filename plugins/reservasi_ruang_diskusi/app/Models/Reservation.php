@@ -15,6 +15,8 @@ class Reservation {
     public $activity;
     public $reservation_date;
 
+    public $memberId;
+
     public $fileId;
     public $uploaderId;
     public $fileTitle;
@@ -135,11 +137,11 @@ class Reservation {
     public function save() {
         global $dbs;
 
-        $sql = "INSERT INTO room_reservations (name, student_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document_id, visitor_number, activity, reservation_date) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO room_reservations (name, student_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document_id, visitor_number, activity, reservation_date, member_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("ssssssssiiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservation_date);
+        $stmt->bind_param("ssssssssiissi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservation_date, $this->memberId);
         
         // Check if the reservation already exists before inserting
         $existingReservation = $this->checkExistingReservation();
@@ -156,6 +158,35 @@ class Reservation {
         } else {
             return ["success" => false, "message" => "Error: Failed to insert reservation."];
         }
+    }
+
+    public function retrieveReservationByMemberId($memberId) {
+        global $dbs;
+
+        $sql = 'SELECT * FROM room_reservations WHERE member_id = ' . $memberId . ';';
+        $result = $dbs->query($sql);
+
+        $reservations = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $reservation = new Reservation();
+                $reservation->name = $row['name'];
+                $reservation->studentId = $row['student_id'];
+                $reservation->major = $row['major'];
+                $reservation->whatsAppNumber = $row['whatsapp_number'];
+                $reservation->reservedDate = $row['reserved_date'];
+                $reservation->duration = $row['duration'];
+                $reservation->startTime = $row['start_time'];
+                $reservation->endTime = $row['end_time'];
+                $reservation->reservationDocumentId = $row['reservation_document_id'];
+                $reservation->visitorNumber = $row['visitor_number'];
+                $reservation->activity = $row['activity'];    
+                $reservations[] = $reservation;
+            }
+        }
+
+        return $reservations;
     }
 
     public function insertFile() {

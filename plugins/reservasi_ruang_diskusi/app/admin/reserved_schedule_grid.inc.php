@@ -39,7 +39,7 @@ function createLinkableReservationDocument($obj_db, $row, $field_num) {
         $result = $obj_db->query($query);
 
         $filesRow = $result->fetch_assoc();
-        return '<a class="s-btn btn btn-link notAJAX openPopUp" href="'.SWB.'admin/view.php?fid='.urlencode($row[$field_num]).'" width="780" height="500" target="_blank">'.$filesRow['file_title'].'</a>';;
+        return '<a class="s-btn btn btn-link notAJAX openPopUp" href="'.SWB.'admin/view.php?fid='.urlencode($row[$field_num]).'" width="780" height="500" target="_blank">'.$filesRow['file_title'].'</a>';
     } else {
         return '<a>Tidak ada surat</a>';
     }

@@ -48,14 +48,15 @@ function reserveSchedule($self)
         $reservation->startTime = $times[0];
         $reservation->endTime = $times[1];
 
-        $isFileUploaded = uploadFile();
-        $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
-
         $reservation->visitorNumber = $_POST['visitorNumber'];
         $reservation->activity = $_POST['activity'];
-
         $reservation->reservation_date = date('Y-m-d H:i:s');
 
+        $reservation->memberId = $_SESSION['mid'];
+
+        $isFileUploaded = uploadFile();
+        $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
+        
         $result = $reservation->save();
 
         if ($isFileUploaded['message'] !== "No insertion is made") {
@@ -136,6 +137,12 @@ function cancelReservation($self)
             exit;
         }
     }
+}
+
+function getReservationByMemberId($memberId) {
+    $reservation = new Reservation();
+
+    return $reservation->retrieveReservationByMemberId($memberId);
 }
 
 function uploadFile()

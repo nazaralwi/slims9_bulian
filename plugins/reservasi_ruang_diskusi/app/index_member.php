@@ -509,6 +509,10 @@ if ($is_member_login) :
         require DRRB . DS . 'app/member/online_reservation_form.inc.php';
     }
 
+    function showDiscussionRoomReservationList() {
+        require DRRB . DS . 'app/member/online_reservation_grid.inc.php';
+    }
+
     /*
        * Function to show member collection baskets
        *
@@ -855,17 +859,14 @@ if ($is_member_login) :
                             echo '<div class="tagline">';
                             echo '<div class="memberInfoHead">' . __('Discussion Room Reservation Form') . '</div>' . "\n";
                             echo '</div>';
-                            // echo showLoanHist();
                             echo showDiscussionRoomReservationForm();
-                            // echo '<div class="alert alert-info">Telah tersedia menu reservasi ruang diskusi dalam area anggota</div>';
                             break;
                         case 'discussion_room_reservation_list':
                             echo '<div class="tagline">';
                             echo '<div class="memberInfoHead">' . __('Discussion Room Reservation List') . '</div>' . "\n";
                             echo '</div>';
-                            // echo showLoanHist();
-                            // echo showDiscussionRoomReservationForm();
-                            echo '<div class="alert alert-info">Telah tersedia menu daftar reservasi ruang diskusi dalam area anggota</div>';
+                            echo showDiscussionRoomReservationList();
+                            // echo '<div class="alert alert-info">Telah tersedia menu daftar reservasi ruang diskusi dalam area anggota</div>';
                             break;
                         case 'my_account':
                             echo '<div class="tagline">';

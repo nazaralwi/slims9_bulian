@@ -48,7 +48,7 @@ else
 
     // create form
     createForm($attr);
-    createFormContent(__('Nama'), 'text', 'name', 'Isikan nama Anda', true, '', true);
+    createFormContent(__('Nama'), 'text', 'name', 'Isikan nama Anda', true, $_SESSION['m_name'], true);
     createFormContent(__('NIM'), 'text', 'studentId', 'Isikan NIM Anda');
     createSelect(__('Program Studi'), 'major', $majorList);
     createFormContent(__('Nomor WhatsApp'), 'text', 'whatsAppNumber', 'Isikan nomor WhatsApp Anda', true, '', true);
