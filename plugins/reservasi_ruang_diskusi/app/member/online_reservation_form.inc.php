@@ -49,13 +49,13 @@ else
     // create form
     createForm($attr);
     createSelect(__('Program Studi'), 'major', $majorList);
-    createFormContent(__('Nomor WhatsApp'), 'text', 'whatsAppNumber', 'Isikan nomor WhatsApp Anda', true, '', true);
+    createFormContent(__('Nomor WhatsApp'), 'text', 'whatsAppNumber', 'Isikan nomor WhatsApp Anda (gunakan format 62..)', true, '', true);
     createDate(__('Tanggal Reservasi'), 'reservationDate', date('Y-m-d'), 'populateSubcategories()');
     createSelect(__('Durasi Peminjaman'), 'duration', $reservationDuration, 'onchange="populateSubcategories()"');
     createDynamicSelect(__('Jadwal Reservasi yang Tersedia'), 'availableSchedule');
     createUploadArea(__('Upload Surat Peminjaman Ruang'), 'reservationDocument');
     createSelect(__('Jumlah pengguna ruangan'), 'visitorNumber', $visitorCount);
-    createFormContent(__('Kegiatan yang Akan Dilakukan'), 'text', 'activity', 'Isikan nomor Kegiatan Anda', true, '', true);
+    createFormContent(__('Kegiatan yang Akan Dilakukan'), 'text', 'activity', 'Isikan apa kegiatan Anda', true, '', true);
     createFormButton('Daftar', 'submit', 'register');
     closeTag('div');
     closeTag('form');

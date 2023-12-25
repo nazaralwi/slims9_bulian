@@ -9,7 +9,7 @@ $datagrid = new simbio_datagrid();
 $table_spec = 'room_reservations';
 
 // set column
-$datagrid->setSQLColumn('reservation_id AS \''.__('ID Reservasi').'\'',
+$datagrid->setSQLColumn('reservation_id',
                         'reservation_date AS \''.__('Tanggal Reservasi').'\'', 
                         'name AS \''.__('Nama').'\'', 
                         'reservation_document_id AS \''.__('Dokumen').'\'', 
@@ -22,11 +22,12 @@ $datagrid->setSQLColumn('reservation_id AS \''.__('ID Reservasi').'\'',
                         'end_time AS \''.__('Akhir').'\'',
                         'visitor_number AS \'' . __('Jml. Agt.') . '\'',
                         'activity AS \'' . __('Kegiatan') . '\'',
-                        'status AS \'' . __('Status') . '\'');
+                        'status AS \'' . __('Status') . '\'',
+                        'last_update');
 
 // ordering
-$datagrid->setSQLorder('reservation_date DESC');
-$datagrid->setSQLCriteria('status = \'ongoing\'');
+$datagrid->setSQLorder('last_update DESC');
+$datagrid->setSQLCriteria('status != \'ongoing\'');
 $datagrid->modifyColumnContent(3, 'callback{createLinkableReservationDocument}'); // modify reservation_document_id content
 $datagrid->modifyColumnContent(6, 'callback{createLinkableWhatsAppNumber}'); // modify whatsapp_number content
 
@@ -52,14 +53,14 @@ function createLinkableWhatsAppNumber($obj_db, $row, $field_num) {
 
 // set table and table header attributes
 $datagrid->icon_edit = SWB.'admin/'.$sysconf['admin_template']['dir'].'/'.$sysconf['admin_template']['theme'].'/edit.gif';
-$datagrid->table_name = 'reservationScheduleList';
+$datagrid->table_name = 'reservationScheduleHistoryList';
 $datagrid->table_attr = 'id="dataList" class="s-table table"';
 $datagrid->table_header_attr = 'class="dataListHeader" style="font-weight: bold;"';
 // set delete proccess URL
 $datagrid->chbox_form_URL = null;
 
 // put the result into variables
-$datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 10, true);
+$datagrid_result = $datagrid->createDataGrid($dbs, $table_spec, 10, false);
 if ((isset($_GET['keywords']) AND $_GET['keywords'])) {
     echo '<div class="infoBox">';
     echo __('Found').' '.$datagrid->num_rows.' '.__('from your search with keyword').' : "'.htmlentities($_GET['keywords']).'"'; //mfc

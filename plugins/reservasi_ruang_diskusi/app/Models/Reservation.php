@@ -14,6 +14,8 @@ class Reservation {
     public $visitorNumber;
     public $activity;
     public $reservation_date;
+    public $status;
+    public $reservationLastUpdate;
 
     public $fileId;
     public $uploaderId;
@@ -89,7 +91,7 @@ class Reservation {
     public static function getBookedSchedules() {
         global $dbs;
 
-        $sql = "SELECT reserved_date, start_time, end_time FROM room_reservations";
+        $sql = "SELECT reserved_date, start_time, end_time FROM room_reservations WHERE status != 'cancelled' AND status != 'completed'";
         $result = $dbs->query($sql);
 
         $schedule = [];
@@ -135,11 +137,11 @@ class Reservation {
     public function save() {
         global $dbs;
 
-        $sql = "INSERT INTO room_reservations (name, member_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document_id, visitor_number, activity, reservation_date) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO room_reservations (name, member_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document_id, visitor_number, activity, reservation_date, last_update) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("sissssssiiss", $this->name, $this->memberId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservation_date);
+        $stmt->bind_param("sissssssiisss", $this->name, $this->memberId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservation_date, $this->reservationLastUpdate);
         
         // Check if the reservation already exists before inserting
         $existingReservation = $this->checkExistingReservation();
@@ -182,6 +184,8 @@ class Reservation {
                 $reservation->reservationDocumentId = $row['reservation_document_id'];
                 $reservation->visitorNumber = $row['visitor_number'];
                 $reservation->activity = $row['activity'];    
+                $reservation->status = $row['status'];
+                $reservation->reservationLastUpdate = $row['last_update'];
                 $reservations[] = $reservation;
             }
         }
@@ -231,7 +235,8 @@ class Reservation {
             (start_time >= ? AND end_time <= ?) OR            -- Case: New reservation is within existing
             (start_time < ? AND end_time > ?) OR            -- Case: New reservation's start_time is within existing
             (start_time < ? AND end_time > ?)               -- Case: New reservation's end_time is within existing
-        )";
+        )
+        AND status != 'cancelled' AND status != 'completed'";
     
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("sssssssss",
@@ -247,7 +252,23 @@ class Reservation {
         $existingReservations = $result->fetch_all(MYSQLI_ASSOC);
     
         return $existingReservations; // Returns existing reservation data if found, otherwise returns an empty array
-    }    
+    }
+
+    public static function updateStatusForExpiredReservations() {
+        global $dbs;
+
+        $sql = "UPDATE room_reservations 
+                SET status = 'completed' 
+                WHERE status = 'ongoing' AND reserved_date < NOW()";
+
+        $result = $dbs->query($sql);
+
+        if ($result) {
+            // echo "Status updated successfully";
+        } else {
+            // echo "Error updating status: " . $dbs->error;
+        }
+    }
 
     public function update() {
         global $dbs;
@@ -267,7 +288,9 @@ class Reservation {
     public static function deleteById($reservationId) {
         global $dbs;
 
-        $sql = "DELETE FROM room_reservations WHERE reservation_id = ?";
+        $sql = "UPDATE room_reservations 
+        SET status = 'cancelled', last_update = NOW()
+        WHERE reservation_id = ?";
         
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("i", $reservationId);

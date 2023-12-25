@@ -513,6 +513,10 @@ if ($is_member_login) :
         require DRRB . DS . 'app/member/online_reservation_grid.inc.php';
     }
 
+    function showDiscussionRoomReservationHistoryList() {
+        require DRRB . DS . 'app/member/online_reservation_history_grid.inc.php';
+    }
+
     /*
        * Function to show member collection baskets
        *
@@ -813,6 +817,10 @@ if ($is_member_login) :
                             'text' => __('Discussion Room Reservation List'),
                             'link' => 'index.php?p=member&sec=discussion_room_reservation_list'
                         ],
+                        'discussion_room_reservation_history_list' => [
+                            'text' => __('Discussion Room Reservation History List'),
+                            'link' => 'index.php?p=member&sec=discussion_room_reservation_history_list'
+                        ],
                         'my_account' => [
                             'text' => __('My Account'),
                             'link' => 'index.php?p=member&sec=my_account'
@@ -866,7 +874,12 @@ if ($is_member_login) :
                             echo '<div class="memberInfoHead">' . __('Discussion Room Reservation List') . '</div>' . "\n";
                             echo '</div>';
                             echo showDiscussionRoomReservationList();
-                            // echo '<div class="alert alert-info">Telah tersedia menu daftar reservasi ruang diskusi dalam area anggota</div>';
+                            break;
+                        case 'discussion_room_reservation_history_list':
+                            echo '<div class="tagline">';
+                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation History List') . '</div>' . "\n";
+                            echo '</div>';
+                            echo showDiscussionRoomReservationHistoryList();
                             break;
                         case 'my_account':
                             echo '<div class="tagline">';

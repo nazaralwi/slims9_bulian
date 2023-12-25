@@ -40,6 +40,7 @@ cancelReservation(Url::adminSection('/reservationScheduleList'));
         <div class="sub_section">
             <div class="btn-group">
                 <a href="<?= Url::adminSection('/reservationScheduleList') ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
+                <a href="<?= Url::adminSection('/reservationScheduleHistoryList') ?>" class="btn btn-primary">Daftar Riwayat Reservasi</a>
                 <a href="<?= Url::adminSection('/onsiteReservation') ?>" class="btn btn-success">Reservasi Onsite</a>
             </div>
         </div>
@@ -54,6 +55,10 @@ switch (true) {
 
     case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleList':
         include __DIR__ . '/admin/reserved_schedule_grid.inc.php';
+        break;
+
+    case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleHistoryList':
+        include __DIR__ . '/admin/reserved_schedule_history_grid.inc.php';
         break;
 
     case (isset($_POST['detail']) || (isset($_GET['sec']) && $_GET['sec'] == '/editReservation')):

@@ -50,7 +50,10 @@ function reserveSchedule($self)
 
         $reservation->visitorNumber = $_POST['visitorNumber'];
         $reservation->activity = $_POST['activity'];
-        $reservation->reservation_date = date('Y-m-d H:i:s');
+
+        $timestamp = date('Y-m-d H:i:s');
+        $reservation->reservation_date = $timestamp;
+        $reservation->reservationLastUpdate = $timestamp;
 
         $isFileUploaded = uploadFile();
         $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
@@ -232,6 +235,10 @@ function uploadFile()
     }
 
     return ["success" => false, "message" => "No insertion is made", "insert_id" => 0];
+}
+
+function updateStatusForExpiredReservations() {
+    Reservation::updateStatusForExpiredReservations();
 }
 
 function dirCheckPermission()
