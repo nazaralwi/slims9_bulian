@@ -33,11 +33,11 @@ function reserveScheduleOnsite($self)
 
 function reserveSchedule($self)
 {
-    if (isset($_POST['name'])) {
+    if (isset($_POST['availableSchedule'])) {
         $reservation = new Reservation();
 
-        $reservation->name = $_POST['name'];
-        $reservation->studentId = $_POST['studentId'];
+        $reservation->name = $_SESSION['m_name'];
+        $reservation->studentId = $_SESSION['mid'];
         $reservation->major = $_POST['major'];
         $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
         $reservation->reservedDate = $_POST['reservationDate'];
