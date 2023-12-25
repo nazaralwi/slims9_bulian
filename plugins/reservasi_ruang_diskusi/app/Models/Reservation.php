@@ -15,8 +15,6 @@ class Reservation {
     public $activity;
     public $reservation_date;
 
-    public $memberId;
-
     public $fileId;
     public $uploaderId;
     public $fileTitle;
@@ -137,11 +135,11 @@ class Reservation {
     public function save() {
         global $dbs;
 
-        $sql = "INSERT INTO room_reservations (name, student_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document_id, visitor_number, activity, reservation_date, member_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO room_reservations (name, student_id, major, whatsapp_number, reserved_date, duration, start_time, end_time, reservation_document_id, visitor_number, activity, reservation_date) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("ssssssssiissi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservation_date, $this->memberId);
+        $stmt->bind_param("sissssssiiss", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservation_date);
         
         // Check if the reservation already exists before inserting
         $existingReservation = $this->checkExistingReservation();
@@ -160,10 +158,11 @@ class Reservation {
         }
     }
 
-    public function retrieveReservationByMemberId($memberId) {
+    public function retrieveReservationByMemberId($studentId) {
         global $dbs;
 
-        $sql = 'SELECT * FROM room_reservations WHERE member_id = ' . $memberId . ';';
+        // We use domain specific student_id for member_id value
+        $sql = 'SELECT * FROM room_reservations WHERE student_id = ' . $studentId . ';';
         $result = $dbs->query($sql);
 
         $reservations = [];
@@ -257,7 +256,7 @@ class Reservation {
         $sql = "UPDATE room_reservations SET name=?, student_id=?, major=?, whatsapp_number=?, reserved_date=?, duration=?, start_time=?, end_time=?, reservation_document_id=?, visitor_number=?, activity=? WHERE id=?";
         
         $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("sssssissiisi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservationId);
+        $stmt->bind_param("sisssissiisi", $this->name, $this->studentId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservationId);
         
         if ($stmt->execute()) {
             return true;

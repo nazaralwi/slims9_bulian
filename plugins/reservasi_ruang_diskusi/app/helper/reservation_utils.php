@@ -52,8 +52,6 @@ function reserveSchedule($self)
         $reservation->activity = $_POST['activity'];
         $reservation->reservation_date = date('Y-m-d H:i:s');
 
-        $reservation->memberId = $_SESSION['mid'];
-
         $isFileUploaded = uploadFile();
         $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
         
@@ -164,10 +162,10 @@ function cancelReservationByMember($self)
     }
 }
 
-function getReservationByMemberId($memberId) {
+function getReservationByMemberId($studentId) {
     $reservation = new Reservation();
 
-    return $reservation->retrieveReservationByMemberId($memberId);
+    return $reservation->retrieveReservationByMemberId($studentId);
 }
 
 function uploadFile()

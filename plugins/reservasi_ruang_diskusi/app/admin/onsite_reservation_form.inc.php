@@ -10,7 +10,7 @@ $form->table_header_attr = 'class="alterCell"';
 $form->table_content_attr = 'class="alterCell2"';
 
 $form->addTextField('text', 'name', 'Nama', $meta['name'] ?? '', 'rows="1" class="form-control"', 'Name');
-$form->addTextField('text', 'studentId', 'NIM', $meta['studentId'] ?? '', 'rows="1" class="form-control"', 'Student ID');
+$form->addTextField('text', 'studentId', 'NIM', $meta['studentId'] ?? 0, 'rows="1" class="form-control"', 'Student ID');
 $form->addSelectList('major', 'Program Studi', $majorList, $meta['major'] ?? '', 'class="select2"', 'Major');
 $form->addTextField('text', 'whatsAppNumber', 'Nomor WhatsApp', $meta['whatsAppNumber'] ?? '', 'rows="1" class="form-control"', 'WhatsApp Number');
 

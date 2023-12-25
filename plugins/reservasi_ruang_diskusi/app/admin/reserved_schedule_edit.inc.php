@@ -42,7 +42,7 @@ $majorList = ['S1 Teknik Informatika', 'S1 Software Engineering', 'S1 Sistem Inf
 $form->addAnything(__('Reservation ID'), $rec_d['reservation_id']);
 $form->addAnything(__('Reservation Date'), $rec_d['reservation_date']);
 $form->addTextField('text', 'name', __('Name').'*', $rec_d['name']??'', 'rows="1" class="form-control"', 'Name');
-$form->addTextField('text', 'studentId', __('NIM'), $rec_d['student_id']??'', 'rows="1" class="form-control"', 'Student Id');
+$form->addTextField('text', 'studentId', __('NIM'), $rec_d['student_id']??0, 'rows="1" class="form-control"', 'Student Id');
 $form->addSelectList('major', __('Program Studi'), $majorList, $rec_d['major'] ?? '', 'class="select2"', 'Major');
 $form->addTextField('text', 'whatsAppNumber', __('Nomor WhatsApp'), $rec_d['whatsapp_number'] ?? '', 'rows="1" class="form-control"', 'WhatsApp Number');
 $reservationDuration = [['30','30 menit'],['60','1 jam'], ['90','1,5 jam'], ['120','2 jam']];
