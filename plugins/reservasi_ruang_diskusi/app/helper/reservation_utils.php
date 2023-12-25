@@ -139,6 +139,31 @@ function cancelReservation($self)
     }
 }
 
+function cancelReservationByMember($self)
+{
+    if (isset($_POST['itemID'])) {
+        $delete = Reservation::deleteById($_POST['itemID']);
+
+        if ($delete) {
+            utility::jsToastr('Onsite Reservation', 'Berhasil membatalkan reservasi', 'success');
+            // echo '<script>parent.$("#mainContent").simbioAJAX("' . $self . '")</script>';
+            echo '<script type="text/javascript">';
+            echo 'alert("' . 'Berhasil' . '");';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_list\';';
+            echo '</script>';
+            exit();
+        } else {
+            utility::jsToastr('Onsite Reservation', 'Gagal membatalkan reservasi', 'error');
+            // echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation\';';
+            echo '<script type="text/javascript">';
+            echo 'alert("' . 'Gagal' . '");';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_list\';';
+            echo '</script>';
+            exit;
+        }
+    }
+}
+
 function getReservationByMemberId($memberId) {
     $reservation = new Reservation();
 

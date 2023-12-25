@@ -171,6 +171,7 @@ class Reservation {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $reservation = new Reservation();
+                $reservation->reservationId = $row['reservation_id'];
                 $reservation->name = $row['name'];
                 $reservation->studentId = $row['student_id'];
                 $reservation->major = $row['major'];
