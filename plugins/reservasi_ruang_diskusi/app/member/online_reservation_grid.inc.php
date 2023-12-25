@@ -4,6 +4,15 @@ require_once DRRB . DS . 'app/helper/reservation_utils.php';
 
 $reservations = getReservationByMemberId($_SESSION['mid']);
 
+function sortByDate($a, $b) {
+  $dateA = strtotime($a->reservation_date);
+  $dateB = strtotime($b->reservation_date);
+
+  return $dateB - $dateA; // Compare in reverse order for descending
+}
+
+usort($reservations, 'sortByDate');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['itemAction']) && $_POST['itemAction'] === 'cancel') {
       cancelReservationByMember('index.php?p=member&sec=discussion_room_reservation_list');
