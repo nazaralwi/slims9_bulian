@@ -13,14 +13,14 @@ $datagrid->setSQLColumn('reservation_id AS \''.__('ID Reservasi').'\'',
                         'reservation_date AS \''.__('Tanggal Reservasi').'\'', 
                         'name AS \''.__('Nama').'\'', 
                         'reservation_document_id AS \''.__('Dokumen').'\'', 
-                        'student_id AS \''.__('NIM').'\'', 
+                        'member_id AS \''.__('NIM/NIDN').'\'', 
                         'major AS \''.__('Jurusan').'\'',
                         'whatsapp_number AS \''.__('No. WA').'\'',
                         'reserved_date AS \''.__('Tanggal').'\'',
                         'duration AS \''.__('Durasi').'\'',
                         'start_time AS \''.__('Awal').'\'',
                         'end_time AS \''.__('Akhir').'\'',
-                        'visitor_number AS \'' . __('Jml. anggota') . '\'',
+                        'visitor_number AS \'' . __('Jml. Agt.') . '\'',
                         'activity AS \'' . __('Kegiatan') . '\'');
 
 // ordering

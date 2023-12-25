@@ -10,7 +10,7 @@ function reserveScheduleOnsite($self)
         $reservation = new Reservation();
 
         $reservation->name = $_POST['name'];
-        $reservation->studentId = $_POST['studentId'];
+        $reservation->memberId = $_POST['memberId'];
         $reservation->major = $_POST['major'];
         $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
         $reservation->duration = $_POST['duration'];
@@ -37,7 +37,7 @@ function reserveSchedule($self)
         $reservation = new Reservation();
 
         $reservation->name = $_SESSION['m_name'];
-        $reservation->studentId = $_SESSION['mid'];
+        $reservation->memberId = $_SESSION['mid'];
         $reservation->major = $_POST['major'];
         $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
         $reservation->reservedDate = $_POST['reservationDate'];
@@ -87,7 +87,7 @@ function updateReservation($self)
 
         if ($reservation) {
             $map = [
-                'name' => 'name', 'studentId' => 'studentId', 'major' => 'major',
+                'name' => 'name', 'memberId' => 'memberId', 'major' => 'major',
                 'whatsAppNumber' => 'whatsAppNumber', 'duration' => 'duration',
                 'visitorNumber' => 'visitorNumber', 'activity' => 'activity',
             ];
@@ -162,10 +162,10 @@ function cancelReservationByMember($self)
     }
 }
 
-function getReservationByMemberId($studentId) {
+function getReservationByMemberId($memberId) {
     $reservation = new Reservation();
 
-    return $reservation->retrieveReservationByMemberId($studentId);
+    return $reservation->retrieveReservationByMemberId($memberId);
 }
 
 function uploadFile()
