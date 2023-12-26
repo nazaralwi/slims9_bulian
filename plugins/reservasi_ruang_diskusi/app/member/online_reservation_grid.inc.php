@@ -1,32 +1,23 @@
 <?php
 
-require_once DRRB . DS . 'app/helper/reservation_utils.php';
+$reservationsList = getReservationByMemberId($_SESSION['mid']);
 
-$reservations = getReservationByMemberId($_SESSION['mid']);
-
-$reservations = array_filter($reservations, function ($reservation) {
+$reservationsList = array_filter($reservationsList, function ($reservation) {
   return $reservation->status === 'ongoing';
 });
 
-function sortByDate($a, $b) {
-  $dateA = strtotime($a->reservation_date);
-  $dateB = strtotime($b->reservation_date);
-
-  return $dateB - $dateA; // Compare in reverse order for descending
-}
-
-usort($reservations, 'sortByDate');
+usort($reservationsList, 'sortByDate');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['itemAction']) && $_POST['itemAction'] === 'cancel') {
-      cancelReservationByMember('index.php?p=member&sec=discussion_room_reservation_list');
+      cancelReservationByMember('index.php?p=member&sec=discussion_room_reservation_tab');
   }
 }
 ?>
 
 <div class="list-group">
-  <?php if (count($reservations) != 0) : ?>
-  <?php foreach ($reservations as $reservation): ?>
+  <?php if (count($reservationsList) != 0) : ?>
+  <?php foreach ($reservationsList as $reservation): ?>
     <a href="" class="list-group-item list-group-item-action flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1"><?= $reservation->activity ?></h5>
@@ -55,21 +46,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   <?php endif; ?>
 </div>
-
-<?php
-function getMinutesAndSecond($time) {
-  $timeParts = explode(":", $time);
-  $formattedTime = $timeParts[0] . ":" . $timeParts[1];
-  return $formattedTime;
-}
-
-
-function convertDate($dateString) {
-  // Convert date string to timestamp
-  $timestamp = strtotime($dateString);
-
-  // Format the date as 'd MonthName YYYY'
-  $formattedDate = date('j F Y', $timestamp);
-
-  return $formattedDate;
-}

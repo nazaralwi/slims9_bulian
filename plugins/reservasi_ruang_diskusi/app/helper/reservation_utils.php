@@ -67,13 +67,13 @@ function reserveSchedule($self)
         if ($result['success'] === true) {
             echo '<script type="text/javascript">';
             echo 'alert("' . $result['message'] . '");';
-            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation\';';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_tab\';';
             echo '</script>';
             exit();
         } else {
             echo '<script type="text/javascript">';
             echo 'alert("' . $result['message'] . '");';
-            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation\';';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_tab\';';
             echo '</script>';
             exit();
         }
@@ -150,15 +150,14 @@ function cancelReservationByMember($self)
             // echo '<script>parent.$("#mainContent").simbioAJAX("' . $self . '")</script>';
             echo '<script type="text/javascript">';
             echo 'alert("' . 'Berhasil' . '");';
-            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_list\';';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_tab\';';
             echo '</script>';
             exit();
         } else {
             utility::jsToastr('Onsite Reservation', 'Gagal membatalkan reservasi', 'error');
-            // echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation\';';
             echo '<script type="text/javascript">';
             echo 'alert("' . 'Gagal' . '");';
-            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_list\';';
+            echo 'location.href = \'index.php?p=member&sec=discussion_room_reservation_tab\';';
             echo '</script>';
             exit;
         }

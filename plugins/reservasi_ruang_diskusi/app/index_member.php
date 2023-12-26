@@ -48,9 +48,6 @@ do_checkIP('opac-member');
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 require LIB . 'member_logon.inc.php';
 
-require DRRB . DS . 'app/helper/reservation_utils.php';
-updateStatusForExpiredReservations();
-
 // Captcha initialize
 $captcha = Captcha::section('memberarea');
 
@@ -508,16 +505,8 @@ if ($is_member_login) :
         return $_result;
     }
 
-    function showDiscussionRoomReservationForm() {
-        require DRRB . DS . 'app/member/online_reservation_form.inc.php';
-    }
-
-    function showDiscussionRoomReservationList() {
-        require DRRB . DS . 'app/member/online_reservation_grid.inc.php';
-    }
-
-    function showDiscussionRoomReservationHistoryList() {
-        require DRRB . DS . 'app/member/online_reservation_history_grid.inc.php';
+    function showDiscussionRoomReservationTab() {
+        require DRRB . DS . 'app/member/online_reservation_tab.inc.php';
     }
 
     /*
@@ -812,17 +801,9 @@ if ($is_member_login) :
                             'text' => __('Loan History'),
                             'link' => 'index.php?p=member&sec=loan_history'
                         ],
-                        'discussion_room_reservation' => [
-                            'text' => __('Discussion Room Reservation Form'),
-                            'link' => 'index.php?p=member&sec=discussion_room_reservation'
-                        ],
-                        'discussion_room_reservation_list' => [
-                            'text' => __('Discussion Room Reservation List'),
-                            'link' => 'index.php?p=member&sec=discussion_room_reservation_list'
-                        ],
-                        'discussion_room_reservation_history_list' => [
-                            'text' => __('Discussion Room Reservation History List'),
-                            'link' => 'index.php?p=member&sec=discussion_room_reservation_history_list'
+                        'discussion_room_reservation_tab' => [
+                            'text' => __('Discussion Room Reservation'),
+                            'link' => 'index.php?p=member&sec=discussion_room_reservation_tab'
                         ],
                         'my_account' => [
                             'text' => __('My Account'),
@@ -866,23 +847,11 @@ if ($is_member_login) :
                             echo '</div>';
                             echo showLoanHist();
                             break;
-                        case 'discussion_room_reservation':
+                        case 'discussion_room_reservation_tab':
                             echo '<div class="tagline">';
-                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation Form') . '</div>' . "\n";
+                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation') . '</div>' . "\n";
                             echo '</div>';
-                            echo showDiscussionRoomReservationForm();
-                            break;
-                        case 'discussion_room_reservation_list':
-                            echo '<div class="tagline">';
-                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation List') . '</div>' . "\n";
-                            echo '</div>';
-                            echo showDiscussionRoomReservationList();
-                            break;
-                        case 'discussion_room_reservation_history_list':
-                            echo '<div class="tagline">';
-                            echo '<div class="memberInfoHead">' . __('Discussion Room Reservation History List') . '</div>' . "\n";
-                            echo '</div>';
-                            echo showDiscussionRoomReservationHistoryList();
+                            echo showDiscussionRoomReservationTab();
                             break;
                         case 'my_account':
                             echo '<div class="tagline">';
