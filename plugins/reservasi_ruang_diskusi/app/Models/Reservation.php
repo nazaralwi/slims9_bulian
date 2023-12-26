@@ -66,7 +66,7 @@ class Reservation {
     public static function getAllEvents() {
         global $dbs;
 
-        $sql = "SELECT name, reserved_date, start_time, end_time, activity FROM room_reservations";
+        $sql = "SELECT name, reserved_date, start_time, end_time, activity FROM room_reservations WHERE status != 'cancelled'";
         $result = $dbs->query($sql);
 
         $events = [];
