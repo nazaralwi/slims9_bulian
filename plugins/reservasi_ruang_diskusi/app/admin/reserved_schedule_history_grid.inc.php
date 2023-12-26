@@ -9,7 +9,7 @@ $datagrid = new simbio_datagrid();
 $table_spec = 'room_reservations';
 
 // set column
-$datagrid->setSQLColumn('reservation_id',
+$datagrid->setSQLColumn('reservation_id AS \''.__('ID').'\'',
                         'reservation_date AS \''.__('Tanggal Reservasi').'\'', 
                         'name AS \''.__('Nama').'\'', 
                         'reservation_document_id AS \''.__('Dokumen').'\'', 
