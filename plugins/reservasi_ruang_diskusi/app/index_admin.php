@@ -27,6 +27,8 @@ use DiscussionRoomReservation\Lib\Url;
 
 $page_title = 'Reservasi Ruang Diskusi';
 
+updateStatusForExpiredReservations();
+
 updateReservation(Url::adminSection('/reservationScheduleList'));
 reserveScheduleOnsite(Url::adminSection('/reservationScheduleList'));
 cancelReservation(Url::adminSection('/reservationScheduleList'));

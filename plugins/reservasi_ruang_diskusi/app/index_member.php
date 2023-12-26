@@ -48,6 +48,9 @@ do_checkIP('opac-member');
 require SIMBIO . 'simbio_DB/simbio_dbop.inc.php';
 require LIB . 'member_logon.inc.php';
 
+require DRRB . DS . 'app/helper/reservation_utils.php';
+updateStatusForExpiredReservations();
+
 // Captcha initialize
 $captcha = Captcha::section('memberarea');
 

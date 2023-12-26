@@ -11,9 +11,12 @@
 // Discussion Room Reservation Base
 define('DRRB', SB.'plugins'.DS.'reservasi_ruang_diskusi');
 require_once DRRB. '/lib/vendor/autoload.php';
+// require_once DRRB . DS . 'app/helper/reservation_utils.php';
 
 // get plugin instance
 $plugin = \SLiMS\Plugins::getInstance();
+
+// updateStatusForExpiredReservations();
 
 // registering menus
 $plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index_admin.php');
@@ -25,6 +28,6 @@ $plugin->registerMenu('opac', 'Populate Schedule', DRRB . DS . 'app/reservation_
 $plugin->registerMenu('opac', 'Reservation Calendar', DRRB . DS . 'app/opac/reservation_schedule_for_ajax.php');
 
 // Hook
-$plugins->register('membership_init', function() {
-    updateStatusForExpiredReservations();
-});
+// $plugins->register('membership_init', function() {
+    
+// });

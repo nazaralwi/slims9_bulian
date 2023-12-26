@@ -258,8 +258,9 @@ class Reservation {
         global $dbs;
 
         $sql = "UPDATE room_reservations 
-                SET status = 'completed' 
-                WHERE status = 'ongoing' AND reserved_date < NOW()";
+            SET status = 'completed', last_update = NOW()
+            WHERE status = 'ongoing' AND 
+            (reserved_date < CURRENT_DATE() OR (reserved_date = CURRENT_DATE() AND end_time < CURRENT_TIME()))";
 
         $result = $dbs->query($sql);
 
