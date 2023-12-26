@@ -59,3 +59,17 @@ updateStatusForExpiredReservations();
 <!-- Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var selectedTab = localStorage.getItem('selectedTab');
+        if (selectedTab) {
+            $('#myTab a[href="' + selectedTab + '"]').tab('show');
+        }
+
+        // Store the selected tab in localStorage when a new tab is selected
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var selected = $(e.target).attr('href');
+            localStorage.setItem('selectedTab', selected);
+        });
+    });
+</script>
