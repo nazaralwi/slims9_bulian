@@ -8,6 +8,10 @@ $reservationsHistory = array_filter($reservationsHistory, function ($reservation
 
 usort($reservationsHistory, 'sortByDate');
 
+if (count($reservationsHistory) > 10) {
+  $reservationsHistory = array_slice($reservationsHistory, 0, 10);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['itemID']) && !empty($_POST['itemID']) && isset($_POST['itemAction']) && $_POST['itemAction'] === 'cancel') {
       cancelReservationByMember('index.php?p=member&sec=discussion_room_reservation_tab');
