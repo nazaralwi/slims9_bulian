@@ -56,19 +56,19 @@ switch (true) {
         break;
 
     case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleList':
-        include __DIR__ . '/admin/reserved_schedule_grid.inc.php';
+        include __DIR__ . '/admin/onsite_reservation_grid.inc.php';
         break;
 
     case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleHistoryList':
-        include __DIR__ . '/admin/reserved_schedule_history_grid.inc.php';
+        include __DIR__ . '/admin/onsite_reservation_history_grid.inc.php';
         break;
 
     case (isset($_POST['detail']) || (isset($_GET['sec']) && $_GET['sec'] == '/editReservation')):
-        include __DIR__ . '/admin/reserved_schedule_edit.inc.php';
+        include __DIR__ . '/admin/onsite_reservation_edit.inc.php';
         break;
     
     default:
-        include __DIR__ . '/admin/reserved_schedule_grid.inc.php';
+        include __DIR__ . '/admin/onsite_reservation_grid.inc.php';
         break;
 }
 ?>
