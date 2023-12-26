@@ -22,8 +22,7 @@ $datagrid->setSQLColumn('reservation_id',
                         'end_time AS \''.__('Akhir').'\'',
                         'visitor_number AS \'' . __('Jml. Agt.') . '\'',
                         'activity AS \'' . __('Kegiatan') . '\'',
-                        'status AS \'' . __('Status') . '\'',
-                        'last_update');
+                        'status AS \'' . __('Status') . '\'');
 
 // ordering
 $datagrid->setSQLorder('last_update DESC');
