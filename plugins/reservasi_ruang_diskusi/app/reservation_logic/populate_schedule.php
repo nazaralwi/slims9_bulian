@@ -10,11 +10,27 @@ define('END_TIME', '16:00');
 date_default_timezone_set('Asia/Jakarta'); // Set the timezone to Jakarta/Western Indonesia Time (WIB)
 
 function generateAvailableSchedules($startDate, $durationInMinutes, $bookedSchedules) {
-    $currentTime = strtotime('now'); // Current date and time
+    $currentTime = strtotime('now'); // Current date and time 2023-12-26 13:45
 
     // Set the start date to the current hour if it's in the past
     if ($startDate < $currentTime) {
-        $startDate = strtotime(date('Y-m-d H:00')); // for debug change this into e.g., 2023-12-12 15:10:22
+        $currentMinute = date('i', $currentTime); // Get the current minute
+
+        $hour = date('H', $currentTime);
+        $min = 0;
+        
+        if ($currentMinute >= 0 && $currentMinute < 15) {
+            $min = 15;
+        } else if ($currentMinute >= 15 && $currentMinute < 30) {
+            $min = 30;
+        } else if ($currentMinute >= 30 && $currentMinute < 45) {
+            $min = 45;
+        } else if ($currentMinute >= 45 && $currentMinute <= 59) {
+            $hour = date('H', strtotime('+1 hour', $currentTime));
+            $min = 0;
+        }
+        
+        $startDate = strtotime(date('Y-m-d H:i', mktime($hour, $min, 0, date('m'), date('d'), date('Y'))));
     }
 
     // Check if the provided start date falls on a weekend (Saturday or Sunday)
