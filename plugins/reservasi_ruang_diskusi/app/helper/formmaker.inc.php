@@ -56,7 +56,7 @@ function createFormContent($_label, $_type, $_name, $_place_holder = '', $_is_re
   	echo '</div>';
 }
 
-function createUploadArea($_label, $_name, $labelUpload = 'Pilih File - besar file maksimal 1 MB', $_edit = false)
+function createUploadArea($_label, $_name, $labelUpload = 'Choose file', $_edit = false)
 {
 	echo '<style>
 	.hidden {

@@ -57,6 +57,14 @@ else
     closeTag('div');
     closeTag('form');
 
+    // Change labelUpload with uploaded file name
+    echo '<script>
+    $(document).on("change", ".custom-file-input", function () {
+        let fileName = $(this).val().replace(/\\\\/g, "/").replace(/.*\\//, "");
+        $(this).parent(".custom-file").find(".custom-file-label").text(fileName);
+    });
+    </script>';
+
     // Populate available schedule based on selected date
     echo '<script>
     const today = new Date().toISOString().substr(0, 10);
