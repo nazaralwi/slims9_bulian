@@ -47,7 +47,7 @@ else
     createForm($attr);
     createSelect(__('Program Studi'), 'major', $majorList);
     createFormContent(__('Nomor WhatsApp'), 'text', 'whatsAppNumber', 'Isikan nomor WhatsApp Anda (gunakan format 62..)', true, '', true);
-    createDate(__('Tanggal Reservasi'), 'reservationDate', date('Y-m-d'), 'populateSubcategories()');
+    createDate(__('Tanggal Reservasi'), 'reservationDate', 'min="'.date('Y-m-d').'" onchange="populateSubcategories()"');
     createSelect(__('Durasi Peminjaman'), 'duration', $reservationDuration, 'onchange="populateSubcategories()"');
     createDynamicSelect(__('Jadwal Reservasi yang Tersedia'), 'availableSchedule');
     createUploadArea(__('Upload Surat Peminjaman Ruang'), 'reservationDocument');

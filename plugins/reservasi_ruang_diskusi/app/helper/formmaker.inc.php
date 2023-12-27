@@ -118,11 +118,11 @@ function createDynamicSelect($_label, $_name)
 }
 
 
-function createDate($_label, $_name, $_min, $_onchange)
+function createDate($_label, $_name, $_attr)
 {
 	echo '<div class="form-group">';
 	echo '<label>'.$_label.'</label>';
-	echo '<input class="form-control" type="date" id="' . $_name . '" name="' . $_name . '" min="' . $_min . '" onchange="' . $_onchange . '">';
+	echo '<input class="form-control" type="date" id="' . $_name . '" name="' . $_name . '" ' . $_attr . '">';
 	echo '</div>';
 }
 
