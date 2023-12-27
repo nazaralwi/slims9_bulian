@@ -9,6 +9,14 @@ function sortByDate($a, $b)
     return $dateB - $dateA; // Compare in reverse order for descending
 }
 
+function sortByLastUpdate($a, $b)
+{
+    $dateA = strtotime($a->reservationLastUpdate);
+    $dateB = strtotime($b->reservationLastUpdate);
+
+    return $dateB - $dateA; // Compare in reverse order for descending
+}
+
 function getMinutesAndSecond($time)
 {
     $timeParts = explode(":", $time);

@@ -6,7 +6,7 @@ $reservationsHistory = array_filter($reservationsHistory, function ($reservation
     return $reservation->status !== 'ongoing';
 });
 
-usort($reservationsHistory, 'sortByDate');
+usort($reservationsHistory, 'sortByLastUpdate');
 
 if (count($reservationsHistory) > 10) {
   $reservationsHistory = array_slice($reservationsHistory, 0, 10);
