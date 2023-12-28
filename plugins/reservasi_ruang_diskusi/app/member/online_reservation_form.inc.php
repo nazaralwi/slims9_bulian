@@ -69,6 +69,16 @@ function getMajorFromId($id) {
     return $actualMajor;
 }
 
+function getWhatsAppFromPreviousBookIfAny() {
+    $reservations = getReservationByMemberId($_SESSION['mid']);
+
+    if (count($reservations) != 0) {
+        return end($reservations)->whatsAppNumber;
+    } else {
+        return '';
+    }
+}
+
 // check dependency
 if (!file_exists(DRRB.DS.'app/helper/formmaker.inc.php'))
 {
@@ -103,7 +113,7 @@ else
     // create form
     createForm($attr);
     createSelect(__('Program Studi'), 'major', $majorList, '', getMajorFromId($_SESSION['mid']));
-    createFormContent(__('Nomor WhatsApp'), 'text', 'whatsAppNumber', 'Isikan nomor WhatsApp Anda (gunakan format 62..)', true, '', true);
+    createFormContent(__('Nomor WhatsApp'), 'text', 'whatsAppNumber', 'Isikan nomor WhatsApp Anda (gunakan format 62..)', true, getWhatsAppFromPreviousBookIfAny(), true);
     createDate(__('Tanggal Reservasi'), 'reservationDate', 'min="'.date('Y-m-d').'" onchange="populateSubcategories()"');
     createSelect(__('Durasi Peminjaman'), 'duration', $reservationDuration, 'onchange="populateSubcategories()"');
     createDynamicSelect(__('Jadwal Reservasi yang Tersedia'), 'availableSchedule');
