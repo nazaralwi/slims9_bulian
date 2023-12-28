@@ -12,6 +12,63 @@ $attr = [
     'enctype' => 'multipart/form-data'
 ];
 
+function getMajorFromId($id) {
+    $educationLevelCode = (int) ((string) $id)[2];
+    $majorCode = ((string) $id)[3] . ((string) $id)[4];
+
+    $actualMajor = "";
+
+    if ($educationLevelCode == 1) {
+        $actualMajor .= "S1";
+    } else if ($majorCode == 2) {
+        $actualMajor .= "D3";
+    } else {
+        $actualMajor .= "";
+    }
+
+    switch ($majorCode) {
+        case "01":
+            $actualMajor .= " Teknik Telekomunikasi";
+            break;
+        case "02":
+            $actualMajor .= " Teknik Informatika";
+            break;
+        case "03":
+            $actualMajor .= " Sistem Informasi";
+            break;
+        case "04":
+            $actualMajor .= " Software Engineering";
+            break;
+        case "05":
+            $actualMajor .= " Desain Komunikasi Visual";
+            break;
+        case "06":
+            $actualMajor .= " Teknik Industri";
+            break;
+        case "07":
+            $actualMajor .= " Teknik Elektro";
+            break;
+        case "08":
+            $actualMajor .= " Teknik Biomedis";
+            break;
+        case "09":
+            $actualMajor .= " Teknik Logistik";
+            break;
+        case "10":
+            $actualMajor .= " Sains Data";
+            break;
+        default:
+            $actualMajor .= "";
+            break;
+    }
+
+    if ($actualMajor === "") {
+        return "S1 Teknik Informatika";
+    }
+    
+    return $actualMajor;
+}
+
 // check dependency
 if (!file_exists(DRRB.DS.'app/helper/formmaker.inc.php'))
 {
@@ -27,8 +84,8 @@ else
     ['label' => __('S1 Automation Technology'), 'value' => 'S1 Automation Technology'], ['label' => __('S1 Teknik Biomedis'), 'value' => 'S1 Teknik Biomedis'],
     ['label' => __('S1 Teknologi Pangan'), 'value' => 'S1 Teknologi Pangan'], ['label' => __('S1 Teknik Industri'), 'value' => 'S1 Teknik Industri'],
     ['label' => __('S1 Desain Komunikasi Visual'), 'value' => 'S1 Desain Komunikasi Visual'], ['label' => __('S1 Digital Logistic'), 'value' => 'S1 Digital Logistic'],
-    ['label' => __('S1 Bisnis Digital'), 'value' => 'S1 Bisnis Digital'], ['label' => __('S1 Product Innovation'), 'value' => 'S1 Product Innovation'],
-    ['label' => __('D3  Teknik Digital'), 'value' => 'D3  Teknik Digital'], ['label' => __('Lainnya'), 'value' => 'Lainnya']];
+    ['label' => __('S1 Bisnis Digital'), 'value' => 'S1 Bisnis Digital'], ['label' => __('S1 Teknik Elektro'), 'value' => 'S1 Teknik Elektro'],
+    ['label' => __('S1 Product Innovation'), 'value' => 'S1 Product Innovation'], ['label' => __('D3  Teknik Digital'), 'value' => 'D3  Teknik Digital'], ['label' => __('Lainnya'), 'value' => 'Lainnya']];
 
     $reservationDuration = [['label' => __('30 menit'), 'value' => 30],['label' => __('1 jam'), 'value' => 60],
     ['label' => __('1,5 jam'), 'value' => 90],['label' => __('2 jam'), 'value' => 120], ['label' => __('> 2 jam'), 'value' => '>120']];
@@ -45,7 +102,7 @@ else
 
     // create form
     createForm($attr);
-    createSelect(__('Program Studi'), 'major', $majorList);
+    createSelect(__('Program Studi'), 'major', $majorList, '', getMajorFromId($_SESSION['mid']));
     createFormContent(__('Nomor WhatsApp'), 'text', 'whatsAppNumber', 'Isikan nomor WhatsApp Anda (gunakan format 62..)', true, '', true);
     createDate(__('Tanggal Reservasi'), 'reservationDate', 'min="'.date('Y-m-d').'" onchange="populateSubcategories()"');
     createSelect(__('Durasi Peminjaman'), 'duration', $reservationDuration, 'onchange="populateSubcategories()"');
