@@ -103,6 +103,9 @@ else
                     newOption.text = \'Tidak ada jadwal\';
                     availableSchedule.appendChild(newOption);
                 }
+                // After populating the options, manually trigger the change event
+                // Since the AJAX call doesnt explicitly trigger the change event for the newly populated options
+                $(\'#availableSchedule\').trigger(\'change\');
             })
             .catch(error => console.error(\'Error:\', error));
     }
@@ -139,14 +142,19 @@ else
     }      
     </script>';
 
-    // Show input reservation document for >120h reservation duration
     echo '<script>
     $(document).ready(function() {
-        $(\'#duration\').on(\'change\', function() {
-            var selectedOption = $(this).val(); // Get the selected option
+        // Initially hide the conditional field and remove required attribute
+        $(\'#reservationDocument\').hide();
+        $(\'#reservationDocumentInput\').prop(\'required\', false);
+    
+        // Use event delegation on the form container
+        $(\'#reservationForm > div\').on(\'change\', \'#duration, #availableSchedule\', function() {
+            var selectedDuration = $(\'#duration\').val(); // Get the selected duration
+            var selectedSchedule = $(\'#availableSchedule\').val(); // Get the selected schedule
             
-            // Show/hide the conditional field based on the selected option
-            if (selectedOption === \'>120\') {
+            // Show/hide the conditional field based on the selected duration and available schedule
+            if (selectedDuration === \'>120\' && selectedSchedule !== \'Jadwal tidak tersedia\') {
                 $(\'#reservationDocument\').show(); // Show the conditional field
                 $(\'#reservationDocumentInput\').prop(\'required\', true); // Add required
             } else {
@@ -155,5 +163,8 @@ else
             }
         });
     });
+
+    // Call populateSubcategories after the initial load
+    populateSubcategories();
     </script>';
 }
