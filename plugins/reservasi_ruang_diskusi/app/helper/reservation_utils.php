@@ -145,8 +145,9 @@ function cancelReservationByMember($self)
 {
     if (isset($_POST['itemID'])) {
         $delete = Reservation::deleteById($_POST['itemID']);
+        $deleteDocument = deleteReservationDocument($_POST['itemID']); // Remove this if you wanna keep the reservation document
 
-        if ($delete) {
+        if ($delete && $deleteDocument) {
             utility::jsToastr('Onsite Reservation', 'Berhasil membatalkan reservasi', 'success');
             // echo '<script>parent.$("#mainContent").simbioAJAX("' . $self . '")</script>';
             echo '<script type="text/javascript">';
@@ -235,6 +236,20 @@ function uploadFile()
     }
 
     return ["success" => false, "message" => "No insertion is made", "insert_id" => 0];
+}
+
+function deleteReservationDocument($reservationId) {
+    $fileName = Reservation::getFileNameFromMemberId($reservationId);
+
+    if ($fileName) {
+        $repository = Storage::repository();
+        
+        $repository->delete('/'. $fileName);
+        return true; // Return true if deletion is successful
+    } else {
+        return false; // Return false if file name retrieval fails
+    }
+
 }
 
 function updateStatusForExpiredReservations() {

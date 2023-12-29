@@ -302,4 +302,29 @@ class Reservation {
             return false;
         }
     }
+
+    public static function getFileNameFromMemberId($reservationId) {
+        global $dbs;
+
+        $sql = "SELECT files.file_name
+        FROM room_reservations
+        JOIN files ON room_reservations.reservation_document_id = files.file_id
+        WHERE room_reservations.reservation_id = ?";
+        
+        $stmt = $dbs->prepare($sql);
+        $stmt->bind_param("i", $reservationId);
+        
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+        
+            // Check if there is a row fetched
+            if ($row = $result->fetch_assoc()) {
+                return $row['file_name']; // Return the file_name value
+            } else {
+                return null; // Return null if no file_name is found
+            }    
+        } else {
+            return null; // Return null if execution fails
+        }
+    }
 }
