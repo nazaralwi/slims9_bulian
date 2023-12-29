@@ -3,6 +3,7 @@ use SLiMS\Filesystems\Storage;
 
 require DRRB . DS . 'lib/vendor/autoload.php';
 require DRRB . DS . 'app/Models/Reservation.php';
+require DRRB . DS . 'app/helper/common.php';
 
 function reserveScheduleOnsite($self)
 {
@@ -39,7 +40,7 @@ function reserveSchedule($self)
         $reservation->name = $_SESSION['m_name'];
         $reservation->memberId = $_SESSION['mid'];
         $reservation->major = $_POST['major'];
-        $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+        $reservation->whatsAppNumber = formatWhatsAppNumberInto62Format($_POST['whatsAppNumber']);
         $reservation->reservedDate = $_POST['reservationDate'];
         $reservation->duration = $_POST['duration'];
 
