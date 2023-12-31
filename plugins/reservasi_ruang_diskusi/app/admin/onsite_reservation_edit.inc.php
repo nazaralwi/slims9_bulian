@@ -7,7 +7,7 @@ $rec_q = $dbs->query(str_replace('{itemID}', $itemID, $attribute));
 $rec_d = $rec_q->fetch_assoc();
 
 // create new instance
-$form = new simbio_form_table_AJAX('updateOnsiteReservationForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
+$form = new simbio_form_table_AJAX('updateReservationForm', $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'], 'post');
 $form->submit_button_attr = 'name="updateReservationData" value="'.__('Update').'" class="s-btn btn btn-default"';
 
 // form table attributes
@@ -157,7 +157,7 @@ echo '<script>
 
 // Prevent form submission when schedule isn't available ("Tidak ada jadwal")
 echo '<script>
-document.getElementById("updateOnsiteReservationForm").addEventListener("submit", function(event) {
+document.getElementById("updateReservationForm").addEventListener("submit", function(event) {
     var availableSchedule = document.getElementById(\'availableSchedule\');
     var selectedValue = availableSchedule.value;
 

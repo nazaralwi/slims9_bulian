@@ -29,7 +29,7 @@ $page_title = 'Reservasi Ruang Diskusi';
 
 updateStatusForExpiredReservations();
 
-// updateReservation(Url::adminSection('/reservationScheduleList'));
+updateReservation(getCurrentUrl(['reservationScheduleList' => 1]));
 reserveScheduleOnsite(getCurrentUrl(['reservationScheduleList' => 1]));
 cancelReservation(getCurrentUrl(['reservationScheduleList' => 1]));
 ?>

@@ -107,9 +107,12 @@ function updateReservation($self)
         global $dbs;
 
         $updateRecordID = $dbs->escape_string($_POST['updateRecordID']);
-        $reservation = Reservation::getById($updateRecordID);
+        $reservation = new Reservation();
+        
+        // Reservation::getById($updateRecordID);
 
         if ($reservation) {
+            $reservation->reservationId = $updateRecordID;
             $reservation->major = $_POST['major'];
             $reservation->whatsAppNumber = formatWhatsAppNumberInto62Format($_POST['whatsAppNumber']);
             $reservation->reservedDate = $_POST['reservationDate'];
@@ -130,17 +133,19 @@ function updateReservation($self)
             $isFileUploaded = uploadFile($_POST['memberId']);
             $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
 
+            $result = $reservation->updateReservation();
+
             if ($isFileUploaded['message'] !== "No insertion is made") {
                 $reservation->associateFileWithReservation();
-            }    
+            }
 
-            if ($reservation->update()) {
-                utility::jsToastr('Onsite Reservation', 'Berhasil memperbarui data reservasi', 'success');
-                echo '<script>parent.$("#mainContent").simbioAJAX("' . MWB . 'membership/index.php")</script>';
-                exit;
+            if ($result['success'] === true) {
+                utility::jsToastr('Reservasi onsite', $result['message'], 'success');
+                echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
+                exit();
             } else {
-                utility::jsToastr('Onsite Reservation', 'Gagal menyimpan data reservasi', 'error');
-                exit;
+                utility::jsToastr('Reservasi onsite', $result['message'], 'success');
+                exit();
             }
         } else {
             echo "Reservation not found.";

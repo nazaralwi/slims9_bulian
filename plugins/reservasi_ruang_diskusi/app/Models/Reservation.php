@@ -32,7 +32,7 @@ class Reservation {
     public static function getById($reservationId) {
         global $dbs;
 
-        $sql = "SELECT * FROM room_reservations WHERE id = ?";
+        $sql = "SELECT * FROM room_reservations WHERE reservation_id = ?";
         $stmt = $dbs->prepare($sql);
         $stmt->bind_param("i", $reservationId);
         $stmt->execute();
@@ -160,6 +160,31 @@ class Reservation {
         }
     }
 
+    public function updateReservation() {
+        global $dbs;
+
+        $sql = "UPDATE room_reservations SET major=?, whatsapp_number=?, reserved_date=?, duration=?, start_time=?, end_time=?, visitor_number=?, activity=?, reservation_document_id=? WHERE reservation_id=?";
+        
+        $stmt = $dbs->prepare($sql);
+        $stmt->bind_param("ssssssisii", $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->visitorNumber, $this->activity, $this->reservationDocumentId, $this->reservationId);
+        
+        // Check if the reservation already exists before inserting
+        $existingReservation = $this->checkExistingReservation();
+
+        if ($existingReservation) {
+            // A reservation already exists with the same date, start time, and end time
+            return ["success" => false, "message" => "Error: This schedule is already reserved."];
+        }    
+
+        // Proceed with the insertion if no existing reservation is found
+        if ($stmt->execute()) {
+            $this->reservationId = $stmt->insert_id;
+            return ["success" => true, "message" => "Reservation saved successfully."];
+        } else {
+            return ["success" => false, "message" => "Error: Failed to update reservation."];
+        }
+    }
+
     public function retrieveReservationByMemberId($memberId) {
         global $dbs;
 
@@ -268,21 +293,6 @@ class Reservation {
             // echo "Status updated successfully";
         } else {
             // echo "Error updating status: " . $dbs->error;
-        }
-    }
-
-    public function update() {
-        global $dbs;
-
-        $sql = "UPDATE room_reservations SET name=?, member_id=?, major=?, whatsapp_number=?, reserved_date=?, duration=?, start_time=?, end_time=?, reservation_document_id=?, visitor_number=?, activity=? WHERE id=?";
-        
-        $stmt = $dbs->prepare($sql);
-        $stmt->bind_param("sisssissiisi", $this->name, $this->memberId, $this->major, $this->whatsAppNumber, $this->reservedDate, $this->duration, $this->startTime, $this->endTime, $this->reservationDocumentId, $this->visitorNumber, $this->activity, $this->reservationId);
-        
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
         }
     }
 
