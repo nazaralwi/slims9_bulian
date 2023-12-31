@@ -10,28 +10,36 @@ $form->table_header_attr = 'class="alterCell"';
 $form->table_content_attr = 'class="alterCell2"';
 
 $meta = [];
-$form->addTextField('text', 'memberId', 'NIDN/NIM', $meta['memberId'], 'rows="1" class="form-control col-6"', 'Member ID');
-$form->addTextField('text', 'name', 'Nama', $meta['name'] ?? '', 'rows="1" class="form-control col-6"', 'Name');
-$form->addSelectList('major', 'Program Studi', $majorList, $meta['major'] ?? '', 'class="form-control col-6"', 'Major');
-$form->addTextField('text', 'whatsAppNumber', 'Nomor WhatsApp', $meta['whatsAppNumber'] ?? '', 'rows="1" class="form-control col-6"', 'WhatsApp Number');
+$str_input  = '<div class="container-fluid">';
+$str_input .= '<div class="row">';
+$str_input .= simbio_form_element::textField('text', 'memberID', $rec_d['member_id']??'', 'id="memberID" onblur="ajaxCheckID(\''.SWB.'plugins/reservasi_ruang_diskusi/app/admin/AJAX_check_id.php\', \'member\', \'member_id\', \'msgBox\', \'memberID\')" class="form-control col-6" required');
+$str_input .= '<div id="msgBox" class="col mt-2"></div>';
+$str_input .= '</div>';
+$str_input .= '</div>';
+$form->addAnything('NIDN/NIM', $str_input);
+// $form->addTextField('text', 'memberId', 'NIDN/NIM', '', 'rows="1" class="form-control col-6"', 'Member ID');
+$form->addTextField('text', 'name', 'Nama', '', 'rows="1" class="form-control col-6" required', 'Name');
+$form->addSelectList('major', 'Program Studi', $majorList, $meta['major'] ?? '', 'class="form-control col-6" required', 'Major');
+$form->addTextField('text', 'whatsAppNumber', 'Nomor WhatsApp', $meta['whatsAppNumber'] ?? '', 'rows="1" class="form-control col-6" required', 'WhatsApp Number');
 
-$str_date = '<input type="date" id="date" name="date" class="form-control col-6" value="'.date('Y-m-d').'" min="'.date('Y-m-d').'" onchange="populateSubcategories()"/>';
-$str_date .= '<div id="error-container" aria-live="polite";></div>';
-
+$str_date = '<input type="date" id="reservationDate" name="reservationDate" class="form-control col-6" value="'.date('Y-m-d').'" min="'.date('Y-m-d').'" onchange="populateSubcategories()" required/>';
 $form->addAnything('Tanggal Reservasi', $str_date);
 
 // $reservationDuration = ['30' => '30 menit', '60' => '1 jam', '90' => '1,5 jam', '120' => '2 jam', '>120' => '> 2 jam'];
 $reservationDuration = [['30', '30 menit'], ['60', '1 jam'], ['90', '1,5 jam'], ['120', '2 jam'], ['>120', '> 2 jam']];
-$form->addSelectList('duration', 'Durasi Peminjaman', $reservationDuration, $meta['duration'] ?? '', 'onchange="populateSubcategories()" class="form-control col-6"', 'Duration');
+$form->addSelectList('duration', 'Durasi Peminjaman', $reservationDuration, $meta['duration'] ?? '', 'onchange="populateSubcategories()" class="form-control col-6" required', 'Duration');
+// $form->addSelectList('availableSchedule', 'Jadwal Reservasi yang Tersedia', [], $meta['availableSchedule'] ?? '', 'class="form-control col-6" required', 'Available Schedule');
 
-$form->addSelectList('availableSchedule', 'Jadwal Reservasi yang Tersedia', [], $meta['availableSchedule'] ?? '', 'class="form-control col-6"', 'Available Schedule');
+$str_available_schedule = '<select id="availableSchedule" class="form-control col-6" name="availableSchedule" required></select>';
+$str_available_schedule .= '<div id="error-container" aria-live="polite"; class="col-6"></div>';
+$form->addAnything('Jadwal Reservasi yang Tersedia', $str_available_schedule);
 
 // required (> 2 hours)
 // md5 
 $str_input  = '<div id="reservationDocument" class="container-fluid">';
 $str_input .= '<div class="row">';
 $str_input .= '<div class="custom-file col-6">';
-$str_input .= simbio_form_element::textField('file', 'reservationDocumentInput','','class="custom-file-input"');
+$str_input .= simbio_form_element::textField('file', 'reservationDocumentInput','','class="custom-file-input" required');
 $str_input .= '<label class="custom-file-label" for="reservationDocumentInput">Choose file</label>';
 $str_input .= '</div>';
 $str_input .= '<div class="col-4 mt-2">Maximum '.$sysconf['max_upload'].' KB</div>';
@@ -39,14 +47,15 @@ $str_input .= '</div>';
 $str_input .= '</div>';
 $form->addAnything('File To Attach', $str_input);
 
-$form->addSelectList('visitorNumber', 'Jumlah pengguna ruangan', ['5', '6', '7', '8', '9', '10'], $meta['visitorNumber'] ?? '', 'class="form-control col-6"', 'Visitor Number');
-$form->addTextField('text', 'activity', 'Kegiatan yang Akan Dilakukan', $meta['activity'] ?? '', 'rows="1" class="form-control col-6"', 'Activity');
+$form->addSelectList('visitorNumber', 'Jumlah pengguna ruangan', ['5', '6', '7', '8', '9', '10'], $meta['visitorNumber'] ?? '', 'class="form-control col-6" required', 'Visitor Number');
+$form->addTextField('text', 'activity', 'Kegiatan yang Akan Dilakukan', $meta['activity'] ?? '', 'rows="1" class="form-control col-6" required', 'Activity');
 
 echo '<style>
 .error-message {
     color: #b9191b; /* Red color */
     font-size: 0.8rem; /* Slightly smaller than your form controls */
     margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
     padding: 5px;
     border: 1px solid #e74c3c; /* Light red border */
     border-radius: 4px;
@@ -73,16 +82,16 @@ $(document).on("change", ".custom-file-input", function () {
 // Populate available schedule based on selected date
 echo '<script>
     const today = new Date().toISOString().substr(0, 10);
-    document.getElementById(\'date\').value = today;
+    document.getElementById(\'reservationDate\').value = today;
 
     function populateSubcategories() {
+        hideErrorMessage()
+
         const category = document.getElementById(\'duration\').value;
-        console.log(category);
         const availableSchedule = document.getElementById(\'availableSchedule\');
         availableSchedule.innerHTML = \'\';
 
-        const selectedDate = document.getElementById(\'date\').value;
-        console.log(selectedDate);
+        const selectedDate = document.getElementById(\'reservationDate\').value;
 
         fetch(\'http://localhost/slims9_bulian/index.php?p=populate_schedule\', {
             method: \'POST\',
@@ -117,7 +126,7 @@ echo '<script>
 
 // Prevent form submission when schedule isn't available ("Tidak ada jadwal")
 echo '<script>
-document.getElementById("onsiteReservationForm").addEventListener("onsiteReservation", function(event) {
+document.getElementById("onsiteReservationForm").addEventListener("submit", function(event) {
     var availableSchedule = document.getElementById(\'availableSchedule\');
     var selectedValue = availableSchedule.value;
 

@@ -316,13 +316,8 @@ class Reservation {
         
         if ($stmt->execute()) {
             $result = $stmt->get_result();
-        
-            // Check if there is a row fetched
-            if ($row = $result->fetch_assoc()) {
-                return $row['file_name']; // Return the file_name value
-            } else {
-                return null; // Return null if no file_name is found
-            }    
+            $row = $result->fetch_assoc();
+            return $row['file_name']; // Return the file_name value    
         } else {
             return null; // Return null if execution fails
         }

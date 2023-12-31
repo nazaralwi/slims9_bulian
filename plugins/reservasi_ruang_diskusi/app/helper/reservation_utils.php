@@ -10,25 +10,44 @@ function reserveScheduleOnsite($self)
     if (isset($_POST['onsiteReservation'])) {
         $reservation = new Reservation();
 
+        $memberId = $_POST['memberID'];
         $reservation->name = $_POST['name'];
-        $reservation->memberId = $_POST['memberId'];
+        $reservation->memberId = $memberId;
         $reservation->major = $_POST['major'];
-        $reservation->whatsAppNumber = $_POST['whatsAppNumber'];
+        $reservation->whatsAppNumber = formatWhatsAppNumberInto62Format($_POST['whatsAppNumber']);;
+        $reservation->reservedDate = $_POST['reservationDate'];
         $reservation->duration = $_POST['duration'];
+
+        $timeRange = $_POST['availableSchedule'];
+        $times = explode(" - ", $timeRange);
+        $reservation->startTime = $times[0];
+        $reservation->endTime = $times[1];
+
         $reservation->visitorNumber = $_POST['visitorNumber'];
         $reservation->activity = $_POST['activity'];
 
-        $reservation->reservation_date = date('Y-m-d H:i:s');
+        $timestamp = date('Y-m-d H:i:s');
+        $reservation->reservation_date = $timestamp;
+        $reservation->reservationLastUpdate = $timestamp;
 
+        $isFileUploaded = uploadFile($memberId);
+        $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
+        
         $result = $reservation->save();
 
-        if ($result['success'] === true) {
-            utility::jsToastr('Reservasi Onsite', $result['message'], 'success');
-            echo '<script>parent.$("#mainContent").simbioAJAX("' . $self . '")</script>';
-        } else {
-            utility::jsToastr('Reservasi Onsite', 'Gagal melakukan reservasi: ' . $result['message'], 'error');
+        if ($isFileUploaded['message'] !== "No insertion is made") {
+            $reservation->associateFileWithReservation();
         }
-        exit;
+
+        if ($result['success'] === true) {
+            utility::jsToastr('Reservasi onsite', $result['message'], 'success');
+            echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
+            exit();
+        } else {
+            utility::jsToastr('Reservasi onsite', $result['message'], 'success');
+            echo '<script>parent.$("#mainContent").simbioAJAX("'.$self.'")</script>';
+            exit();
+        }
     }
 }
 
@@ -37,8 +56,9 @@ function reserveSchedule($self)
     if (isset($_POST['availableSchedule'])) {
         $reservation = new Reservation();
 
+        $memberId = $_SESSION['mid'];
         $reservation->name = $_SESSION['m_name'];
-        $reservation->memberId = $_SESSION['mid'];
+        $reservation->memberId = $memberId;
         $reservation->major = $_POST['major'];
         $reservation->whatsAppNumber = formatWhatsAppNumberInto62Format($_POST['whatsAppNumber']);
         $reservation->reservedDate = $_POST['reservationDate'];
@@ -56,7 +76,7 @@ function reserveSchedule($self)
         $reservation->reservation_date = $timestamp;
         $reservation->reservationLastUpdate = $timestamp;
 
-        $isFileUploaded = uploadFile();
+        $isFileUploaded = uploadFile($memberId);
         $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
         
         $result = $reservation->save();
@@ -172,14 +192,13 @@ function getReservationByMemberId($memberId) {
     return $reservation->retrieveReservationByMemberId($memberId);
 }
 
-function uploadFile()
+function uploadFile($memberId)
 {
     global $sysconf;
 
     ob_start();
     if (isset($_FILES['reservationDocumentInput'])) {
         $uploaded_file_id = 0;
-        $memberId = $_SESSION['mid'];
         $title = 'spr_' . $memberId;
         $url = '';
         $fileDesc = '';
@@ -264,6 +283,12 @@ function dirCheckPermission()
     }
 
     return $msg;
+}
+
+function getCurrentUrl($query = [])
+{
+    
+    return $_SERVER['PHP_SELF'] . '?' . http_build_query(array_merge(['mod' => $_GET['mod'], 'id' => $_GET['id']], $query));
 }
 
 function getMajorList()

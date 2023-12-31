@@ -29,9 +29,9 @@ $page_title = 'Reservasi Ruang Diskusi';
 
 updateStatusForExpiredReservations();
 
-updateReservation(Url::adminSection('/reservationScheduleList'));
-reserveScheduleOnsite(Url::adminSection('/reservationScheduleList'));
-cancelReservation(Url::adminSection('/reservationScheduleList'));
+// updateReservation(Url::adminSection('/reservationScheduleList'));
+reserveScheduleOnsite(getCurrentUrl(['reservationScheduleList' => 1]));
+cancelReservation(getCurrentUrl(['reservationScheduleList' => 1]));
 ?>
 
 <div class="menuBox">
@@ -41,9 +41,9 @@ cancelReservation(Url::adminSection('/reservationScheduleList'));
         </div>
         <div class="sub_section">
             <div class="btn-group">
-                <a href="<?= Url::adminSection('/reservationScheduleList') ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
-                <a href="<?= Url::adminSection('/reservationScheduleHistoryList') ?>" class="btn btn-primary">Daftar Riwayat Reservasi</a>
-                <a href="<?= Url::adminSection('/onsiteReservation') ?>" class="btn btn-success">Reservasi Onsite</a>
+                <a href="<?= getCurrentUrl(['reservationScheduleList' => 1]) ?>" class="btn btn-primary">Daftar Jadwal Reservasi</a>
+                <a href="<?= getCurrentUrl(['reservationScheduleHistoryList' => 1]) ?>" class="btn btn-primary">Daftar Riwayat Reservasi</a>
+                <a href="<?= getCurrentUrl(['onsiteReservation' => 1]) ?>" class="btn btn-success">Reservasi Onsite</a>
             </div>
         </div>
     </div>
@@ -51,19 +51,19 @@ cancelReservation(Url::adminSection('/reservationScheduleList'));
 
 <?php
 switch (true) {
-    case isset($_GET['sec']) && $_GET['sec'] == '/onsiteReservation':
+    case isset($_GET['onsiteReservation']):
         include __DIR__ . '/admin/onsite_reservation_form.inc.php';
         break;
 
-    case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleList':
+    case isset($_GET['reservationScheduleList']):
         include __DIR__ . '/admin/onsite_reservation_grid.inc.php';
         break;
 
-    case isset($_GET['sec']) && $_GET['sec'] == '/reservationScheduleHistoryList':
+    case isset($_GET['reservationScheduleHistoryList']):
         include __DIR__ . '/admin/onsite_reservation_history_grid.inc.php';
         break;
 
-    case (isset($_POST['detail']) || (isset($_GET['sec']) && $_GET['sec'] == '/editReservation')):
+    case (isset($_POST['detail']) || (isset($_GET['editReservation']))):
         include __DIR__ . '/admin/onsite_reservation_edit.inc.php';
         break;
     
@@ -74,11 +74,11 @@ switch (true) {
 ?>
 <script>
     document.querySelectorAll('.editLink').forEach((el) => {
-        el.href = el.getAttribute('href').replace(/(\&sec=%2FreservationScheduleList)/g, '');
+        el.href = el.getAttribute('href').replace(/(\&reservationScheduleList=1)/g, '');
     });
 
     const form = document.querySelector('.simbio_form_maker');
     if (form !== null) {
-        form.setAttribute('action', '<?= Url::adminSection('/editReservation') ?>');
+        form.setAttribute('action', '<?= getCurrentUrl() ?>');
     }
 </script>
