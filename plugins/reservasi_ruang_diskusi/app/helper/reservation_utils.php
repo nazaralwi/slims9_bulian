@@ -110,17 +110,29 @@ function updateReservation($self)
         $reservation = Reservation::getById($updateRecordID);
 
         if ($reservation) {
-            $map = [
-                'name' => 'name', 'memberId' => 'memberId', 'major' => 'major',
-                'whatsAppNumber' => 'whatsAppNumber', 'duration' => 'duration',
-                'visitorNumber' => 'visitorNumber', 'activity' => 'activity',
-            ];
+            $reservation->major = $_POST['major'];
+            $reservation->whatsAppNumber = formatWhatsAppNumberInto62Format($_POST['whatsAppNumber']);
+            $reservation->reservedDate = $_POST['reservationDate'];
+            $reservation->duration = $_POST['duration'];
+    
+            $timeRange = $_POST['availableSchedule'];
+            $times = explode(" - ", $timeRange);
+            $reservation->startTime = $times[0];
+            $reservation->endTime = $times[1];
+    
+            $reservation->visitorNumber = $_POST['visitorNumber'];
+            $reservation->activity = $_POST['activity'];
+    
+            $timestamp = date('Y-m-d H:i:s');
+            $reservation->reservation_date = $timestamp;
+            $reservation->reservationLastUpdate = $timestamp;
+    
+            $isFileUploaded = uploadFile($_POST['memberId']);
+            $reservation->reservationDocumentId = $isFileUploaded['insert_id'];
 
-            foreach ($map as $key => $property) {
-                if (isset($_POST[$key])) {
-                    $reservation->$property = str_replace(['"'], '', strip_tags($_POST[$key]));
-                }
-            }
+            if ($isFileUploaded['message'] !== "No insertion is made") {
+                $reservation->associateFileWithReservation();
+            }    
 
             if ($reservation->update()) {
                 utility::jsToastr('Onsite Reservation', 'Berhasil memperbarui data reservasi', 'success');
