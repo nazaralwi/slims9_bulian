@@ -9,7 +9,7 @@
  */
 
 // Discussion Room Reservation Base
-define('DRRB', SB.'plugins'.DS.'reservasi_ruang_diskusi');
+define('DRRB', __DIR__);
 require_once DRRB. '/lib/vendor/autoload.php';
 // require_once DRRB . DS . 'app/helper/reservation_utils.php';
 
@@ -20,7 +20,7 @@ $plugin = \SLiMS\Plugins::getInstance();
 
 // registering menus
 $plugin->registerMenu('membership', 'Reservasi Ruang Diskusi', DRRB . DS . 'app/index_admin.php');
-$plugins->registerMenu('opac', 'Member', DRRB . DS . 'app/index_member.php');
+$plugin->registerMenu('opac', 'Member', DRRB . DS . 'app/index_member.php');
 $plugin->registerMenu('opac', 'Jadwal Ruang Diskusi', DRRB . DS . 'app/index_opac.php');
 
 // For AJAX request
