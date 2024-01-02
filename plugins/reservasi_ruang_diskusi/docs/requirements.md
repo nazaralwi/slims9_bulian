@@ -23,14 +23,10 @@ Sistem harus mampu menerima input data detail reservasi:
 **Reliability:**
 * Sistem hanya mengizinkan pengguna untuk memilih jadwal yang tersedia.
 * Sistem harus mengizinkan pengguna untuk mendaftar kapanpun.
-* Sistem harus menandai pengguna yang mendaftar sebagai pengunjung perpustakaan.
-    * Setiap anggota perpustakaan yang ingin mengunjungi perpustakaan harus melakukan reservasi kehadiran terlebih dahulu.
 * Sistem harus dapat menampilkan nama anggota perpustakaan berdasarkan NIM mereka.
     * Fitur autocomplete
 * Perhatikan bagaimana jika ada anggota perpustakaan yang mendaftarkan nama tanpa seizin orangnya.
 * Sistem harus dapat mendeteksi hari libur.
-* Sistem harus mencetak barcode kehadiran anggota yang terdaftar.
-    * Kemungkinan akan ada bentrok dengan use case reservasi kehadiran, di mana anggota yang telah melakukan reservasi kehadiran, barcode-nya akan expired 30 menit setelah daftar.
 **Security:**
 * Sistem hanya mengizinkan pengguna untuk melakukan reservasi jika penggguna sudah menyetujui kebijakan.
 
